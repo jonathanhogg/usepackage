@@ -23,6 +23,8 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 	* INSTALL: Short basic installation instructions.
 
+	* Makefile.am: Added custom install procedure for usepackage.conf file.
+
 2002-05-26  Jonathan Hogg  <jonathan@onegoodidea.com>
 
 	* Makefile.am, configure.ac: Now using autoconf/automake to
