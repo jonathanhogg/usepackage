@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 
    if (list_packages)
    {
-      fprintf(stderr, "usepackage %s, Copyright %s\n\n", VERSION, COPYRIGHT);
+      fprintf(stderr, "usepackage %s, %s\n\n", VERSION, COPYRIGHT);
       fprintf(stderr, "Available packages are:\n\n");
       list_annotations();
       fprintf(stderr, "\nAvailable groups are:\n\n");
