@@ -50,7 +50,7 @@
 
 X11-user-setup := standard, GNU, X11 ;
 openwin-user-setup := standard, GNU, OpenWin ;
-vlsi-tools := Magic, MEBS, VSystem, Alliance ;
+vlsi-tools := Magic, MEBS, VSystem, Alliance, XACT6000 ;
 
 
 ### empty path: ###
@@ -177,6 +177,10 @@ Alliance sun4* * * * :
 		MBK_WORK_LIB = .,
 		MBK_IN_LO = "vst" ;
 
+### Xilinx XACT6000: ###
+
+XACT6000 sun4* * * * :	PATH += /local/vlsi/xact6000/bin,
+			XACT6000 = /local/vlsi/xact6000 ;
 
 ### TeX: ###
 
