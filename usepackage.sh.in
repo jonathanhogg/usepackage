@@ -1,5 +1,5 @@
 #!/bin/sh
 changequote(``,'')
-PATH=/bin:/usr/bin:/usr/local/bin:/usr/ucb:/ucb
-exec INSTALL_DIR/bin/`arch`/usepackage $*
+HW_OS=`/usr/local/gnu/bin/hw_os`
+exec INSTALL_DIR/bin/$HW_OS/usepackage $*
 

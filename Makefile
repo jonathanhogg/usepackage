@@ -13,6 +13,8 @@ FLEX = flex -Cf -i
 MV = mv
 RM = rm -f
 
+HW_OS := $(shell /usr/local/gnu/bin/hw_os )
+
 ifdef INSTALL_IN
 
 CC = gcc -O2 -DMAIN_PACKAGE_FILE=\"$(INSTALL_IN)/lib/packages\"
@@ -35,8 +37,8 @@ install: noobjects README usepackage packages usepackage.sh
 	$(INSTALL_DIR) $(INSTALL_IN)/bin
 	$(INSTALL_SCRIPT) usepackage.sh $(INSTALL_IN)/bin/usepackage 
 	$(STRIP) usepackage
-	$(INSTALL_DIR) $(INSTALL_IN)/bin/$(ARCH)
-	$(INSTALL_EXEC) usepackage $(INSTALL_IN)/bin/$(ARCH)/usepackage
+	$(INSTALL_DIR) $(INSTALL_IN)/bin/$(HW_OS)
+	$(INSTALL_EXEC) usepackage $(INSTALL_IN)/bin/$(HW_OS)/usepackage
 	$(INSTALL_DIR) $(INSTALL_IN)/lib
 	$(INSTALL_FILE) packages $(INSTALL_IN)/lib/packages
 
@@ -62,7 +64,7 @@ scanner.c: scanner.l
 	$(CC) -c $*.c
 
 noobjects:
-	$(RM) *.o
+	$(RM) *.o usepackage.sh README
 
 clean:
 	$(RM) *.o scanner.c grammar.c grammar.h usepackage usepackage.sh \
