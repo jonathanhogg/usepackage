@@ -1,0 +1,18 @@
+#
+# contrib packages
+#
+# Version: $Revision$
+#
+# [see packages.master]
+#
+
+
+### main contrib stuff: ###
+
+contrib * * * * :		PATH += /usr/local/contrib/bin,
+				MANPATH += /usr/local/contrib/man,
+				LD_LIBRARY_PATH += /usr/local/contrib/lib,
+				XFILESEARCHPATH
+				  += /usr/local/contrib/lib/X11/%T/%N%S ;
+
+

@@ -1,0 +1,17 @@
+#
+# RAPIDS group packages
+#
+# Version: $Revision$
+#
+# [see packages.master]
+#
+
+
+### Java: ###
+ 
+Java sun4* SunOS 5.* * :        PATH += /local/java/jdk/bin:
+                                        /local/java/hotjava/bin,
+                                CLASSPATH += /local/java/jdk/lib/classes.zip ;
+
+
+

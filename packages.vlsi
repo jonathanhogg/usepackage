@@ -1,0 +1,48 @@
+#
+# vlsi group packages
+#
+# Version: $Revision$
+#
+# [see packages.master]
+#
+
+
+Magic sun4* * * * :	PATH += /local/vlsi/software/magic/bin,
+			MANPATH += /local/vlsi/software/magic/man ;
+
+MEBS sun4* * * * :	PATH += /local/vlsi/software/mebs/MEBS1.2/bin,
+			MANPATH += /local/vlsi/software/mebs/MEBS1.2/man,
+			MEBS_ROOT = /local/vlsi/software/mebs/MEBS1.2 ;
+
+VSystem * * * {hawaii,albatross} :
+		PATH += /local/vlsi/software/V-System/modeltech/sun4 ;
+
+
+Alliance sun4* * * * :
+		PATH += /local/vlsi/software/alliance/bin,
+		MANPATH += /local/vlsi/software/alliance/man,
+		MBK_CATA_LIB = .:
+			/local/vlsi/alliance/software/cells/scr:
+			/local/vlsi/alliance/software/cells/ring/pad12,
+		VH_BEHSFX = "vbe",
+		VH_PATSFX = "pat",
+		MBK_WORK_LIB = .,
+		MBK_IN_LO = "vst" ;
+
+XACT6000 sun4* * * * :	PATH += /local/vlsi/software/xact6000/bin,
+			XACT6000 = /local/vlsi/software/xact6000 ;
+
+XACT5 sun4* * * * :     XACT += /local/peg1/xact/xact,
+                        PATH += /local/peg1/xact/xact/bin/sparc ;
+
+PowerView sun4* * * * : XACT += /local/peg1/xact/powerview,
+                        PATH += /local/peg1/xact/powerview/bin/sparc ;
+
+CLAyTools * * * copinsay : PATH += /local/vlsi/claytools/1.11/bin ;
+
+truby sun4* * * * :     PATH += ~satnam/research/truby/bin/sun4 ;
+
+ruby * * * * :		RUBY_ROOT = /local/vlsi/software/ruby,
+			PATH += /local/vlsi/software/ruby/bin,
+			MANPATH += /local/vlsi/software/ruby/man ;
+

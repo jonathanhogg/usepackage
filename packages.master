@@ -1,0 +1,174 @@
+#
+# usepackage standard packages file
+#
+# Version: $Revision$
+#
+# format:
+#
+# 	<packagename> <arch> <os> <release> <host> [<= <requires>...] :
+#		<variable>[, <variable>...] ;
+#
+# <packagename>, <arch>, <os>, and <host> may use a restricted shell-style
+# pattern matching ('*' for anything, '<pre>*' for prefix, '{<a>,<b>,...}'
+# for a choice. <variables> are of the form <name>=<value> or <name>+=<value>.
+# a <value> is either a path list (colon separated) or a literal string in
+# double quotes. new-lines are ignored in path lists and in literal strings.
+# a path may begin with '~' or '~user' which will be expanded respectively
+# to the home directory of the user invoking usepackage or the specified user.
+# the optional <requires> list is a comma-separated list of package or
+# group names that must be loaded into the environment before this package.
+# whatever you do, DON'T create a mutually dependant loop!
+#
+# e.g.:
+#
+#	X * * * * : PATH+=/usr/X11/bin, LD_LIBRARY_PATH+=/usr/X11/lib ;
+#	frib * * * mymachine : PATH+=/special/frib/bin ;
+#	frib sun4* * * * : PATH+=/usr/local/frib/bin/sun4 ;
+#	frib alpha * * * : PATH+=/usr/local/frib/bin/alpha ;
+#	cvs * * * * <= gnu : CVSROOT=/usr/local/src/cvsroot ;
+#
+# NOTE: the sun SPARCs identify themselves as 'sun4m' or 'sun4c' not 'sun4',
+#       so use 'sun4*' to match both.
+#
+# package matching is done sequentially through the file and _every_ record
+# that matches will be added to the environment. path additions (+=) are
+# made to the head of a path list and duplicates are removed from the tail.
+# matches are case insensitive.
+#
+#
+# groups format:
+#
+#	<groupname> := <packagename>[, <packagename>...] ;
+#
+# no pattern matching is available for <groupname> or <packagename>. groups
+# cannot reference other groups, only packages. names are case insensitive.
+#
+# e.g.:
+#
+#	standard-user-settings := standard, X, TeX ;
+#	openwin-user-settings := standard, OpenWin, TeX ;
+#
+
+
+### basic groups: ###
+
+CDE-user := standard, bsd, opt, gnu, contrib, CDE, X11 ;
+OpenWin-user := standard, bsd, opt, gnu, contrib, OpenWin, X11 ;
+X11-user := standard, bsd, opt, gnu, contrib, X11 ;
+
+
+### empty path: ###
+
+none * * * * :		PATH = "",
+			MANPATH = "",
+			LD_LIBRARY_PATH = "" ;
+
+
+### if you absolutely insist on such a security hole: ###
+
+dot * * * * :		PATH += . ;
+
+
+### useful side-effect use of usepackage: ###
+
+# the ARCH variable is pretty much obsolete now as it isn't a clear
+# enough namespace for all the architectures we now use, so i'm including
+# the HW_OS variable which is becoming the standard.
+
+arch sun4* SunOS 4.* * :	ARCH="sun4", HW_OS="sparc-sun-sunos4" ;
+arch sun4* SunOS 5.* * :	ARCH="solaris", HW_OS="sparc-sun-solaris2" ;
+arch alpha OSF1 * * :		ARCH="alpha", HW_OS="alpha-dec-osf1" ;
+arch i86pc SunOS 5.* * :	ARCH="i86pc", HW_OS="i386-unknown-solaris2" ;
+arch mips IRIX * * :		ARCH="mips", HW_OS="mips-sgi-irix" ;
+# arch i86px linux? * * :	ARCH="linux", HW_OS="i386-unknown-linux" ;
+
+
+### standard things that everyone should have: ###
+
+standard * * * * :	PATH += /usr/bin:/bin,
+			MANPATH += /usr/man,
+			LD_LIBRARY_PATH += /usr/lib:/lib ;
+
+# neglect not the berkelian way...
+
+bsd * * * * :		PATH += /usr/ucb ;
+bsd * SunOS * * :	LD_LIBRARY_PATH += /usr/ucblib ;
+
+
+### GNU stuff: ###
+
+gnu * * * * :		PATH += /usr/local/gnu/bin,
+			MANPATH += /usr/local/gnu/man ;
+
+
+### optional stuff: ###
+
+opt * * * * :		PATH += /usr/local/opt/bin,
+			MANPATH += /usr/local/opt/man,
+			LD_LIBRARY_PATH += /usr/local/opt/lib ;
+
+
+### sysadm stuff: ###
+
+sysadm * * * * :	PATH += /usr/sbin:/sbin:/etc ;
+
+
+### X11: ###
+
+X11 * * * * :		PATH += /usr/local/X11/bin,
+			MANPATH += /usr/local/X11/man,
+			LD_LIBRARY_PATH += /usr/local/X11/lib,
+			XFILESEARCHPATH
+			  += /usr/local/X11/lib/%T/%N%S ;
+
+
+### OpenWindows on any SunOS machine: ###
+
+OpenWin * SunOS * * :	PATH += /usr/openwin/bin,
+			MANPATH += /usr/openwin/man,
+			LD_LIBRARY_PATH += /usr/openwin/lib,
+			OPENWINHOME = /usr/openwin,
+			XFILESEARCHPATH
+			  += /usr/openwin/lib/locale/%L/%T/%N%S:
+			     /usr/openwin/lib/%T/%N%S ;
+
+
+### CDE: ###
+
+CDE * * * * :		PATH += /usr/dt/bin,
+			MANPATH += /usr/dt/man,
+			LD_LIBRARY_PATH += /usr/dt/lib,
+			XFILESEARCHPATH
+			  += /usr/dt/%T/%L/%N%S:
+			     /usr/dt/lib/%T/%N%S ;
+
+
+### TeX: ###
+
+TeX * * * * :	PATH += /usr/local/tex/bin,
+		MANPATH += /usr/local/tex/man ;
+
+
+### contrib stuff: ###
+
+(include /usr/local/contrib/lib/usepackage/packages.contrib)
+
+
+### SPARCworks: ###
+
+SPARCworks * SunOS 5.* * :	PATH += /opt/SUNWspro/bin,
+				MANPATH += /opt/SUNWspro/man,
+				LD_LIBRARY_PATH += /opt/SUNWspro/lib ;
+
+
+### Group packages: ###
+
+(include /usr/local/contrib/lib/usepackage/packages.vlsi)
+(include /usr/local/contrib/lib/usepackage/packages.fp)
+(include /usr/local/contrib/lib/usepackage/packages.rapids)
+
+
+### include users own packages information: ###
+
+(include ~/.packages)
+

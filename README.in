@@ -71,46 +71,6 @@ even better if the pages you request are near the head of the MANPATH (which
 is the case when a package is added at the command line).
 
 
-
-Available packages:
--------------------
-
-As of going to press, the available packages are:
-
-	arch		- easy way to reliably set the ARCH variable
-	standard	- things everyone should have in their path
-	GNU		- ditto ;-)
-	X11		- X
-	X11-alt		- X for people who like that flaky 3D look
-	OpenWin		- Sun OpenWindows
-	SunVision	- SunVision visualization programs
-	Motif		- Motif binaries
-	TeX		- TeX and LaTeX
-	MH		- scary mail handling system
-	Alsys		- Alsys Ada'83 compiler (only hawaii, albatross and
-			  walrus)
-	Modula3		- the Modula 3 compiler
-	Java		- the Java compiler and HotJava browser
-	SPARCworks	- the SPARCworks developers toolset
-	Pine		- the Pine mailer
-
-	Magic		- VLSI layout tool
-	MEBS		- VHDL synthesis tool
-	VSystem		- VHDL simulator
-	Alliance	- VHDL simulator and layout tool
-	CLAyTools	- Nat Semi CLAy FPGA tools
-	ARMTools	- ARM Software Development Toolkit
-
-	FP		- Haskell and friends
-	HOL		- HOL22 theorem prover 
-	Lego		- Lego
-	Pegasus		- The Pegasus tools
-	MBONE		- MBONE video and audio conferencing tools
-
-Please bear with me, many of these packages are moving targets. If there is
-something you want that is not here then read the next section.
-
-
 Customising packages:
 ---------------------
 

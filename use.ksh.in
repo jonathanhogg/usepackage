@@ -1,9 +1,8 @@
 
 # setup usepackage for ksh users
-changequote(``,'')
-export HW_OS=`PATH=/bin:/usr/local/bin /usr/local/gnu/bin/hw_os`
+changequote([[,]])
 function use
 {
-   eval `INSTALL_DIR/bin/$HW_OS/usepackage -b $*`
+   [[eval]] `INSTALL_DIR/bin/usepackage -b $*`
 }
 

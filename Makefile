@@ -1,50 +1,38 @@
 
 # Makefile
 
-ifndef INSTALL_GROUP
-INSTALL_GROUP = vlsi
-endif 
+GROUP = contrib
+DEST = /usr/local/contrib
 
-LINK = gcc
-INSTALL_EXEC = install -m 771 -g $(INSTALL_GROUP)
-INSTALL_SCRIPT = install -m 775 -g $(INSTALL_GROUP)
-INSTALL_FILE = install -m 664 -g $(INSTALL_GROUP)
-INSTALL_DIR = install -m 775 -d -g $(INSTALL_GROUP)
+INSTALL_EXEC = install -m 771 -g $(GROUP)
+INSTALL_SCRIPT = install -m 775 -g $(GROUP)
+INSTALL_FILE = install -m 664 -g $(GROUP)
+INSTALL_DIR = install -m 775 -d -g $(GROUP)
 M4 = m4
 STRIP = strip
 BISON = bison -d
 FLEX = flex -Cf -i
 MV = mv
 RM = rm -f
+CC = gcc -O2 -DMAIN_PACKAGE_FILE=\"$(DEST)/lib/usepackage/packages.master\"
+LINK = gcc
 
-HW_OS := $(shell /usr/local/gnu/bin/hw_os )
 
-ifdef INSTALL_IN
+all: README usepackage use.bsh use.csh use.ksh use.zsh
 
-CC = gcc -O2 -DMAIN_PACKAGE_FILE=\"$(INSTALL_IN)/lib/packages\"
-
-install: noobjects README usepackage packages use.bsh use.csh use.ksh use.zsh
-	$(INSTALL_DIR) $(INSTALL_IN)
-	$(INSTALL_FILE) README $(INSTALL_IN)/README
-	$(INSTALL_DIR) $(INSTALL_IN)/bin
-	$(INSTALL_SCRIPT) use.bsh $(INSTALL_IN)/use.bsh
-	$(INSTALL_SCRIPT) use.csh $(INSTALL_IN)/use.csh
-	$(INSTALL_SCRIPT) use.ksh $(INSTALL_IN)/use.ksh
-	$(INSTALL_SCRIPT) use.zsh $(INSTALL_IN)/use.zsh
+install: all
+	$(INSTALL_DIR) $(DEST)/lib/usepackage
+	$(INSTALL_FILE) README $(DEST)/README
+	$(INSTALL_SCRIPT) use.bsh $(DEST)/lib/usepackage/use.bsh
+	$(INSTALL_SCRIPT) use.csh $(DEST)/lib/usepackage/use.csh
+	$(INSTALL_SCRIPT) use.ksh $(DEST)/lib/usepackage/use.ksh
+	$(INSTALL_SCRIPT) use.zsh $(DEST)/lib/usepackage/use.zsh
 	$(STRIP) usepackage
-	$(INSTALL_DIR) $(INSTALL_IN)/bin/$(HW_OS)
-	$(INSTALL_EXEC) usepackage $(INSTALL_IN)/bin/$(HW_OS)/usepackage
-	$(INSTALL_DIR) $(INSTALL_IN)/lib
-	$(INSTALL_FILE) packages $(INSTALL_IN)/lib/packages
-
-%: %.in
-	$(M4) -DINSTALL_DIR=$(INSTALL_IN) $*.in > $*
-
-else
-
-CC = gcc -g
-
-endif
+	$(INSTALL_EXEC) usepackage $(DEST)/bin/usepackage
+	for package in packages.* ;\
+	do \
+		$(INSTALL_FILE) $$package $(DEST)/lib/usepackage/$$package ;\
+	done
 
 OBJECTS = usepackage.o grammar.o scanner.o linked_list.o utils.o match.o
 
@@ -60,14 +48,15 @@ scanner.c: scanner.l
 	$(FLEX) scanner.l
 	$(MV) lex.yy.c scanner.c
 
+clean:
+	$(RM)	README usepackage use.bsh use.csh use.ksh use.zsh \
+		*.o scanner.c grammar.c grammar.h
+
 %.o: %.c
 	$(CC) -c $*.c
 
-noobjects:
-	$(RM) *.o README use.bsh use.csh use.ksh use.zsh
-
-clean: noobjects
-	$(RM) scanner.c grammar.c grammar.h usepackage \
+%: %.in
+	$(M4) -DINSTALL_DIR=$(DEST) $*.in > $*
 
 
 linked_list.o: linked_list.h
