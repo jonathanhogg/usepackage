@@ -5,13 +5,15 @@
 #--- edit these variables to customise (or supply them as make args) ---#
 
 
+# Installation root:
+
+ifndef(prefix)
+prefix = /usr/local/contrib
+endif
+
 # Install group:
 
 GROUP = contrib
-
-# Installation root:
-
-DEST = /usr/local/contrib
 
 # List of package spec files to install:
 
@@ -24,7 +26,7 @@ MASTER_PACKAGE_FILE = packages.master
 
 # Path for finding package specs:
 
-DEFAULT_PACKAGE_PATH = $(DEST)/lib/usepackage:~:.
+DEFAULT_PACKAGE_PATH = $(prefix)/lib/usepackage:~:.
 
 
 #--- usual stuff about not editing below this line unless you're sure ---#
