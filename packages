@@ -254,6 +254,19 @@ pine i86pc * * * :		PATH += ~jonathan/pub/bin/i86pc ;
 pine * * * * :			MANPATH += ~jonathan/pub/man ;
 
 
+### Pegasus tools: ###
+
+pegasus * * * * :		MANPATH += /local/peg1/install/man ;
+pegasus alpha OSF1 V2.0 * :	PATH += /usr/local/pegasus/bin:
+				/local/peg1/install/alpha-dec-osf/bin ;
+pegasus alpha OSF1 V3.2 * :	PATH += /usr/local/pegasus/bin:
+				/local/peg1/install/alpha-dec-osf3.2/bin ;
+pegasus sun4 SunOS 4.* * :	PATH += /usr/local/pegasus/bin:
+				/local/peg1/install/sparc-sun-sunos4/bin ;
+pegasus alpha SunOS 5.* * :	PATH += /usr/local/pegasus/bin:
+				/local/peg1/install/sparc-sun-solaris2/bin ;
+
+
 ### include users own packages information: ###
 
 (include ~/.packages)
