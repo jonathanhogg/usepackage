@@ -538,7 +538,7 @@ linked_list* merge_paths(linked_list* elist, linked_list* vlist)
 	 add_to_head(elist, get_value(vnode));
       }
    }
-   else if (vlist)
+   else if (vlist && head(vlist))
    {
       return(vlist);
    }
