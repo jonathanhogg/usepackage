@@ -33,7 +33,7 @@
 ### empty path: ###
 
 none * * * :		PATH = "",
-			MANPATH = "" ;
+			MANPATH = "",
 			LD_LIBRARY_PATH = "" ;
 
 
