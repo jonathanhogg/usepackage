@@ -79,7 +79,7 @@ void main(int argc, char *argv[])
 	 }
    }
 
-   if (i == argc)
+   if (i >= argc)
    {
       fprintf(stderr, "usage: usepackage [-vscb] [-f <file>] <package> [<package>...]\n\n");
       fprintf(stderr, "       -v : verbose\n");
