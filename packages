@@ -113,7 +113,7 @@ TeX * * * :	PATH += /usr/local/tex/bin,
 
 FP * * * :	MANPATH += /local/fp/man ;
 FP alpha * * :	PATH += /local/fp/bin.alpha ;
-FP sun4 * * :	PATH += /local/fp/bin.alpha ;
+FP sun4 * * :	PATH += /local/fp/bin.sun4 ;
 
 
 ### CLAyTools only licensed for copinsay at present: ###
