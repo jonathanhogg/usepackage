@@ -60,6 +60,11 @@ none * * * * :		PATH = "",
 			LD_LIBRARY_PATH = "" ;
 
 
+### if you absolutely insist on such a security hole: ###
+
+dot * * * * :		PATH += . ;
+
+
 ### useful side-effect use of usepackage: ###
 
 arch sun4* SunOS 4.* * :	ARCH = "sun4" ;
@@ -97,24 +102,27 @@ GNU * * * * :		PATH += /usr/local/gnu/bin,
 
 X11* i86pc SunOS * * :	PATH += /usr/openwin/bin,
 			MANPATH += /usr/openwin/man,
-			LD_LIBRARY_PATH += /usr/openwin/lib ;
+			LD_LIBRARY_PATH += /usr/openwin/lib,
+			XAPPLRESDIR += /usr/openwin/lib/app-defaults ;
 X11* sun4* * * * :	PATH += /usr/X11/local/bin:/usr/X11/local/bin/pbm,
 			MANPATH += /usr/X11/local/man;
 X11* {sun4*,alpha} * * * :	PATH += /usr/X11/bin,
 				MANPATH += /usr/X11/man,
-				LD_LIBRARY_PATH += /usr/X11/lib ;
+				LD_LIBRARY_PATH += /usr/X11/lib,
+				XAPPLRESDIR += /usr/X11/lib/X11/app-defaults ;
 X11-alt sun4* * * * :	LD_LIBRARY_PATH += /usr/X11/local/altlib ;
 
 
 ### OpenWindows on any SunOS machine (extras on SunOS sparcs): ###
 
-OpenWin * SunOS * * :	PATH += /usr/openwin/bin,
-			MANPATH += /usr/openwin/man,
-			LD_LIBRARY_PATH += /usr/openwin/lib,
-			OPENWINHOME = /usr/openwin ;
 OpenWin sun4* SunOS 4.* * :	PATH += /usr/AnswerBook/SysSoft1_4:
 					/local/sun4/guide/bin,
 				MANPATH += /local/sun4/guide/man ;
+OpenWin * SunOS * * :	PATH += /usr/openwin/bin,
+			MANPATH += /usr/openwin/man,
+			LD_LIBRARY_PATH += /usr/openwin/lib,
+			OPENWINHOME = /usr/openwin,
+			XAPPLRESDIR += /usr/openwin/lib/app-defaults ;
 
 
 ### Motif on sparcs: ###
