@@ -239,6 +239,7 @@ SPARCworks * SunOS 5.* * :	PATH += /opt/SUNWspro/bin,
 (include packages.vlsi)
 (include packages.fp)
 (include packages.rapids)
+(include packages.our)
 
 
 ### include user's own packages information: ###
