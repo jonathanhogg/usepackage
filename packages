@@ -8,7 +8,7 @@
 # 	<packagename> <arch> <os> <host> :
 #		<variable>[, <variable>...] ;
 #
-# <arch>, <os>, and <host> may use a restricted shell-style
+# <packagename>, <arch>, <os>, and <host> may use a restricted shell-style
 # pattern matching ('*' for anything, '<pre>*' for prefix, '{<a>,<b>,...}'
 # for a choice. <variables> are of the form <name>=<value> or <name>+=<value>.
 # a <value> is either a path list (colon separated) or a literal string in
@@ -25,9 +25,29 @@
 #       so use 'sun4*' to match both.
 #
 # package matching is done sequentially through the file and _every_ record
-# that matches will be added to the environment. variable additions (+=) are
-# made to the front of the path list.
+# that matches will be added to the environment. path additions (+=) are
+# made to the front of a path list. matches are case insensitive.
 #
+#
+# groups format:
+#
+#	<groupname> := <packagename>[, <packagename>...] ;
+#
+# no pattern matching is available for <groupname> or <packagename>. groups
+# cannot reference other groups, only packages. names are case insensitive.
+#
+# e.g.:
+#
+#	standard-user-settings := standard X TeX ;
+#	openwin-user-settings := standard OpenWin TeX ;
+#
+
+
+### groups: ###
+
+standard-user-setup := standard, GNU, X11 ;
+openwin-user-setup := standard, GNU, OpenWin ;
+vlsi-tools := Ruby, MEBS, Alliance, CLAyTools ;
 
 
 ### empty path: ###
@@ -47,17 +67,22 @@ standard * * * :	PATH += /usr/ucb:/usr/bin:/usr/local/bin:
 
 
 ### GNU stuff: ###
+# (some GNU things, like man, appear to be pathalogical so GNU-bust ensures
+#  the normal system versions of these appear first.)
 
-gnu sun4* * * :		PATH += /usr/local/gnu/bin/sun4 ;
-gnu alpha * * :		PATH += /usr/local/gnu/bin/alpha ;
-gnu * * * :		PATH += /usr/local/gnu/bin,
+GNU* sun4* * * :	PATH += /usr/local/gnu/bin/sun4 ;
+GNU* alpha * * :	PATH += /usr/local/gnu/bin/alpha ;
+GNU* * * * :		PATH += /usr/local/gnu/bin,
 			MANPATH += /usr/local/gnu/man ;
+GNU-bust * * * :	PATH += /usr/ucb/bin ;
 
 
-### assume X is everywhere: ###
+### assume X is everywhere (but more stuff on suns): ###
 
-X * * * :	PATH += /usr/X11/bin:/usr/X11/local/bin:/usr/X11/local/bin/pbm,
-		MANPATH += /usr/X11/man:/usr/X11/local/man,
+X11 sun4* * * :	PATH += /usr/X11/local/bin:/usr/X11/local/bin/pbm,
+		MANPATH += /usr/X11/local/man;
+X11 * * * :	PATH += /usr/X11/bin,
+		MANPATH += /usr/X11/man,
 		LD_LIBRARY_PATH += /usr/X11/lib ;
 
 
@@ -116,7 +141,7 @@ TeX * * * :	PATH += /usr/local/tex/bin,
 			/usr/local/tex/inputs/latex-new ;
 
 
-### Haskell: ###
+### Functional Programming: ###
 
 FP * * * :	MANPATH += /local/fp/man ;
 FP alpha * * :	PATH += /local/fp/bin.alpha ;
