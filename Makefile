@@ -7,7 +7,7 @@
 
 # Installation root:
 
-ifndef(prefix)
+ifndef prefix
 prefix = /usr/local/contrib
 endif
 
