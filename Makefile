@@ -27,6 +27,7 @@ target: usepackage
 
 endif
 
+OBJECTS = usepackage.o grammar.o scanner.o linked_list.o utils.o match.o
 
 install: noobjects README usepackage packages usepackage.sh
 	$(INSTALL_DIR) $(INSTALL_IN)
@@ -39,9 +40,8 @@ install: noobjects README usepackage packages usepackage.sh
 	$(INSTALL_DIR) $(INSTALL_IN)/lib
 	$(INSTALL_FILE) packages $(INSTALL_IN)/lib/packages
 
-usepackage: usepackage.o linked_list.o grammar.o scanner.o match.o
-	$(LINK) -o usepackage usepackage.o linked_list.o grammar.o scanner.o \
-	    match.o
+usepackage: $(OBJECTS)
+	$(LINK) -o usepackage $(OBJECTS)
 
 README: README.in
 	$(M4) -DINSTALL_DIR=$(INSTALL_IN) README.in > README
@@ -49,12 +49,12 @@ README: README.in
 usepackage.sh: usepackage.sh.in
 	$(M4) -DINSTALL_DIR=$(INSTALL_IN) usepackage.sh.in > usepackage.sh
 
-grammar.c grammar.h: grammar.y linked_list.h packages.h
+grammar.c grammar.h: grammar.y
 	$(BISON) grammar.y
 	$(MV) grammar.tab.c grammar.c
 	$(MV) grammar.tab.h grammar.h
 
-scanner.c: scanner.l linked_list.h grammar.h packages.h
+scanner.c: scanner.l
 	$(FLEX) scanner.l
 	$(MV) lex.yy.c scanner.c
 
@@ -71,5 +71,7 @@ clean:
 
 linked_list.o: linked_list.h
 match.o: packages.h linked_list.h
-usepackage.o: packages.h linked_list.h version.h
+usepackage.o: packages.h linked_list.h utils.h version.h
+grammar.o: packages.h linked_list.h utils.h
+scanner.o: packages.h grammar.h
 

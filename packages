@@ -13,6 +13,8 @@
 # for a choice. <variables> are of the form <name>=<value> or <name>+=<value>.
 # a <value> is either a path list (colon separated) or a literal string in
 # double quotes. new-lines are ignored in path lists and in literal strings.
+# a path may begin with '~' or '~user' which will be expanded respectively
+# to the home directory of the user invoking usepackage or the specified user.
 #
 # e.g.:
 #
@@ -48,7 +50,6 @@
 
 standard-user-setup := standard, GNU, X11 ;
 openwin-user-setup := standard, GNU, OpenWin ;
-vlsi-tools := Ruby, MEBS, Alliance, CLAyTools ;
 
 
 ### empty path: ###
@@ -84,21 +85,26 @@ GNU * * * * :		PATH += /usr/local/gnu/bin,
 ### X11 on i86pc solaris machines is part of OpenWindows, otherwise ###
 ### its in the normal place, except for the extra bits on the suns: ###
 
-X11 i86pc SunOS * * :	PATH += /usr/openwin/bin,
+X11* i86pc SunOS * * :	PATH += /usr/openwin/bin,
 			MANPATH += /usr/openwin/man,
 			LD_LIBRARY_PATH += /usr/openwin/lib ;
-X11 sun4* * * * :	PATH += /usr/X11/local/bin:/usr/X11/local/bin/pbm,
+X11* sun4* * * * :	PATH += /usr/X11/local/bin:/usr/X11/local/bin/pbm,
 			MANPATH += /usr/X11/local/man;
-X11 {sun4*,alpha} * * * :	PATH += /usr/X11/bin,
+X11* {sun4*,alpha} * * * :	PATH += /usr/X11/bin,
 				MANPATH += /usr/X11/man,
 				LD_LIBRARY_PATH += /usr/X11/lib ;
+X11-alt sun4* * * * :	LD_LIBRARY_PATH += /usr/X11/local/altlib ;
 
 
-### OpenWindows on any SunOS machine: ###
+### OpenWindows on any SunOS machine (extras on SunOS sparcs): ###
 
 OpenWin * SunOS * * :	PATH += /usr/openwin/bin,
 			MANPATH += /usr/openwin/man,
-			LD_LIBRARY_PATH += /usr/openwin/lib ;
+			LD_LIBRARY_PATH += /usr/openwin/lib,
+			OPENWINHOME = /usr/openwin ;
+OpenWin sun4* SunOS 4.* * :	PATH += /usr/AnswerBook/SysSoft1_4:
+					/local/sun4/guide/bin ;
+				MANPATH += /local/sun4/guide/man ;
 
 
 ### Ruby compiler: ###
@@ -107,6 +113,12 @@ Ruby * * * * :
 		PATH += /local/vlsi/ruby/bin,
 		MANPATH += /local/vlsi/ruby/man,
 		RUBY_ROOT = /local/vlsi/ruby ;
+
+
+### Berkeley Magic: ###
+
+Magic sun4* * * * :	PATH += /local/vlsi/magic/bin,
+Magic sun4* * * * :	MANPATH += /local/vlsi/magic/man,
 
 
 ### MEBS is sun4 only: ###
@@ -165,6 +177,16 @@ CLAyTools * * * copinsay : PATH += /local/vlsi/claytools/1.11/bin ;
 ### MH mail system: ###
 
 MH sun4* * * * :	PATH += /local/sun4/mh/bin ;
+
+
+### HOL: ###
+
+HOL sun4* * * * :	PATH += /local/provers/HOL22 ;
+
+
+### Lego: ###
+
+Lego sun4* * * * :	PATH += /local/sun4/lego ;
 
 
 ### include users own packages information: ###

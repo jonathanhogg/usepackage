@@ -7,12 +7,12 @@
 #include <sys/utsname.h>
 #include "linked_list.h"
 #include "packages.h"
+#include "utils.h"
 
 
 extern char litbuf[1024];
 extern char *yytext;
 extern FILE *yyin;
-extern char* the_home;
 extern char* main_package_filename;
 
 
@@ -114,7 +114,7 @@ names: name
        { add_to_tail($$ = $1, (void*) $3); } ;
 
 path: PATH
-	{ $$ = strdup(litbuf); } ;
+	{ $$ = strdup(expand(litbuf)); } ;
 
 prefix: PREFIX
 	{ $$ = strdup(litbuf); } ;
@@ -175,10 +175,7 @@ int include(char* filename)
    stack_pointer++;
    line_number[stack_pointer] = 1;
 
-   if (filename[0] == '~')
-      sprintf(file_name[stack_pointer], "%s%s", the_home, filename+1);
-   else
-      strcpy(file_name[stack_pointer], filename);
+   strcpy(file_name[stack_pointer], expand(filename));
 
    if (!(file[stack_pointer] = fopen(file_name[stack_pointer], "r")))
    {

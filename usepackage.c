@@ -8,17 +8,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <pwd.h>
 #include <string.h>
 #include <sys/utsname.h>
 #include "linked_list.h"
 #include "packages.h"
 #include "version.h"
+#include "utils.h"
 
 
 /*** prototypes: ***/
 
-int is_csh_user(void);
 void add_package(package_t* package);
 void use_package(char* name);
 void use_group(group_t* group);
@@ -40,7 +39,6 @@ struct utsname the_host_info;
 linked_list* the_packages;
 linked_list* the_groups;
 linked_list* the_environment;
-char* the_home;
 char* main_package_filename = MAIN_PACKAGE_FILE;
 
 
@@ -127,23 +125,6 @@ void main(int argc, char *argv[])
 
 
 /*** functions: ***/
-
-int is_csh_user(void)
-{
-   struct passwd *pwent;
-   char *shell;
-
-   pwent = getpwuid(getuid());
-   shell = strrchr(pwent->pw_shell, '/');
-   the_home = strdup(pwent->pw_dir);
-   if (!shell) return(0);
-   shell++;
-
-   DEBUG("# shell: %s\n", shell);
-   DEBUG("# home: %s\n", the_home);
-
-   return ((!strcmp(shell, "csh")) || (!strcmp(shell, "tcsh")));
-}
 
 void use_package(char* name)
 {
@@ -270,12 +251,7 @@ void print_path(linked_list* pathlist)
    list_node* node;
 
    for (node = head(pathlist) ; node ; node = next(node))
-   {
-      if (next(node))
-	 printf("%s:", (char*) get_value(node));
-      else
-	 printf("%s", (char*) get_value(node));
-   }
+      printf(next(node) ? "%s:" : "%s", (char*) get_value(node));
 }
 
 list_node* get_into_env(variable_t* var)

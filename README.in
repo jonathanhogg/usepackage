@@ -1,4 +1,4 @@
-changequote(``,'')
+changequote([[,]])
 usepackage
 ==========
 by Jonathan AH Hogg
@@ -30,7 +30,7 @@ Customising packages:
 ---------------------
 
 The file 'INSTALL_DIR/lib/packages' contains the information about
-each package. This file contains comments explaining its ``format''. Custom
+each package. This file contains comments explaining its [[format]]. Custom
 packages can be added by creating the file '.packages' in your home
-directory with the same ``format'' as the main packages file.
+directory with the same [[format]] as the main packages file.
 

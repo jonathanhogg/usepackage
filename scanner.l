@@ -2,7 +2,6 @@
 /* scanner.l */
 
 #include <string.h>
-#include "linked_list.h"
 #include "packages.h"
 #include "grammar.h"
 
@@ -21,7 +20,8 @@ extern int include(char* filename);
 %x val lit
 
 name	[-a-z0-9_\.]*
-path	(\.|\.?\/[^ \t\n:,;]*)
+path	(\.|\~|\.?\/[^ \t\n:,;]*|\~[^ \t\n:,;]+)
+
 
 %%
 
