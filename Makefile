@@ -33,7 +33,7 @@ install-lib: README use.bsh use.csh use.ksh use.zsh
 	$(INSTALL_SCRIPT) use.csh $(DEST)/lib/usepackage/use.csh
 	$(INSTALL_SCRIPT) use.ksh $(DEST)/lib/usepackage/use.ksh
 	$(INSTALL_SCRIPT) use.zsh $(DEST)/lib/usepackage/use.zsh
-	for package in packages.* ;\
+	for package in packages.?* ;\
 	do \
 		$(INSTALL_FILE) $$package $(DEST)/lib/usepackage/$$package ;\
 	done
