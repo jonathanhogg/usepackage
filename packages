@@ -34,16 +34,16 @@
 
 standard sun4* * * :			PATH += /local/sun4/bin:/usr/lang ;
 standard alpha * * :			PATH += /local/alpha/bin ;
-
 standard * * * :	PATH += /usr/ucb:/usr/bin:/usr/local/bin:/usr/hosts,
 			MANPATH += /usr/man:/usr/local/man:/local/man ;
 
 
 ### GNU stuff: ###
 
-gnu {sun4*,alpha} * * :	MANPATH += /usr/local/gnu/man ;
 gnu sun4* * * :		PATH += /usr/local/gnu/bin/sun4 ;
 gnu alpha * * :		PATH += /usr/local/gnu/bin/alpha ;
+gnu * * * :		PATH += /usr/local/gnu/bin,
+			MANPATH += /usr/local/gnu/man ;
 
 
 ### assume X is everywhere: ###
