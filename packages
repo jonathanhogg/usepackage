@@ -168,7 +168,8 @@ TeX * * * * :	PATH += /usr/local/tex/bin,
 
 ### Functional Programming: ###
 
-FP * * * * :		MANPATH += /local/fp/man ;
+FP * * * * :		PATH += /local/fp/bin,
+			MANPATH += /local/fp/man ;
 FP sun4* SunOS 4.* * :	PATH += /local/fp/bin/sparc-sun-sunos4 ;
 FP sun4* SunOS 5.* * :	PATH += /local/fp/bin/sparc-sun-solaris2 ;
 FP alpha OSF1 * * :	PATH += /local/fp/bin/alpha-dec-osf2 ;
@@ -195,6 +196,12 @@ HOL sun4* * * * :	PATH += /local/provers/HOL22 ;
 ### Lego: ###
 
 Lego sun4* * * * :	PATH += /local/sun4/lego ;
+
+
+### Modula 3: ###
+
+modula3 sun4* * * * :	PATH += /local/modula3/sparc-sun-sunos4.1/bin ;
+modula3 alpha * * * :	PATH += /local/modula3/alpha-dec-osf2/bin ;
 
 
 ### include users own packages information: ###

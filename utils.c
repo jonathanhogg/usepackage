@@ -8,6 +8,7 @@
 
 #include <pwd.h>
 #include <string.h>
+#include <stdio.h>
 #include "utils.h"
 
 
@@ -42,13 +43,29 @@ char* expand(char* filepath)
       i++;
 
       if (filepath[i] == '/')
+      {
 	 pwent = getpwuid(getuid());
+
+	 if (!pwent)
+	 {
+	    fprintf(stderr, "usepackage: cannot obtain home directory.\n");
+	    return(filepath);
+	 }
+      }
       else
       {
          j = i;
          while (filepath[i] && (filepath[i] != '/')) i++;
          strncpy(username, filepath + j, i - j);
 	 pwent = getpwnam(username);
+
+	 if (!pwent)
+	 {
+	    fprintf(stderr,
+                    "usepackage: cannot obtain home directory of user `%s'.\n",
+                    username);
+	    return(filepath);
+	 }
       }
 
       strcat(newpath, pwent->pw_dir);
