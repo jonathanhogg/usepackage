@@ -1,8 +1,0 @@
-AC_INIT(usepackage.c)
-AC_CONFIG_HEADER(config.h)
-AC_PROG_CC
-AC_PROG_LEX
-AC_PROG_YACC
-AC_CHECK_PROGS(M4,m4)
-AC_CHECK_PROGS(INSTALL,install install-sh install.sh)
-AC_OUTPUT(Makefile)
