@@ -24,6 +24,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	existence of paths before adding them to the environment, via
 	new ?= and ?+= operators. New test_paths function added for this.
 
+	* use.1.in, usepackage.1.in: Documentation of new syntax and
+	fixes to old mistakes.
+
 2003-04-18  Jonathan Hogg  <jonathan@onegoodidea.com>
 
 	* Tagged version 1.7 for release.
