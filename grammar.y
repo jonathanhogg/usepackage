@@ -17,7 +17,7 @@ extern int line_number;
    list_node* node;
 }
 
-%token COLON SEMICOLON COMMA EQUALS PLUSEQUALS VALUE NAME PATH ASTERISK
+%token COLON SEMICOLON COMMA EQUALS PLUSEQUALS VALUE NAME PATH
 
 %type <list> packages
 %type <node> package
@@ -34,16 +34,15 @@ package: name pattern COLON variables SEMICOLON
 
 name: NAME { printf("package %s...", litbuf); } ;
 
-pattern: /* nothing */ | arch | arch os | arch os release |
-         arch os release host ;
+pattern: arch os release host ;
 
-arch: NAME | ASTERISK ;
+arch: NAME ;
 
-os: NAME | ASTERISK ;
+os: NAME ;
 
-release: NAME | ASTERISK ;
+release: NAME ;
 
-host: NAME | ASTERISK ;
+host: NAME ;
 
 variables: variable |
         variables COMMA variable ;

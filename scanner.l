@@ -18,7 +18,6 @@ static char *bufp;
 ":"			return(COLON);
 ";"			return(SEMICOLON);
 ","			return(COMMA);
-"*"			return(ASTERISK);
 "+="[ \t]*		bufp=litbuf; BEGIN(val); return(PLUSEQUALS);
 "="[ \t]*		bufp=litbuf; BEGIN(val); return(EQUALS);
 <val>"\""		BEGIN(lit);
