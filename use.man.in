@@ -16,6 +16,9 @@ use \- environment management program
 [\-vscb] [\-f
 .IR file ]
 .I package ...
+.PP
+.B use
+\-l
 .SH DESCRIPTION
 .I Usepackage
 is an environment management program. It is based on the principle of
@@ -54,6 +57,12 @@ underlying sourcing mechanism).
 .I \-f file
 Specify an alternate master packages file, see
 .IR PACKAGES .
+.TP
+.I \-l
+List available packages and groups, see
+.IR ANNOTATIONS
+and
+.IR GROUPS .
 .SH PACKAGES
 .I Usepackage
 reads package environment information from package files as follows:
@@ -151,17 +160,38 @@ searches for a given package name in the defined groups first, if the given
 name matchs a group name then the packages defined as part of that group are
 sourced into the environment together. A group definition may not reference
 other groups and may not contain patterns.
+.SS ANNOTATIONS
+In order to give useful package information to the user, annotations may be
+placed in the packages file that give summaries of packages. These annotations
+have the form:
+.PP
+.nf
+     >> name : "description" <<
+.fi
+.PP
+.I Usepackage
+collects these annotations together and displays them when called with the
+.I -l
+flag, see
+.IR OPTIONS .
+These annotations have no impact on the package mechanism and need not
+necessarily be beside or correspond to the package definitions (although
+this is the sensible way to arrange things).
 .SS EXAMPLE
 The following fragment of a packages file illustrates the main features:
 .PP
 .nf
      # GNU software is available everywhere:
 
+     >> GNU : "The GNU project software" <<
+
      GNU * * * * :             PATH += /usr/local/gnu/bin,
                                MANPATH += /usr/local/gnu/man ;
 
      # CVS requires RCS which is found in the GNU package, but
      # is only available on SPARC Solaris machines:
+
+     >> CVS : "Concurrent Versions System revision control" <<
 
      CVS sun4* SunOS 5.* * <= GNU :
                                CVSROOT = /usr/src/cvsroot,
@@ -171,11 +201,13 @@ The following fragment of a packages file illustrates the main features:
 
      # User bin directories (Solaris will run SunOS 4 binaries):
 
+     >> user : "User's own programs" <<
+
      user sun4* SunOS * * :    PATH += ~/bin/sun4 ;
      user sun4* SunOS 5.* * :  PATH += ~/bin/solaris ;
      user alpha OSF * * :      PATH += ~/bin/alpha ;
 
-     # include standard package:
+     # include standard packages:
 
      (include packages.standard)
 
@@ -209,11 +241,11 @@ Note that on a DEC Alpha machine, this will generate a warning like:
 .PP
 .nf
      $ use CVS
-     # warning: no match for package `CVS' on this host.
+     warning: no match for package `CVS' on this host.
 .fi
 .PP
 In a shell script which is executed on a number of different platforms (such
-as the shell startup script) these warnings may be silenced (see
+as the shell startup script). These warnings may be silenced (see
 .IR OPTIONS ).
 .SH FILES
 .TP 15

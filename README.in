@@ -5,7 +5,9 @@ by Jonathan AH Hogg (jonathan@dcs.gla.ac.uk)
 
 usepackage is an environment management program. It is based on the principle
 of "packages" that are "used". When a package is used, the information
-necessary to invoke it is drawn into the environment of the shell.
+necessary to invoke it is drawn into the environment of the shell. A summary
+of how to setup and use the system is given below; see the manual page for 
+more information.
 
 
 Using usepackage:
@@ -53,6 +55,11 @@ These messages can be suppressed with the `-s' flag (for instance if you log
 onto platforms for which certain packages that you use are not available):
 
    > use -s java
+
+You can obtain a usage summary by typing 'use' with no arguments and a list
+of available packages with:
+
+   > use -l
 
 
 A Recommendation:
