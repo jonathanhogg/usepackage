@@ -81,11 +81,11 @@ As of going to press, the available packages are:
 	VSystem		- VHDL simulator
 	Alliance	- VHDL simulator and layout tool
 	CLAyTools	- Nat Semi CLAy FPGA tools
+	ARMTools	- ARM Software Development Toolkit
 
 	FP		- Haskell and friends
 	HOL		- HOL22 theorem prover 
 	Lego		- Lego
-
 	Pegasus		- The Pegasus tools
 
 Please bear with me, many of these packages are moving targets. If there is
