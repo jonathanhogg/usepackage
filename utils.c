@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2004  Jonathan Hogg  <jonathan@onegoodidea.com>
  *  
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

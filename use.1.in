@@ -91,7 +91,7 @@ and detecting the style of environment output that should be used, see
 .SH COPYRIGHT
 .nf
 Usepackage Environment Manager
-Copyright (C) 1995-2003  Jonathan Hogg
+Copyright (C) 1995-2004  Jonathan Hogg
 .fi
 .PP
 This program is free software; you can redistribute it and/or modify
