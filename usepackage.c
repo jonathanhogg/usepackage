@@ -305,14 +305,31 @@ variable_t* update_var(variable_t* evar, variable_t* vvar)
    {
       case VAR_LIT_SET:
          evar->literal = vvar->literal;
+         evar->type = VAR_LIT_SET;
          break;
 
       case VAR_PATH_SET:
          evar->pathlist = vvar->pathlist;
+         evar->type = VAR_PATH_SET;
          break;
 
       case VAR_PATH_ADD:
-         evar->pathlist = merge_paths(evar->pathlist, vvar->pathlist);
+         switch (evar->type)
+         {
+            case VAR_LIT_SET:
+	       evar->pathlist = merge_paths(make_pathlist(evar->literal),
+                                            vvar->pathlist);
+               break;
+
+            case VAR_PATH_SET:
+            case VAR_PATH_ADD:
+	       evar->pathlist = merge_paths(evar->pathlist, vvar->pathlist);
+	       break;
+
+	    default:
+	       break;
+         }
+         evar->type = VAR_PATH_ADD;
          break;
 
       default:

@@ -30,6 +30,11 @@
 #
 
 
+### empty path: ###
+
+empty * * * :		PATH = "",
+			MANPATH = "" ;
+
 ### standard things that everyone should have: ###
 
 standard sun4* * * :	PATH += /local/sun4/bin:/usr/lang ;
