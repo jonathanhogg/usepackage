@@ -6,6 +6,6 @@ use ()
 {
    INSTALL_DIR/bin/$HW_OS/usepackage -b $* > /tmp/use.$$
    source /tmp/use.$$
-   rm /tmp/use.$$
+   /bin/rm /tmp/use.$$
 }
 
