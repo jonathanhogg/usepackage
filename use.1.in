@@ -85,7 +85,7 @@ A packages file may contain inclusion directives which cause the sourcing of
 other files at a given points. An inclusion directive looks like:
 .PP
 .nf
-     (include file-name)
+     (`include' file-name)
 .fi
 .PP
 The same location mechanism is used to find "file-name" as for the master
@@ -213,7 +213,7 @@ The following fragment of a packages file illustrates the main features:
 
      # include standard packages:
 
-     (include packages.standard)
+     (`include' packages.standard)
 
      # security hole:
 
@@ -280,11 +280,22 @@ Colon-separated path list giving the directories to search for the master
 packages file and included files. Shell-style tilde (~) user-directory 
 escapes are expanded.
 .SH COPYRIGHT
-Copyright (C) 1995, 1996, 1997 Jonathan Hogg.
-
-.I Usepackage
-is copywritten material and has not been placed into the public domain.
-Distribution without permission of the author is expressly prohibited.
+Copyright (C) 1995-2001 Jonathan Hogg.
+.PP
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+.PP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.PP
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 .SH SEE ALSO
-csh(1), sh(1), ksh(1), env(1), environ(5), getenv(3C)
+csh(1), sh(1), ksh(1), env(1), environ(5), getenv(3C), uname(1),
+uname(2)
 
