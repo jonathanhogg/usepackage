@@ -16,11 +16,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-Changes between usepackage version 1.6 and 1.1.6
+Changes between usepackage version 1.6 and 1.6.1
 
 * Now uses autoconf/automake for the build system.
 * Small changes to the output messages.
 * Fixed up the contact information.
+* A bit more portable hopefully.
 
 Initial distribution version 1.6
 

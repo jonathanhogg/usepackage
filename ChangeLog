@@ -25,10 +25,15 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 	* Makefile.am: Added custom install procedure for usepackage.conf file.
 
+	* Updated copyright and author notices on everything.
+
 2002-05-26  Jonathan Hogg  <jonathan@onegoodidea.com>
 
 	* Makefile.am, configure.ac: Now using autoconf/automake to
 	generate all of the build system.
 
 	* usepackage.c: Small changes to the messages.
+
+	* scanner.l, grammar.y: Patch from Luca Filipozzi to improve
+	portability.
 

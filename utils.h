@@ -1,7 +1,7 @@
 
 /*****************************************************************************
  * 
- * Copyright (C) 2001 Jonathan Hogg
+ * Copyright 1995-2002 Jonathan Hogg
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  * 
  * Name   : utils.h
- * Author : Jonathan Hogg <jonathan@dcs.gla.ac.uk>
+ * Author : Jonathan Hogg <jonathan@onegoodidea.com>
  * 
  ****************************************************************************/
 

@@ -280,7 +280,7 @@ Colon-separated path list giving the directories to search for the master
 packages file and included files. Shell-style tilde (~) user-directory 
 escapes are expanded.
 .SH COPYRIGHT
-Copyright (C) 1995-2001 Jonathan Hogg.
+Copyright (C) 1995-2002 Jonathan Hogg.
 .PP
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
