@@ -204,6 +204,12 @@ modula3 sun4* * * * :	PATH += /local/modula3/sparc-sun-sunos4.1/bin ;
 modula3 alpha * * * :	PATH += /local/modula3/alpha-dec-osf2/bin ;
 
 
+### FrameMaker: ###
+
+Frame sun4* SunOS 5.* * :	FMHOME = /local/sparc-sun-solaris2/frame,
+				PATH += /local/sparc-sun-solaris2/frame/bin ;
+
+
 ### include users own packages information: ###
 
 (include ~/.packages)
