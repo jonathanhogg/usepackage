@@ -8,6 +8,8 @@
 #include <pwd.h>
 #include <string.h>
 #include <sys/utsname.h>
+#include "linked_list.h"
+#include "packages.h"
 
 
 /*** macros: ***/
@@ -25,7 +27,7 @@ int is_csh_user(void);
 int debugging = 0;
 int csh_user;
 struct utsname hostinfo;
-extern FILE *yyin;
+linked_list* the_packages;
 
 
 /*** main program: ***/
@@ -63,9 +65,12 @@ void main(int argc, char *argv[])
 
    csh_user = is_csh_user();
 
-   yyin = fopen("packages", "r");
-   yyparse();
-   fclose(yyin);
+   the_packages = get_packages();
+   if (!the_packages)
+   {
+      fprintf(stderr, "%s: couldn't load package information.\n", argv[0]);
+      exit(2);
+   }
 
    for (; i<argc; i++)
    {

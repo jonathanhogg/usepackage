@@ -1,6 +1,8 @@
 
 /* linked_list.h */
 
+#ifndef _linked_list_h
+#define _linked_list_h
 
 typedef struct list_node_struct {
    void	*value;
@@ -14,13 +16,15 @@ typedef struct {
 } linked_list;
 
 
-extern linked_list *new_list();
-extern void add_to_head();
-extern void add_to_tail();
-extern void remove_node();
-extern list_node *next();
-extern list_node *previous();
-extern list_node *head();
-extern list_node *tail();
-extern void *value();
+extern linked_list* new_list();
+extern void add_to_head(linked_list* l, void* s);
+extern void add_to_tail(linked_list* l, void* s);
+extern void remove_node(linked_list* l, list_node* n);
+extern list_node* next(list_node* n);
+extern list_node* previous(list_node* n);
+extern list_node* head(linked_list* l);
+extern list_node* tail(linked_list* l);
+extern void* value(list_node* n);
+
+#endif
 
