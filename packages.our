@@ -1,0 +1,53 @@
+#
+# contrib packages
+#
+# Version: $Revision$
+#
+# [see packages.master]
+#
+
+
+### main OUR stuff: ###
+
+>> our : "standard OUR setup" <<
+
+
+our * * {slimy,slicker,slinger} <= our-vars :
+        PATH += /our/bin,
+        MANPATH += /our/man,
+        LD_LIBRARY_PATH += /our/lib ;
+
+our-vars * * {slimy,slicker,slinger}:
+	OUR_SITE = "glasli1",
+	OUR_NSROOT = /our,
+	OUR_INCDIR = /our/share/our-unix-rollout/common/perl ;
+
+
+### OUR software development: ###
+
+>> our : "OUR software development" <<
+
+our-swdevp * * * {slimy,slicker,slinger} <= our :
+        PATH += /our/swdevp/bin,
+        MANPATH += /our/swdevp/man,
+        LD_LIBRARY_PATH += /our/swdevp/lib ;
+
+
+### OUR hardware development: ###
+
+>> our : "OUR hardware development" <<
+
+our-hwdesign * * * {slimy,slicker,slinger} <= our :
+        PATH += /our/hwdesign/bin,
+        MANPATH += /our/hwdesign/man ;
+
+
+### OUR sysadmin: ###
+
+>> our : "OUR system administration" <<
+
+our-sysadmin * * * {slimy,slicker,slinger} <= our :
+        PATH += /our/sbin:/our/sysadmin/bin:/our/sysadmin/sbin,
+        MANPATH += /our/sysadmin/man ;
+
+
