@@ -1,11 +1,15 @@
 
 # Makefile
 
+ifndef INSTALL_GROUP
+INSTALL_GROUP = vlsi
+endif 
+
 LINK = gcc
-INSTALL_EXEC = install -m 711
-INSTALL_SCRIPT = install -m 755
-INSTALL_FILE = install -m 644 
-INSTALL_DIR = install -m 755 -d
+INSTALL_EXEC = install -m 711 -g $(INSTALL_GROUP)
+INSTALL_SCRIPT = install -m 755 -g $(INSTALL_GROUP)
+INSTALL_FILE = install -m 644 -g $(INSTALL_GROUP)
+INSTALL_DIR = install -m 755 -d -g $(INSTALL_GROUP)
 M4 = m4
 STRIP = strip
 BISON = bison -d
