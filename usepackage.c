@@ -67,7 +67,7 @@ void main(int argc, char *argv[])
 	       csh_user = 0;
 	       break;
 	    default:
-	       fprintf(stderr, "%s: unrecognised flag '%c'\n", argv[0], f);
+	       fprintf(stderr, "%s: unrecognised flag '%c'\n", argv[0], *f);
 	       exit(1);
 	 }
    }
