@@ -158,31 +158,31 @@ Motif sun4* SunOS 4.* * :	PATH += /local/motif/bin ;
 ### Ruby compiler: ###
 
 Ruby * * * * :
-		PATH += /local/vlsi/ruby/bin,
-		RUBY_ROOT = /local/vlsi/ruby ;
+		PATH += /local/vlsi/software/ruby/bin,
+		RUBY_ROOT = /local/vlsi/software/ruby ;
 
 OldRuby * * * * :
-		PATH += /local/vlsi/ruby-natsemi1/bin,
-		RUBY_ROOT = /local/vlsi/ruby-natsemi1 ;
+		PATH += /local/vlsi/software/ruby-natsemi1/bin,
+		RUBY_ROOT = /local/vlsi/software/ruby-natsemi1 ;
 
 
 ### Berkeley Magic: ###
 
-Magic sun4* * * * :	PATH += /local/vlsi/magic/bin,
-			MANPATH += /local/vlsi/magic/man ;
+Magic sun4* * * * :	PATH += /local/vlsi/software/magic/bin,
+			MANPATH += /local/vlsi/software/magic/man ;
 
 
 ### MEBS is sun4 only: ###
 
-MEBS sun4* * * * :	PATH += /local/vlsi/mebs/MEBS1.2/bin,
-			MANPATH += /local/vlsi/mebs/MEBS1.2/man,
-			MEBS_ROOT = /local/vlsi/mebs/MEBS1.2 ;
+MEBS sun4* * * * :	PATH += /local/vlsi/software/mebs/MEBS1.2/bin,
+			MANPATH += /local/vlsi/software/mebs/MEBS1.2/man,
+			MEBS_ROOT = /local/vlsi/software/mebs/MEBS1.2 ;
 
 
 ### V-System VHDL Simulator (albatross only): ###
 
 VSystem * * * albatross :
-		PATH += /local/sun4/V-System/modeltech/sun4 ;
+		PATH += /local/vlsi/software/V-System/modeltech/sun4 ;
 
 
 ### Alsys Ada can only be used on hawaii, albatross, and walrus: ###
@@ -194,11 +194,11 @@ Alsys * * * {hawaii,albatross,walrus} <= standard :
 ### Alliance is sun4 only: ###
 
 Alliance sun4* * * * :
-		PATH += /local/vlsi/alliance/bin,
-		MANPATH += /local/vlsi/alliance/man,
+		PATH += /local/vlsi/software/alliance/bin,
+		MANPATH += /local/vlsi/software/alliance/man,
 		MBK_CATA_LIB = .:
-			/local/vlsi/alliance/cells/scr:
-			/local/vlsi/alliance/cells/ring/pad12,
+			/local/vlsi/alliance/software/cells/scr:
+			/local/vlsi/alliance/software/cells/ring/pad12,
 		VH_BEHSFX = "vbe",
 		VH_PATSFX = "pat",
 		MBK_WORK_LIB = .,
@@ -207,8 +207,8 @@ Alliance sun4* * * * :
 
 ### Xilinx Tools: ###
 
-XACT6000 sun4* * * * :	PATH += /local/vlsi/xact6000/bin,
-			XACT6000 = /local/vlsi/xact6000 ;
+XACT6000 sun4* * * * :	PATH += /local/vlsi/software/xact6000/bin,
+			XACT6000 = /local/vlsi/software/xact6000 ;
 
 XACT5 sun4* * * * :     XACT += /local/peg1/xact/xact,
                         PATH += /local/peg1/xact/xact/bin/sparc ;
