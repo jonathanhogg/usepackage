@@ -201,10 +201,18 @@ Alliance sun4* * * * :
 		MBK_WORK_LIB = .,
 		MBK_IN_LO = "vst" ;
 
-### Xilinx XACT6000: ###
+
+### Xilinx Tools: ###
 
 XACT6000 sun4* * * * :	PATH += /local/vlsi/xact6000/bin,
 			XACT6000 = /local/vlsi/xact6000 ;
+
+XACT5 sun4* * * * :     XACT += /local/peg1/xact/xact,
+                        PATH += /local/peg1/xact/xact/bin/sparc ;
+
+PowerView sun4* * * * : XACT += /local/peg1/xact/powerview,
+                        PATH += /local/peg1/xact/powerview/bin/sparc ;
+
 
 ### TeX: ###
 
