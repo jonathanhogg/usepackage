@@ -59,6 +59,7 @@ install: install-exec install-lib install-man
 
 install-exec: usepackage
 	$(STRIP) usepackage
+	$(INSTALL_DIR) $(prefix)/bin
 	$(INSTALL_EXEC) usepackage $(prefix)/bin/usepackage
 
 install-lib: README use.bsh use.csh use.ksh
@@ -73,6 +74,7 @@ install-lib: README use.bsh use.csh use.ksh
 	done
 
 install-man: use.man
+	$(INSTALL_DIR) $(prefix)/man/man1
 	$(INSTALL_FILE) use.man $(prefix)/man/man1/use.1
 
 OBJECTS = usepackage.o grammar.o scanner.o linked_list.o utils.o match.o
