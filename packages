@@ -125,6 +125,15 @@ OpenWin * SunOS * * :	PATH += /usr/openwin/bin,
 			XAPPLRESDIR = /usr/openwin/lib/app-defaults ;
 
 
+### SunVision: ###
+
+SunVision sun4* SunOS 4.* * :
+			SUNVISION = /local/sun4/sunvision_1.2,
+			PATH += /local/sun4/sunvision_1.2/bin,
+			MANPATH += /local/sun4/sunvision_1.2/man,
+			LD_LIBRARY_PATH += /local/sun4/sunvision_1.2/lib ;
+
+
 ### Motif on sparcs: ###
 
 Motif sun4* SunOS 4.* * :	PATH += /local/motif/bin ;
