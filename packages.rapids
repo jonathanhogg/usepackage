@@ -9,9 +9,24 @@
 
 ### Java: ###
  
-Java sun4* SunOS 5.* * :        PATH += /local/java/jdk/bin:
-                                        /local/java/hotjava/bin,
-                                CLASSPATH += /local/java/jdk/lib/classes.zip ;
+Java sun4* SunOS 5.* * :
+		PATH += /local/java/jdk/bin,
+		LD_LIBRARY_PATH += /local/java/jdk/lib/sparc/green_threads,
+		CLASSPATH += /local/java/jdk/lib/classes.zip ;
 
+
+### Hot-Java: ###
+
+HotJava sun4* SunOS 5.* * <= Java:
+		PATH += /local/java/jdk/hotjava ;
+
+
+### Persistent-Java: ###
+
+PJama sun4* SunOS 5.* * <= Java:
+		PJHOME = /local/java/pjama,
+		PATH += /local/java/pjama/bin/sparc/green_threads,
+		LD_LIBRARY_PATH += /local/java/pjama/lib/sparc/green_threads
+		CLASSPATH += /local/java/pjama/classes ;
 
 
