@@ -51,3 +51,13 @@ our-sysadmin * * * {slimy,slicker,slinger} <= our :
         MANPATH += /our/sysadmin/man ;
 
 
+### OUR KDE installation: ###
+
+>> our-kde : "OUR KDE installation" <<
+
+our-kde * * * {slimy,slicker,slinger} <= our :
+        PATH += /our/kde/bin,
+        MANPATH += /our/kde/man,
+        LD_LIBRARY_PATH += /our/kde/lib ;
+
+
