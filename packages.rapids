@@ -18,7 +18,7 @@ Java sun4* SunOS 5.* * :
 ### Hot-Java: ###
 
 HotJava sun4* SunOS 5.* * <= Java:
-		PATH += /local/java/jdk/hotjava ;
+		PATH += /local/java/hotjava/bin ;
 
 
 ### Persistent-Java: ###
