@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software 
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-AC_INIT(usepackage,1.6.1,jonathan@onegoodidea.com,usepackage)
-AM_INIT_AUTOMAKE(usepackage,1.6.1)
+AC_INIT(usepackage,1.6.2,jonathan@onegoodidea.com,usepackage)
+AM_INIT_AUTOMAKE(usepackage,1.6.2)
 
 AM_CONFIG_HEADER(config.h)
 AC_PROG_CC
@@ -33,7 +33,7 @@ AC_CHECK_HEADER(dirent.h)
 AH_VERBATIM([COPYRIGHT],
 [/* Copyright string for the executable. */
 #ifndef COPYRIGHT
-# define COPYRIGHT "Copyright 1995-2002 Jonathan Hogg"
+# define COPYRIGHT "Copyright (C) 1995-2002  Jonathan Hogg"
 #endif])
 
 AC_OUTPUT(Makefile)

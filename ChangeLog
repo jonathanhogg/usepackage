@@ -17,15 +17,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 2002-06-17  Jonathan Hogg  <jonathan@onegoodidea.com>
 
-	* README, usepackage.c: Fixed dumb "Copyright Copyright" cosmetic 
-	bug.
-
-	* usepackage.conf: tidied this up a little.
-
-	* Updated copyright and license stuff to latest versions from FSF.
+	* Tagged version 1.6.2 for release.
 
 	* use.1.in, usepackage.1.in: split the manual page into two, one
 	for the front-end (use) and one for the backend (usepackage).
+
+	* Updated copyright and license stuff to latest versions from FSF.
+
+	* usepackage.conf: tidied this up a little.
+
+	* README, usepackage.c: Fixed dumb "Copyright Copyright" cosmetic 
+	bug.
 
 2002-05-29  Jonathan Hogg  <jonathan@onegoodidea.com>
 

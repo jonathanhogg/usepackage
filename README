@@ -70,7 +70,7 @@ You can obtain a usage summary by typing 'use' with no arguments and a list
 of available packages with:
 
    % use -l
-   usepackage 1.6.1, Copyright 1995-2002 Jonathan Hogg
+   usepackage 1.6.2, Copyright (C) 1995-2002  Jonathan Hogg
 
    Available packages are:
 
