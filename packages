@@ -155,8 +155,11 @@ Motif sun4* SunOS 4.* * :	PATH += /local/motif/bin ;
 
 Ruby * * * * :
 		PATH += /local/vlsi/ruby/bin,
-		MANPATH += /local/vlsi/ruby/man,
 		RUBY_ROOT = /local/vlsi/ruby ;
+
+OldRuby * * * * :
+		PATH += /local/vlsi/ruby-natsemi1/bin,
+		RUBY_ROOT = /local/vlsi/ruby-natsemi1 ;
 
 
 ### Berkeley Magic: ###
