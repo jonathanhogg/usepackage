@@ -91,7 +91,7 @@ void main(int argc, char *argv[])
    }
 
    DEBUG("# usepackage\n");
-   DEBUG("# Release: $Name$");
+   DEBUG("# Version: $Revision$");
    DEBUG("# Copyright (c) Jonathan Hogg\n");
 
    uname(&the_host_info);
