@@ -54,7 +54,9 @@ Ruby * * * * :		RUBY_ROOT = /local/vlsi/software/ruby,
 			PATH += /local/vlsi/software/ruby/bin,
 			MANPATH += /local/vlsi/software/ruby/man ;
 
-NP-Tools sun4* * * * :	PATH += /local/vlsi/software/np-tools/np-tools/bin ;
+NP-Tools sun4* * * * :
+		PATH += /local/vlsi/software/np-tools/np-tools/bin,
+		LD_LIBRARY_PATH += /local/vlsi/software/np-tools/np-tools/lib ;
 
 
 
