@@ -262,7 +262,7 @@ Java sun4* SunOS 5.* * :	PATH += /local/java/jdk/bin:
 
 ### SPARCworks: ###
 
-SPARCworks sun4* SunOS 5.* * :	PATH += /opt/SUNWspro/bin,
+SPARCworks * SunOS 5.* * :	PATH += /opt/SUNWspro/bin,
 				MANPATH += /opt/SUNWspro/man,
 				LD_LIBRARY_PATH += /opt/SUNWspro/lib ;
 
