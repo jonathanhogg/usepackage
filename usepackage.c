@@ -34,7 +34,7 @@ linked_list* merge_paths(linked_list* elist, linked_list* vlist);
 
 int debugging = 0;
 int silent = 0;
-int csh_user = -1;
+int csh_user;
 struct utsname the_host_info;
 linked_list* the_packages;
 linked_list* the_groups;
@@ -50,6 +50,7 @@ void main(int argc, char *argv[])
    int first,i;
    char* f;
    group_t* group;
+   int sh_override = -1;
 
    for (i=1; i<argc && *argv[i] == '-'; i++)
    {
@@ -65,10 +66,10 @@ void main(int argc, char *argv[])
 	       silent = 1;
 	       break;
 	    case 'c':
-	       csh_user = 1;
+	       sh_override = 1;
 	       break;
 	    case 'b':
-	       csh_user = 0;
+	       sh_override = 0;
 	       break;
 	    case 'f':
 	       main_package_filename = argv[++i];
@@ -100,7 +101,9 @@ void main(int argc, char *argv[])
          the_host_info.release);
    DEBUG("# architecture: %s\n", the_host_info.machine);
 
-   if (csh_user == -1) csh_user = is_csh_user();
+   csh_user = is_csh_user();
+   if (sh_override != -1) csh_user = sh_override;
+
    the_environment = new_list();
    if (get_packages(&the_packages, &the_groups))
    {
@@ -136,6 +139,7 @@ int is_csh_user(void)
    shell++;
 
    DEBUG("# shell: %s\n", shell);
+   DEBUG("# home: %s\n", the_home);
 
    return ((!strcmp(shell, "csh")) || (!strcmp(shell, "tcsh")));
 }
