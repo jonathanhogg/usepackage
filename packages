@@ -304,6 +304,25 @@ mbone alpha OSF1 V3.2 * : PATH += /local/peg1/avtools/alpha-dec-osf3.2/bin ;
 mbone * * * * :	MANPATH += /local/peg1/avtools/man ;
 
 
+### T-Ruby: ###
+
+truby sun4* * * * :	PATH += ~satnam/research/truby/bin/sun4 ;
+
+
+### Andy's hugs 1.3: ###
+
+hugs13 sun4* * * * :	PATH += ~andy/src/hugs/src-1.3,
+			HUGS = ~andy/src/hugs/src-1.3/hugs13.prelude ;
+
+
+### Will's working version of ghc: ###
+
+ghc-working sun4* * * * :
+	PATH += /local/grasp_tmp3/partain/ghc-BUILDS/working/ghc/driver ;
+ghc-working alpha * * * :
+	PATH += /local/grasp_tmp3/partain/ghc-BUILDS/working-alpha/ghc/driver ;
+
+
 ### include users own packages information: ###
 
 (include ~/.packages)
