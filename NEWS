@@ -15,6 +15,15 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software 
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+Changes between usepackage version 1.7 and 1.8
+
+* Now supports basic checking for existence of directories before adding
+  them to a path (or setting a variable) using the new "?=" and "?+="
+  operators.
+* The order that variables are sourced into the environment has been
+  changed to better support using other variables as parts of updates
+  to the environment (e.g., "FOO=/opt/foo, PATH+=$FOO/bin;").
+
 Changes between usepackage version 1.6.3 and 1.7
 
 * Now supports arbitrary inclusions into the shell evaluation text,
