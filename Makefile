@@ -13,7 +13,7 @@ scanner.c: scanner.l linked_list.h grammar.h packages.h
 	mv lex.yy.c scanner.c
 
 %.o: %.c
-	gcc -c -O2 $*.c
+	gcc -c -g $*.c
 
 clean:
 	rm -f *.o scanner.c grammar.c grammar.h usepackage

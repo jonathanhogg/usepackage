@@ -68,9 +68,9 @@ Ruby {sun4*,alpha} * * :
 
 ### MEBS is sun4 only: ###
 
-MEBS sun4* * * :	PATH += /local/vlsi/mebs/MEBS/bin,
-			MANPATH += /local/vlsi/mebs/MEBS/man,
-			MEBS_ROOT = /local/vlsi/mebs/MEBS ;
+MEBS sun4* * * :	PATH += /local/vlsi/mebs/MEBS1.2/bin,
+			MANPATH += /local/vlsi/mebs/MEBS1.2/man,
+			MEBS_ROOT = /local/vlsi/mebs/MEBS1.2 ;
 
 
 ### Alsys Ada can only be used on hawaii, albatross, and walrus: ###
@@ -96,17 +96,14 @@ Alliance sun4* * * :
 
 ### TeX: ###
 
-TeX {alpha,sun4*} * * :
-			MANPATH += /usr/local/tex/man,
-			MY_TEXINPUTS = .:
-				/usr/local/tex/inputs:
-				/usr/local/tex/inputs/latex2e:
-				/usr/local/tex/inputs/latex-contrib:
-				/usr/local/tex/inputs/latex-GLASGOW:
-				/usr/local/tex/inputs/latex-new ;
-
-TeX alpha * * :	PATH += /usr/local/tex/bin/alpha ;
-TeX sun4* * * :	PATH += /usr/local/tex/bin/sun4 ;
+TeX * * * :	PATH += /usr/local/tex/bin,
+		MANPATH += /usr/local/tex/man,
+		MY_TEXINPUTS = .:
+			/usr/local/tex/inputs:
+			/usr/local/tex/inputs/latex2e:
+			/usr/local/tex/inputs/latex-contrib:
+			/usr/local/tex/inputs/latex-GLASGOW:
+			/usr/local/tex/inputs/latex-new ;
 
 
 ### Haskell: ###
