@@ -59,14 +59,14 @@ X11-user := standard, bsd, opt, gnu, contrib, X11-local, X11-common ;
 
 ### empty path: ###
 
-none * * * * :		PATH = "",
-			MANPATH = "",
-			LD_LIBRARY_PATH = "" ;
+none * * * * :			PATH = "",
+				MANPATH = "",
+				LD_LIBRARY_PATH = "" ;
 
 
 ### if you absolutely insist on such a security hole: ###
 
-dot * * * * :		PATH += . ;
+dot * * * * :			PATH += . ;
 
 
 ### useful side-effect use of usepackage: ###
@@ -84,74 +84,91 @@ arch {i86pc,i586} Linux * * :	ARCH="linux", HW_OS="i386-unknown-linux" ;
 
 ### standard things that everyone should have: ###
 
-standard * * * * :	PATH += /usr/local/bin:/usr/bin:/bin,
-			MANPATH += /usr/local/man:/usr/man,
-			LD_LIBRARY_PATH += /usr/lib:/lib ;
+standard * SunOS 5.* * :	PATH += /usr/ccs/bin,
+				LD_LIBRARY_PATH += /usr/ccs/lib ;
+standard * * * * :		PATH += /usr/local/bin:/usr/bin:/bin,
+				MANPATH += /usr/local/man:/usr/man,
+				LD_LIBRARY_PATH += /usr/lib:/lib ;
 
 # neglect not the berkelian way...
 
-bsd * * * * :		PATH += /usr/ucb ;
-bsd * SunOS * * :	LD_LIBRARY_PATH += /usr/ucblib ;
+bsd * * * * :			PATH += /usr/ucb ;
+bsd * SunOS * * :		LD_LIBRARY_PATH += /usr/ucblib ;
 
 
 ### GNU stuff: ###
 
-gnu * * * * :		PATH += /usr/local/gnu/bin,
-			MANPATH += /usr/local/gnu/man ;
+gnu * * * * :			PATH += /usr/local/gnu/bin,
+				MANPATH += /usr/local/gnu/man ;
 
 
 ### optional stuff: ###
 
-opt * * * * :		PATH += /usr/local/opt/bin,
-			MANPATH += /usr/local/opt/man,
-			LD_LIBRARY_PATH += /usr/local/opt/lib ;
+opt * * * * :			PATH += /usr/local/opt/bin,
+				MANPATH += /usr/local/opt/man,
+				LD_LIBRARY_PATH += /usr/local/opt/lib ;
 
 
 ### sysadm stuff: ###
 
-sysadm * * * * :	PATH += /usr/sbin:/sbin:/etc ;
+sysadm * * * * :		PATH += /usr/sbin:/sbin:/etc ;
+
+
+### PP mail stuff: ###
+
+pp * * * * :			PATH += /usr/local/nexor/bin,
+				MANPATH += /usr/local/nexor/man ;
+
+
+### Ingres Database: ###
+
+Ingres * SunOS 5.* * :		II_SYSTEM = /local/ingres_sys/ingres,
+				PATH +=
+				  /local/ingres_sys/ingres/bin:
+				  /local/ingres_sys/ingres/utility,
+				ING_SET = "set autocommit on" ;
 
 
 ### X11: ###
 
-X11-local * * * * :	PATH += /usr/X11/bin,
-			MANPATH += /usr/X11/man,
-			LD_LIBRARY_PATH += /usr/X11/lib,
-			XFILESEARCHPATH
-			  += /usr/X11/lib/%T/%N%S ;
+X11-local * * * * :		PATH += /usr/X11/bin,
+				MANPATH += /usr/X11/man,
+				LD_LIBRARY_PATH += /usr/X11/lib,
+				XFILESEARCHPATH
+				  += /usr/X11/lib/%T/%N%S ;
 
-X11-common * * * * :	PATH += /usr/local/X11/bin,
-			MANPATH += /usr/local/X11/man,
-			LD_LIBRARY_PATH += /usr/local/X11/lib,
-			XFILESEARCHPATH
-			  += /usr/local/X11/lib/%T/%N%S ;
+X11-common * * * * :		PATH += /usr/local/X11/bin,
+				MANPATH += /usr/local/X11/man,
+				LD_LIBRARY_PATH += /usr/local/X11/lib,
+				XFILESEARCHPATH
+				  += /usr/local/X11/lib/%T/%N%S ;
 
 
 ### OpenWindows on any SunOS machine: ###
 
-OpenWin * SunOS * * :	PATH += /usr/openwin/bin,
-			MANPATH += /usr/openwin/man,
-			LD_LIBRARY_PATH += /usr/openwin/lib,
-			OPENWINHOME = /usr/openwin,
-			XFILESEARCHPATH
-			  += /usr/openwin/lib/locale/%L/%T/%N%S:
-			     /usr/openwin/lib/%T/%N%S ;
+OpenWin * SunOS * * :		PATH += /usr/openwin/bin,
+				MANPATH += /usr/openwin/man,
+				LD_LIBRARY_PATH += /usr/openwin/lib,
+				OPENWINHOME = /usr/openwin,
+				XFILESEARCHPATH
+				  += /usr/openwin/lib/locale/%L/%T/%N%S:
+				     /usr/openwin/lib/%T/%N%S ;
 
 
 ### CDE: ###
 
-CDE * SunOS * * :	PATH += /usr/dt/bin,
-			MANPATH += /usr/dt/man,
-			LD_LIBRARY_PATH += /usr/dt/lib,
-			XFILESEARCHPATH
-			  += /usr/dt/%T/%L/%N%S:
-			     /usr/dt/lib/%T/%N%S ;
+CDE * SunOS * * :		PATH += /usr/dt/bin,
+				MANPATH += /usr/dt/man,
+				LD_LIBRARY_PATH += /usr/dt/lib,
+				XFILESEARCHPATH
+				  += /usr/dt/%T/%L/%N%S:
+				     /usr/dt/lib/%T/%N%S ;
 
 
 ### TeX: ###
 
-TeX * * * * :	PATH += /usr/local/tex/bin,
-		MANPATH += /usr/local/tex/man ;
+TeX * * * * :			PATH += /usr/local/tex/bin,
+				MANPATH += /usr/local/tex/man ;
 
 
 ### SPARCworks: ###
