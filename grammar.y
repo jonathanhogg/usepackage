@@ -129,9 +129,14 @@ literal: LITERAL
 
 yyerror()
 {
-   fprintf(stderr, "usepackage: parse error on line %d of %s, input '%s'\n",
-           line_number[stack_pointer], file_name[stack_pointer],
-           yytext);
+   if (stack_pointer < 0)
+      fprintf(stderr, "usepackage: parse error, unexpected end of input (possibly missing semicolon?)\n");
+   else
+   {
+      fprintf(stderr, "usepackage: parse error on line %d of %s, input '%s'\n",
+	      line_number[stack_pointer], file_name[stack_pointer],
+	      yytext);
+   }
    yyerrors++;
 }
 

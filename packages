@@ -107,6 +107,11 @@ OpenWin sun4* SunOS 4.* * :	PATH += /usr/AnswerBook/SysSoft1_4:
 				MANPATH += /local/sun4/guide/man ;
 
 
+### Motif on sparcs: ###
+
+Motif sun4* SunOS 4.* * :	PATH += /local/motif/bin ;
+
+
 ### Ruby compiler: ###
 
 Ruby * * * * :
@@ -128,9 +133,10 @@ MEBS sun4* * * * :	PATH += /local/vlsi/mebs/MEBS1.2/bin,
 			MEBS_ROOT = /local/vlsi/mebs/MEBS1.2 ;
 
 
-### V-System VHDL Simulator (sun4 only): ###
+### V-System VHDL Simulator (albatross only): ###
 
-VSystem sun4* * * * :	PATH += /local/sun4/V-System/modeltech/sun4 ;
+VSystem * * * albatross :
+		PATH += /local/sun4/V-System/modeltech/sun4 ;
 
 
 ### Alsys Ada can only be used on hawaii, albatross, and walrus: ###
@@ -176,10 +182,9 @@ CLAyTools * * * copinsay : PATH += /local/vlsi/claytools/1.11/bin ;
 
 ### MH mail system: ###
 
-MH sun4* * * * :	PATH += /local/sun4/mh/bin,
-			MANPATH += /local/sun4/mh/man ;
-MH alpha * * * :	PATH += /usr/bin/mh,
-			MANPATH += /usr/man ;
+MH {sun4*,alpha} * * * :	MANPATH += /usr/local/gnu/man ;
+MH sun4* * * * :		PATH += /usr/local/gnu/bin/mh/sparc-sun-sunos4 ;
+MH alpha * * * :		PATH += /usr/local/gnu/bin/mh/alpha-dec-osf2 ;
 
 
 ### HOL: ###
