@@ -1,6 +1,9 @@
 
 /* usepackage.c */
 
+/* Jonathan AH Hogg */
+
+
 /*** uses: ***/
 
 #include <stdio.h>
@@ -47,6 +50,8 @@ void main(int argc, char *argv[])
    int first,i;
    char *f;
 
+   csh_user = -1;
+
    for (i=1; i<argc && *argv[i] == '-'; i++)
    {
       for (f=argv[i]+1; *f; f++)
@@ -54,6 +59,12 @@ void main(int argc, char *argv[])
 	 {
 	    case 'v':
 	       debugging = 1;
+	       break;
+	    case 'c':
+	       csh_user = 1;
+	       break;
+	    case 'b':
+	       csh_user = 0;
 	       break;
 	    default:
 	       fprintf(stderr, "%s: unrecognised flag '%c'\n", argv[0], f);
@@ -63,18 +74,22 @@ void main(int argc, char *argv[])
 
    if (i == argc)
    {
-      fprintf(stderr, "usage: %s [-v] <package> [<package>...]\n", argv[0]);
+      fprintf(stderr, "usage: %s [-vcb] <package> [<package>...]\n\n", argv[0]);
+      fprintf(stderr, "       -v : verbose\n");
+      fprintf(stderr, "       -c : force csh style output\n");
+      fprintf(stderr, "       -b : force sh style output\n");
       exit(1);
    }
 
-   DEBUG("# usepackage\n# ($Id$)\n");
+   DEBUG("# usepackage\n");
+   DEBUG("# ($Id$)\n");
 
    uname(&the_host_info);
    DEBUG("# host: %s\n", the_host_info.nodename);
    DEBUG("# operating system: %s\n", the_host_info.sysname);
    DEBUG("# architecture: %s\n", the_host_info.machine);
 
-   csh_user = is_csh_user();
+   if (csh_user == -1) csh_user = is_csh_user();
    the_environment = new_list();
    the_packages = get_packages();
    if (!the_packages)
@@ -186,7 +201,7 @@ void print_env(void)
       switch (var->type)
       {
          case VAR_LIT_SET:
-            printf("\"%s\"\n", var->literal);
+            printf("\"%s\"", var->literal);
             break;
 
          case VAR_PATH_ADD:
@@ -199,7 +214,9 @@ void print_env(void)
       }
 
       if (!csh_user)
-         printf("export %s\n", var->name);
+         printf(" ;\nexport %s ;\n", var->name);
+      else
+         printf(" ;\n");
    }
 }
 
@@ -212,7 +229,7 @@ void print_path(linked_list* pathlist)
       if (next(node))
 	 printf("%s:", (char*) get_value(node));
       else
-	 printf("%s\n", (char*) get_value(node));
+	 printf("%s", (char*) get_value(node));
    }
 }
 
