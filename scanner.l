@@ -19,19 +19,22 @@ static char *bufp;
 ":"			return(COLON);
 ";"			return(SEMICOLON);
 ","			return(COMMA);
-"+="[ \t]*		bufp=litbuf; BEGIN(val); return(PLUSEQUALS);
-"="[ \t]*		bufp=litbuf; BEGIN(val); return(EQUALS);
-<val>"\""		BEGIN(lit);
-<val>[^ ,\\\"\t\n]*	strcpy(bufp, yytext); bufp += yyleng;
-<val>"\\"[ \t]*\n[ \t]*	line_number++;
-<val>[ ,\t]	 	BEGIN(INITIAL); yyless(0); return(VALUE);
-<val>\n	 		line_number++; BEGIN(INITIAL); return(VALUE);
+"{"			return(LEFTPAREN);
+"}"			return(RIGHTPAREN);
+"*"			return(WILDCARD);
+"+="[ \t]*		return(PLUSEQUALS);
+"="[ \t]*		return(EQUALS);
+"\""			bufp=litbuf; BEGIN(lit);
 <lit>[^\"\n]*		strcpy(bufp, yytext); bufp += yyleng;
 <lit>\n			line_number++;
-<lit>"\""		BEGIN(val);
-[^ \t\n:]+		strcpy(litbuf, yytext); return(NAME);
+<lit>"\""		BEGIN(INITIAL); return(LITERAL);
+[\./][^ \t\n:,;]*	strcpy(litbuf, yytext); return(PATH);
+[a-zA-Z0-9_\.]+		strcpy(litbuf, yytext); return(NAME);
+[a-zA-Z0-9_]+\*		{ strcpy(litbuf, yytext); litbuf[yyleng-1] = '\0';
+			  return(PREFIX); }
 [ \t]+			/* ignore */
 \n			line_number++;
+.			fprintf(stderr, "scanner: ignoring weird character `%s'\n", yytext);
 
 %%
 

@@ -24,14 +24,17 @@ int yyerrors;
    char* string;
    package_t* package;
    variable_t* variable;
+   match_t* match;
 }
 
-%token COLON SEMICOLON COMMA EQUALS PLUSEQUALS VALUE NAME PATH
+%token COLON SEMICOLON COMMA EQUALS PLUSEQUALS LITERAL NAME PATH
+%token LEFTPAREN RIGHTPAREN PREFIX WILDCARD
 
 %type <package> package
-%type <list> variables
-%type <string> name value
+%type <list> variables pathlist matchlist matches
+%type <string> name literal path prefix
 %type <variable> variable
+%type <match> match
 
 %%
 
@@ -40,28 +43,62 @@ packages: /* nothing */
           packages package
           { add_to_tail(packages, (void*) $2); } ;
 
-package: name name name name name COLON variables SEMICOLON 
+package: matchlist matchlist matchlist matchlist COLON variables SEMICOLON 
          { $$ = new(package_t);
-           $$->name = $1; $$->arch = $2; $$->os = $3; $$->release = $4;
-           $$->host = $5; $$->variables = $7; } ;
+           $$->name = $1; $$->arch = $2; $$->os = $3;
+           $$->host = $4; $$->variables = $6; } ;
 
 variables: variable
            { $$ = new_list(); add_to_tail($$, (void*) $1); } |
            variables COMMA variable
            { add_to_tail($$ = $1, (void*) $3); } ;
 
-variable: name EQUALS value
+variable: name EQUALS literal
           { $$ = new(variable_t);
-            $$->name = $1; $$->type = VAR_SET; $$->value = $3; } |
-	  name PLUSEQUALS value
+            $$->name = $1; $$->type = VAR_LIT_SET;
+            $$->literal = $3; $$->pathlist = NULL; } |
+          name EQUALS pathlist
+          { $$ = new(variable_t);
+            $$->name = $1; $$->type = VAR_PATH_SET;
+            $$->literal = NULL; $$->pathlist = $3; } |
+	  name PLUSEQUALS pathlist
           { $$ = new(variable_t); 
-            $$->name = $1; $$->type = VAR_ADD; $$->value = $3; } ;
+            $$->name = $1; $$->type = VAR_PATH_ADD;
+            $$->literal = NULL; $$->pathlist = $3; } ;
+
+matchlist: match
+       { $$ = new_list(); add_to_tail($$, (void*) $1); } |
+       LEFTPAREN matches RIGHTPAREN
+       { $$ = $2; } ;
+
+matches: match
+       { $$ = new_list(); add_to_tail($$, (void*) $1); } |
+       matches COMMA match
+       { add_to_tail($$ = $1, (void*) $3); } ;
+
+match: name
+       { $$ = new(match_t); $$->type = MATCH_EXACT; $$->text = $1; } |
+       prefix
+       { $$ = new(match_t); $$->type = MATCH_PREFIX; $$->text = $1; } |
+       WILDCARD
+       { $$ = new(match_t); $$->type = MATCH_WILD; $$->text = NULL; } ;
+
+pathlist: path
+          { $$ = new_list(); add_to_tail($$, (void*) $1); } |
+          pathlist COLON path
+          { add_to_tail($$ = $1, (void*) $3); } ;
+
+path: PATH
+	{ $$ = strdup(litbuf); } ;
+
+prefix: PREFIX
+	{ $$ = strdup(litbuf); } ;
 
 name: NAME
-	{ $$ = strdup(litbuf); }
+	{ $$ = strdup(litbuf); } ;
 
-value: VALUE
-	{ $$ = strdup(litbuf); }
+literal: LITERAL
+	{ $$ = strdup(litbuf); } ;
 
 %%
 
@@ -73,6 +110,9 @@ yyerror()
 
 linked_list* get_packages()
 {
+#ifdef YYDEBUG
+   yydebug = 1;
+#endif
    yyerrors = 0;
    yyin = fopen("packages", "r");
    yyparse();

@@ -20,6 +20,7 @@
 /*** prototypes: ***/
 
 int is_csh_user(void);
+void add_package(package_t* package);
 
 
 /*** globals: ***/
@@ -28,6 +29,7 @@ int debugging = 0;
 int csh_user;
 struct utsname hostinfo;
 linked_list* the_packages;
+linked_list* the_environment;
 
 
 /*** main program: ***/
@@ -36,6 +38,8 @@ void main(int argc, char *argv[])
 {
    int i;
    char *f;
+   package_t* package;
+   list_node* node;
 
    for (i=1; i<argc && *argv[i] == '-'; i++)
    {
@@ -60,10 +64,11 @@ void main(int argc, char *argv[])
    uname(&hostinfo);
    DEBUG("# host: %s\n", hostinfo.nodename);
    DEBUG("# operating system: %s\n", hostinfo.sysname);
-   DEBUG("# release: %s\n", hostinfo.release);
    DEBUG("# architecture: %s\n", hostinfo.machine);
 
    csh_user = is_csh_user();
+
+   the_environment = new_list();
 
    the_packages = get_packages();
    if (!the_packages)
@@ -75,6 +80,15 @@ void main(int argc, char *argv[])
    for (; i<argc; i++)
    {
       DEBUG("# using package %s...\n", argv[i]);
+      
+      for (node = head(the_packages) ; node ; node = next(node))
+      {
+         package = (package_t*) value(node);
+
+         if (package_matches(package, argv[i], hostinfo.machine,
+                             hostinfo.sysname, hostinfo.nodename))
+            add_package(package);
+      }
    }
 }
 
@@ -94,5 +108,10 @@ int is_csh_user(void)
    DEBUG("# shell: %s\n", shell);
 
    return ((!strcmp(shell, "csh")) || (!strcmp(shell, "tcsh")));
+}
+
+void add_package(package_t* package)
+{
+   
 }
 
