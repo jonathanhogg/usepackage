@@ -7,7 +7,7 @@
 #
 
 
-VHDL-tools := VSystem, Alliance, MEBS ;
+VHDL-tools := VSystem, Alliance, MEBS, VELAB ;
 Xilinx-tools := XACT6000, XACT5 ;
 Schematic-tools := PowerView, Magic ;
 Ruby-tools := TRuby, Ruby ;
