@@ -1,5 +1,5 @@
 Usepackage Environment Manager
-Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
 .  
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -14,6 +14,50 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software 
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+2003-11-16  Jonathan Hogg  <jonathan@onegoodidea.com>
+
+	* grammar.y, scanner.l: Addition of new operators QEQUALS (?=)
+	and QPLUSEQUALS (?+=) to variable settings rules.
+
+	* usepackage.c, package.h: Changes to support testing for the
+	existence of paths before adding them to the environment, via
+	new ?= and ?+= operators. New test_paths function added for this.
+
+2003-04-18  Jonathan Hogg  <jonathan@onegoodidea.com>
+
+	* Tagged version 1.7 for release.
+
+	* usepackage.c, configure.ac: Addition of mailing list address to
+	online help text.
+
+	* README, usepackage.1.in, use.1.in: Slight fixes to the 
+	documentation.
+
+2003-03-12  Jonathan Hogg  <jonathan@onegoodidea.com>
+
+	* usepackage.c: Changes to support shell matching and inclusion of
+	script components into the output.
+
+	* match.c: Changes to support shell matching.
+	
+	* utils.c, utils.h: Addition of get_user_shell function, removal of
+	old is_csh_user function.
+
+	* grammar.y, scanner.l: Updated to support new syntax for scripts and
+	shell matches. Also made all matches (except package match) optional -
+	leaving out a match is the equivalent of a "*" wildcard.
+
+	* linked_list.c: Updated to be ANSI C (finally).
+
+2002-12-11  Jonathan Hogg  <jonathan@onegoodidea.com>
+
+	* Tagged version 1.6.3 for release.
+
+	* utils.c: Updated to use HOME environment variable for ~ expansion
+	if available. Previously I looked up the home directory from the UID
+	of the process, which defeats usepackage when run by a user with
+	root privileges.
 
 2002-06-17  Jonathan Hogg  <jonathan@onegoodidea.com>
 

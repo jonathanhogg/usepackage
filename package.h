@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,6 +50,8 @@
 #define VAR_LIT_SET 0
 #define VAR_PATH_SET 1
 #define VAR_PATH_ADD 2
+#define VAR_PATH_TESTSET 3
+#define VAR_PATH_TESTADD 4
 
 #define MATCH_EXACT 0
 #define MATCH_PREFIX 1
@@ -67,8 +69,10 @@ typedef struct {
    linked_list* os;
    linked_list* version;
    linked_list* host;
+   linked_list* shell;
    linked_list* variables;
    linked_list* requires;
+   linked_list* scripts;
 } package_t;
 
 typedef struct {
@@ -93,6 +97,9 @@ typedef struct {
    char* description;
 } annotation_t;
 
+typedef struct {
+   char* text;
+} script_t;
 
 /*** globals: ***/
 
@@ -104,5 +111,5 @@ extern int debugging;
 extern int get_packages(linked_list** packages, linked_list** groups,
                         linked_list** annotations);
 extern int package_matches(package_t* package, char* name, char* arch,
-                           char* os, char* version, char* host);
+                           char* os, char* version, char* host, char* shell);
 

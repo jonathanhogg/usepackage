@@ -78,7 +78,7 @@ This path may be overridden with the PACKAGES_PATH environment variable
 (see
 .IR ENVIRONMENT ).
 A packages file may contain inclusion directives which cause the sourcing of 
-other files at a given points. An inclusion directive looks like:
+other files at given points. An inclusion directive looks like:
 .PP
 .nf
      (include file-name)
@@ -92,17 +92,18 @@ A package file consists of comments, delimited by a leading hash (#),
 or package definitions of the form: 
 .PP
 .nf
-     package platform os version host [<= requires ...] :
-          variable-def [, variable-def ...] ;
+     package [arch [os [version [host [shell]]]]]
+          [<= requires ...] : setting [, setting ...] ;
 .fi
 .PP
 The
 .IR package ,
 .IR arch ,
 .IR os ,
-.IR release
+.IR version ,
+.IR host ,
 and
-.I host
+.I shell
 parts may be simple shell-style patterns of the form:
 .TP 15
 *
@@ -114,6 +115,19 @@ matches "foo", "foobar" etc.
 {foo,bar}
 matches "foo" or "bar".
 .PP
+A
+.I setting
+is either a variable definition (as described below) or a section of text
+to be directly evaluated in the shell, delimited with
+.IR <[
+and
+.IR ]> ,
+for example:
+.PP
+.nf
+     <[ /usr/local/bin/test-init ]>
+.fi
+.PP
 When
 .I Usepackage
 searches for the definition for a particular package, it compares each line
@@ -123,8 +137,8 @@ system-dependant information for the execution host, as obtained by
 This information is the hardware implementation (platform), the operating 
 system name (os), the operating system version (version) and the hostname
 (host). Comparisons are case-insensitive. If a match is obtained then the 
-given variable definitions are processed to modify the environment. A 
-variable definition may be one of three forms:
+given variable definitions and script sections are processed to modify the
+environment. A  variable definition may have one of the following forms:
 .PP
 .nf
           var-name = "string"
@@ -142,6 +156,20 @@ directories and may contain shell-style tilde (~), user-relative, directories
 which will be expanded automatically (except when the path list is given as a 
 literal string). When pre-pending paths to a variable, duplicate paths are 
 removed from the original value first.
+.PP
+In addition,
+.I Usepackage
+can optionally test for the existence of paths before setting or adding them
+to variables. This is done with the test form of the above operators:
+.PP
+.nf
+          var-name ?= path-list
+          var-name ?+= path-list
+          var-name ?+= "string"
+.fi
+.PP
+These operate as per the definitions above, but will ignore path components
+that don't exist.
 .PP
 The
 .I requires
@@ -185,7 +213,7 @@ The following fragment of a packages file illustrates the main features:
 
      >> GNU : "The GNU project software" <<
 
-     GNU * * * * :             PATH += /usr/local/gnu/bin,
+     GNU :                     PATH += /usr/local/gnu/bin,
                                MANPATH += /usr/local/gnu/man ;
 
      # CVS requires RCS which is found in the GNU package, but
@@ -193,19 +221,27 @@ The following fragment of a packages file illustrates the main features:
 
      >> CVS : "Concurrent Versions System revision control" <<
 
-     CVS sun4* SunOS 5.* * <= GNU :
+     CVS sun4* SunOS 5.* <= GNU :
                                CVSROOT = /usr/src/cvsroot,
                                CVSEDITOR = "vi",
                                PATH += /usr/local/cvs/bin,
                                MANPATH += /usr/local/cvs/man ;
 
      # User bin directories (Solaris will run SunOS 4 binaries):
+     # (Only added to the path if the directories actually exist)
 
      >> user : "User's own programs" <<
 
-     user sun4* SunOS * * :    PATH += ~/bin/sun4 ;
-     user sun4* SunOS 5.* * :  PATH += ~/bin/solaris ;
-     user alpha OSF * * :      PATH += ~/bin/alpha ;
+     user sun4* SunOS :        PATH ?+= ~/bin/sun4 ;
+     user sun4* SunOS 5.* :    PATH ?+= ~/bin/solaris ;
+     user alpha OSF :          PATH ?+= ~/bin/alpha ;
+
+     # Special function for zsh:
+     
+     >> zsh-function : "Special zsh function" <<
+     
+     zsh-function * * * * zsh :
+           <[ hello() { echo "Hello World!"; } ]> ;
 
      # include standard packages:
 
@@ -213,7 +249,7 @@ The following fragment of a packages file illustrates the main features:
 
      # security hole:
 
-     dot * * * * :             PATH += . ;
+     dot :                     PATH += . ;
 
      # groups:
 
@@ -228,9 +264,9 @@ fact that package "user" on a SPARC Solaris machine will match both of the
 first two lines of the "user" package section, resulting in the "solaris"
 directory and the "sun4" directory being added into the PATH.
 .PP
-Assuming the appropriate shell setup script has been sources (see
-.IR SYNOPSIS ),
-then the following command will cause the CVS environment (including the
+Assuming the appropriate shell setup script has been sourced - see
+.IR use(1)
+- then the following command will cause the CVS environment (including the
 GNU environment) to be sourced:
 .PP
 .nf
@@ -274,10 +310,21 @@ also uses the following environment variables for user configuration:
 .SB PACKAGES_PATH
 Colon-separated path list giving the directories to search for configuration
 files. Shell-style tilde (~) user-directory escapes are expanded.
+.TP
+.SB HOME
+If present in the environment, this is used to provide the expansion for
+the tilde (~) user-directory.
+.TP
+.SB SHELL
+If present in the environment, the last path component of this is used for
+shell matching (see
+.IR SYNTAX )
+and detecting style environment output should be used (see
+.IR OPTIONS ).
 .SH COPYRIGHT
 .nf
 Usepackage Environment Manager
-Copyright (C) 1995-2002  Jonathan Hogg
+Copyright (C) 1995-2003  Jonathan Hogg
 .fi
 .PP
 This program is free software; you can redistribute it and/or modify

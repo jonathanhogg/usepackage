@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,19 +66,21 @@ int include(char* filename);
    match_t* match;
    group_t* group;
    annotation_t* annotation;
+   script_t* script;
 }
 
-%token COLON SEMICOLON COMMA EQUALS PLUSEQUALS LITERAL NAME PATH
+%token COLON SEMICOLON COMMA EQUALS PLUSEQUALS QEQUALS QPLUSEQUALS LITERAL NAME PATH
 %token LEFTPAREN RIGHTPAREN PREFIX WILDCARD ASSIGN WITH
-%token BEGIN_ANNOTATE END_ANNOTATE
+%token BEGIN_ANNOTATE END_ANNOTATE SCRIPT
 
-%type <package> package
-%type <list> variables pathlist matchlist matches names requires
+%type <package> package settings
+%type <list> pathlist matchlist matches names requires
 %type <string> name literal path prefix
 %type <variable> variable
 %type <match> match
 %type <group> group
 %type <annotation> annotation
+%type <script> script
 
 %%
 
@@ -95,11 +97,36 @@ entry: package
        annotation
        { add_to_tail(loaded_annotations, (void*) $1); } ;
 
-package: matchlist matchlist matchlist matchlist matchlist requires COLON
-         variables SEMICOLON 
-         { $$ = new(package_t);
+package: matchlist requires COLON
+         settings SEMICOLON 
+         { $$ = $4;
+           $$->name = $1; $$->arch = NULL; $$->os = NULL; $$->version = NULL;
+           $$->host = NULL; $$->shell = NULL; $$->requires = $2; } |
+         matchlist matchlist requires COLON
+         settings SEMICOLON 
+         { $$ = $5;
+           $$->name = $1; $$->arch = $2; $$->os = NULL; $$->version = NULL;
+           $$->host = NULL; $$->shell = NULL; $$->requires = $3; } |
+         matchlist matchlist matchlist requires COLON
+         settings SEMICOLON 
+         { $$ = $6;
+           $$->name = $1; $$->arch = $2; $$->os = $3; $$->version = NULL;
+           $$->host = NULL; $$->shell = NULL; $$->requires = $4; } |
+         matchlist matchlist matchlist matchlist requires COLON
+         settings SEMICOLON 
+         { $$ = $7;
            $$->name = $1; $$->arch = $2; $$->os = $3; $$->version = $4;
-           $$->host = $5; $$->requires = $6; $$->variables = $8; } ;
+           $$->host = NULL; $$->shell = NULL; $$->requires = $5; } |
+         matchlist matchlist matchlist matchlist matchlist requires COLON
+         settings SEMICOLON 
+         { $$ = $8;
+           $$->name = $1; $$->arch = $2; $$->os = $3; $$->version = $4;
+           $$->host = $5; $$->shell = NULL; $$->requires = $6; } |
+         matchlist matchlist matchlist matchlist matchlist matchlist requires COLON
+         settings SEMICOLON 
+         { $$ = $9;
+           $$->name = $1; $$->arch = $2; $$->os = $3; $$->version = $4;
+           $$->host = $5; $$->shell = $6; $$->requires = $7; } ;
 
 requires: /* nothing */
           { $$ = NULL; } |
@@ -115,10 +142,22 @@ annotation: BEGIN_ANNOTATE name COLON literal END_ANNOTATE
               $$->name = $2;
               $$->description = $4; } ;
 
-variables: variable
-           { $$ = new_list(); add_to_tail($$, (void*) $1); } |
-           variables COMMA variable
-           { add_to_tail($$ = $1, (void*) $3); } ;
+settings: variable
+          { $$ = new(package_t);
+            $$->variables = new_list();
+            $$->scripts = new_list();
+            add_to_tail($$->variables, (void*) $1); } |
+          script
+          { $$ = new(package_t);
+            $$->variables = new_list();
+            $$->scripts = new_list();
+            add_to_tail($$->scripts, (void*) $1); } |
+          settings COMMA variable
+          { $$ = $1;
+            add_to_tail($$->variables, (void*) $3); } |
+          settings COMMA script
+          { $$ = $1;
+            add_to_tail($$->scripts, (void*) $3); } ;
 
 variable: name EQUALS literal
           { $$ = new(variable_t);
@@ -135,7 +174,23 @@ variable: name EQUALS literal
 	  name PLUSEQUALS pathlist
           { $$ = new(variable_t); 
             $$->name = $1; $$->type = VAR_PATH_ADD;
+            $$->literal = NULL; $$->pathlist = $3; } |
+	  name QEQUALS pathlist
+          { $$ = new(variable_t); 
+            $$->name = $1; $$->type = VAR_PATH_TESTSET;
+            $$->literal = NULL; $$->pathlist = $3; } |
+	  name QPLUSEQUALS literal
+          { $$ = new(variable_t); 
+            $$->name = $1; $$->type = VAR_PATH_TESTADD;
+            $$->literal = NULL; $$->pathlist = make_pathlist($3); } |
+	  name QPLUSEQUALS pathlist
+          { $$ = new(variable_t); 
+            $$->name = $1; $$->type = VAR_PATH_TESTADD;
             $$->literal = NULL; $$->pathlist = $3; } ;
+
+script: SCRIPT
+	{ $$ = new(script_t);
+	  $$->text = strdup(litbuf); } ;
 
 matchlist: match
        { $$ = new_list(); add_to_tail($$, (void*) $1); } |

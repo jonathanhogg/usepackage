@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
  *  
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,5 @@
 
 /*** prototypes: ***/
 
-int is_csh_user(void);
-char* expand(char* filepath);
-
-
+extern char* get_user_shell(void);
+extern char* expand(char* filepath);

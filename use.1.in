@@ -15,7 +15,7 @@ Environment Manager
  . @pkgdatadir@/use.ksh
 .PP
 .B use
-[\-vscb] [\-f
+[\-vs] [\-f
 .IR file ]
 .I package ...
 .PP
@@ -35,6 +35,9 @@ sources the appropriate environment information into the current shell.
 The environment information is specified in a configuration file, see
 .IR usepackage(1) .
 .SS OPTIONS
+.TP
+.I \-v
+Output verbose information to the standard error stream.
 .TP
 .I \-s
 Silence warnings for un-matched packages. This is useful in a shell
@@ -74,10 +77,21 @@ also uses the following environment variables for user configuration:
 .SB PACKAGES_PATH
 Colon-separated path list giving the directories to search for configuration
 files. Shell-style tilde (~) user-directory escapes are expanded.
+.TP
+.SB HOME
+If present in the environment, this is used to provide the expansion for
+the tilde (~) user-directory.
+.TP
+.SB SHELL
+If present in the environment, the last path component of this is used for
+shell matching (see
+.IR SYNTAX )
+and detecting style environment output should be used (see
+.IR OPTIONS ).
 .SH COPYRIGHT
 .nf
 Usepackage Environment Manager
-Copyright (C) 1995-2002  Jonathan Hogg
+Copyright (C) 1995-2003  Jonathan Hogg
 .fi
 .PP
 This program is free software; you can redistribute it and/or modify

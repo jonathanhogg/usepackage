@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,8 +41,7 @@
 #include "linked_list.h"
 
 
-list_node *
-new_node()
+list_node* new_node(void)
 {
    list_node *node;
 
@@ -51,8 +50,7 @@ new_node()
 } /* new_node */
 
 
-linked_list *
-new_list()
+linked_list* new_list(void)
 {
    linked_list	*list;
 
@@ -63,10 +61,7 @@ new_list()
 } /* new_list */
 
 
-void
-add_to_head(l, s)
-linked_list	*l;
-void	*s;
+void add_to_head(linked_list* l, void* s)
 {
    list_node *node;
 
@@ -82,10 +77,7 @@ void	*s;
 } /* add_to_head */
 
 
-void
-add_to_tail(l, s)
-linked_list	*l;
-void	*s;
+void add_to_tail(linked_list* l, void* s)
 {
    list_node *node;
 
@@ -101,11 +93,7 @@ void	*s;
 } /* add_to_tail */
 
 
-void
-remove_node(l, n, k)
-linked_list	*l;
-list_node	*n;
-int		k;
+void remove_node(linked_list* l, list_node* n, int k)
 {
    if (n->previous)
       n->previous->next = n->next;
@@ -120,10 +108,7 @@ int		k;
 } /* remove_node */
 
 
-void
-free_list(l, k)
-linked_list	*l;
-int		k;
+void free_list(linked_list* l, int k)
 {
    list_node *node;
    list_node *next_node;
@@ -140,50 +125,37 @@ int		k;
 } /* free_list */
 
 
-list_node *
-head(l)
-linked_list	*l;
+list_node* head(linked_list* l)
 {
    return(l->head);
 } /* head */
 
 
-list_node *
-list_tail(l)
-linked_list	*l;
+list_node* list_tail(linked_list* l)
 {
    return(l->tail);
 } /* list_tail */
 
 
-list_node *
-next(n)
-list_node	*n;
+list_node* next(list_node* n)
 {
    return(n->next);
 } /* next */
 
 
-list_node *
-previous(n)
-list_node	*n;
+list_node* previous(list_node* n)
 {
    return(n->previous);
 } /* previous */
 
 
-void *
-get_value(n)
-list_node	*n;
+void* get_value(list_node* n)
 {
    return(n->value);
 } /* value */
 
 
-void
-set_value(n, s)
-list_node	*n;
-void		*s;
+void set_value(list_node* n, void* s)
 {
    n->value = s;
 } /* value */

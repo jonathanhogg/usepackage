@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
  *  
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,23 +33,29 @@
 
 #include <pwd.h>
 #include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "utils.h"
 
 
 /*** functions: ***/
 
-int is_csh_user(void)
+char* get_user_shell(void)
 {
    struct passwd *pwent;
-   char *shell;
+   char *shell = getenv("SHELL");
 
-   pwent = getpwuid(getuid());
-   shell = strrchr(pwent->pw_shell, '/');
-   if (!shell) return(0);
+   if (!shell)
+   {
+      pwent = getpwuid(getuid());
+      shell = pwent->pw_shell;
+   }
+   shell = strrchr(shell, '/');
+   if (!shell)
+      return("sh");
    shell++;
 
-   return ((!strcmp(shell, "csh")) || (!strcmp(shell, "tcsh")));
+   return strdup(shell);
 }
 
 
@@ -58,6 +64,7 @@ char* expand(char* filepath)
    static char newpath[256];
    static char username[32];
    struct passwd* pwent;
+   char* home;
    int i,j;
 
    i = 0;
@@ -69,12 +76,22 @@ char* expand(char* filepath)
 
       if (!filepath[i] || filepath[i] == '/')
       {
-	 pwent = getpwuid(getuid());
+      	 home = getenv("HOME");
+      	 if (home)
+      	 {
+     	    strcat(newpath, home);
+      	 }
+      	 else
+      	 {
+	    pwent = getpwuid(getuid());
 
-	 if (!pwent)
-	 {
-	    fprintf(stderr, "usepackage: cannot obtain home directory.\n");
-	    return(filepath);
+	    if (!pwent)
+	    {
+	       fprintf(stderr, "usepackage: cannot obtain home directory.\n");
+	       return(filepath);
+	    }
+	    
+	    strcat(newpath, pwent->pw_dir);
 	 }
       }
       else
@@ -92,9 +109,9 @@ char* expand(char* filepath)
                     username);
 	    return(filepath);
 	 }
-      }
 
-      strcat(newpath, pwent->pw_dir);
+         strcat(newpath, pwent->pw_dir);
+      }
    }
 
    strcat(newpath, filepath + i);

@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 #include "package.h"
 #include "grammar.h"
 
-char litbuf[1024];
+char litbuf[2048];
 static char *bufp;
 
 extern int stack_pointer;
@@ -42,7 +42,7 @@ extern int include(char* filename);
 
 %}
 
-%x lit
+%x lit scpt
 
 name	[-A-Za-z0-9_\.]*
 path	(\.|\~|\/|\$)[^ \t\n:,;]*
@@ -57,17 +57,27 @@ path	(\.|\~|\/|\$)[^ \t\n:,;]*
 "{"		return(LEFTPAREN);
 "}"		return(RIGHTPAREN);
 "*"		return(WILDCARD);
-"+="		return(PLUSEQUALS);
 "="		return(EQUALS);
+"+="		return(PLUSEQUALS);
+"?="		return(QEQUALS);
+"?+="		return(QPLUSEQUALS);
 ":="		return(ASSIGN);
 "<="		return(WITH);
 ">>"		return(BEGIN_ANNOTATE);
 "<<"		return(END_ANNOTATE);
+
 "\""		bufp=litbuf; bufp[0] = '\0'; BEGIN(lit);
 <lit>[^\"\n]*	strcpy(bufp, yytext); bufp += yyleng;
 <lit>\n		{ strcpy(bufp, yytext); bufp += yyleng;
 		  line_number[stack_pointer]++; }
 <lit>"\""	BEGIN(INITIAL); return(LITERAL);
+
+"<["		bufp=litbuf; bufp[0] = '\0'; BEGIN(scpt);
+<scpt>[^\]\n]*	strcpy(bufp, yytext); bufp += yyleng;
+<scpt>\n	{ strcpy(bufp, yytext); bufp += yyleng;
+		  line_number[stack_pointer]++; }
+<scpt>"]>"	BEGIN(INITIAL); return(SCRIPT);
+
 {path}		strcpy(litbuf, yytext); return(PATH);
 {name}		strcpy(litbuf, yytext); return(NAME);
 {name}\*	{ strcpy(litbuf, yytext); litbuf[yyleng-1] = '\0';

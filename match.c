@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ int text_matches(char* text, linked_list* matches);
 /*** functions: ***/
 
 int package_matches(package_t* package, char* name, char* arch,
-                    char* os, char* version, char* host)
+                    char* os, char* version, char* host, char* shell)
 {
    if (!text_matches(name, package->name))
       return(0);
@@ -56,6 +56,8 @@ int package_matches(package_t* package, char* name, char* arch,
       return(0);
    if (!text_matches(host, package->host))
       return(0);
+   if (!text_matches(shell, package->shell))
+      return(0);
    return(1);
 }
 
@@ -63,6 +65,9 @@ int text_matches(char* text, linked_list* matches)
 {
    list_node* node;
    match_t* match;
+
+   if ( !matches )
+      return(1);
 
    for (node = head(matches) ; node ; node = next(node))
    {

@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
  *  
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,8 +54,10 @@ linked_list* make_pathlist(char* path_string);
 variable_t* update_var(variable_t* evar, variable_t* vvar);
 void print_path(char* varname, linked_list* pathlist);
 linked_list* merge_paths(linked_list* elist, linked_list* vlist);
+linked_list* test_paths(linked_list* vlist);
 void list_annotations();
 void list_groups();
+void print_scripts(void);
 
 
 /*** globals: ***/
@@ -64,10 +66,12 @@ int debugging = 0;
 int silent = 0;
 int csh_user;
 struct utsname the_host_info;
+char* the_shell;
 linked_list* the_packages;
 linked_list* the_groups;
 linked_list* the_annotations;
 linked_list* the_environment;
+linked_list* the_scripts;
 char* main_package_filename = MASTER_PACKAGE_FILE;
 
 
@@ -84,46 +88,45 @@ int main(int argc, char *argv[])
    for (i=1; i<argc && *argv[i] == '-'; i++)
    {
       for (f=argv[i]+1; *f; f++)
-	 switch (*f)
-	 {
-	    case 'v':
-	       debugging = 1;
-	       silent = 0;
-	       break;
-	    case 's':
-	       debugging = 0;
-	       silent = 1;
-	       break;
-	    case 'c':
-	       sh_override = 1;
-	       break;
-	    case 'b':
-	       sh_override = 0;
-	       break;
-	    case 'f':
-	       main_package_filename = argv[++i];
-	       break;
-	    case 'l':
-	       list_packages = 1;
-	       break;
-	    default:
-	       fprintf(stderr, "usepackage: unrecognised flag '%c'\n", *f);
+         switch (*f)
+         {
+            case 'v':
+               debugging = 1;
+               silent = 0;
+               break;
+            case 's':
+               debugging = 0;
+               silent = 1;
+               break;
+            case 'c':
+               sh_override = 1;
+               break;
+            case 'b':
+               sh_override = 0;
+               break;
+            case 'f':
+               main_package_filename = argv[++i];
+               break;
+            case 'l':
+               list_packages = 1;
+               break;
+            default:
+               fprintf(stderr, "usepackage: unrecognised flag '%c'\n", *f);
                exit(1);
-	 }
+         }
    }
 
    if (!list_packages && (i >= argc))
    {
-      fprintf(stderr, "%s %s, %s\n", PACKAGE_NAME, PACKAGE_VERSION, COPYRIGHT);
-      fprintf(stderr, "Bug reports and comments to: %s\n\n", PACKAGE_BUGREPORT);
-      fprintf(stderr, "usage: use [-vscb] [-f <file>] <package> [<package>...]\n");
+      fprintf(stderr, "\n%s %s, %s\n", PACKAGE_NAME, PACKAGE_VERSION, COPYRIGHT);
+      fprintf(stderr, "Bug reports and comments to: %s\n", PACKAGE_BUGREPORT);
+      fprintf(stderr, "Discussion/announcement list: %s\n\n", MAILING_LIST);
+      fprintf(stderr, "usage: use [-vs] [-f <file>] <package> [<package>...]\n");
       fprintf(stderr, "       use -l\n\n");
       fprintf(stderr, "       -v : verbose\n");
       fprintf(stderr, "       -s : silence match warnings\n");
-      fprintf(stderr, "       -c : force csh style output\n");
-      fprintf(stderr, "       -b : force sh style output\n");
       fprintf(stderr, "       -f : use <file> as main packages file\n");
-      fprintf(stderr, "       -l : list available packages\n");
+      fprintf(stderr, "       -l : list available packages\n\n");
       exit(1);
    }
 
@@ -137,10 +140,17 @@ int main(int argc, char *argv[])
          the_host_info.release);
    DEBUG(stderr, "architecture: %s\n", the_host_info.machine);
 
-   csh_user = is_csh_user();
-   if (sh_override != -1) csh_user = sh_override;
+   the_shell = get_user_shell();
+   DEBUG(stderr, "shell: %s\n", the_shell);
+
+   if (sh_override != -1)
+      csh_user = sh_override;
+   else
+      csh_user = ((!strcmp(the_shell, "csh")) || (!strcmp(the_shell, "tcsh")));
 
    the_environment = new_list();
+   the_scripts = new_list();
+   
    if (get_packages(&the_packages, &the_groups, &the_annotations))
    {
       fprintf(stderr, "usepackage: couldn't load package information.\n");
@@ -149,11 +159,12 @@ int main(int argc, char *argv[])
 
    if (list_packages)
    {
-      fprintf(stderr, "usepackage %s, %s\n\n", VERSION, COPYRIGHT);
+      fprintf(stderr, "\nusepackage %s, %s\n\n", VERSION, COPYRIGHT);
       fprintf(stderr, "Available packages are:\n\n");
       list_annotations();
       fprintf(stderr, "\nAvailable groups are:\n\n");
       list_groups();
+      fprintf(stderr, "\n");
       exit(0);
    }
 
@@ -166,6 +177,8 @@ int main(int argc, char *argv[])
    }
 
    print_env();
+
+   print_scripts();
 
    return(0);
 }
@@ -186,18 +199,18 @@ void use_package(char* name)
       package = (package_t*) get_value(node);
 
       if (package_matches(package, name, the_host_info.machine,
-			  the_host_info.sysname, the_host_info.release,
-                          the_host_info.nodename))
+                          the_host_info.sysname, the_host_info.release,
+                          the_host_info.nodename, the_shell))
       {
-	 add_package(package);
+         add_package(package);
          got_one = 1;
       }
    }
 
    if ((!silent) && (!got_one))
       fprintf(stderr,
-	      "warning: no match for package `%s' on this host.\n",
-	      name);
+              "warning: no match for package `%s' on this host.\n",
+              name);
 }
 
 void add_package(package_t* package)
@@ -210,6 +223,7 @@ void add_package(package_t* package)
    group_t* group;
    char* name;
    int got_one;
+   char* text;
    
    if (package->requires)
    {
@@ -219,10 +233,10 @@ void add_package(package_t* package)
       {
          name = (char*) get_value(rnode);
 
-	 if (group = get_group(name))
-	    use_group(group);
-	 else
-	    use_package(name);
+         if (group = get_group(name))
+            use_group(group);
+         else
+            use_package(name);
       }
    }
 
@@ -244,9 +258,15 @@ void add_package(package_t* package)
       {
          enode = get_into_env(vvar);
          evar = get_value(enode);
-	 set_value(enode, update_var(evar, vvar));
+         set_value(enode, update_var(evar, vvar));
       }
    }
+   
+   for (vnode = head(package->scripts) ; vnode ; vnode = next(vnode))
+   {
+      text = ((script_t*) get_value(vnode))->text;
+      add_to_tail(the_scripts, (void*) text);
+   }   
 }
 
 void use_group(group_t* group)
@@ -311,6 +331,20 @@ void print_env(void)
    }
 }
 
+void print_scripts(void)
+{
+   list_node* node;
+   char* text;
+
+   DEBUG(stderr, "dumping scripts...\n");
+
+   for (node = head(the_scripts) ; node ; node = next(node))
+   {
+      text = (char*) get_value(node);
+      printf("%s ;\n", text);
+   }
+}
+
 void print_path(char* varname, linked_list* pathlist)
 {
    list_node* node;
@@ -330,14 +364,6 @@ void print_path(char* varname, linked_list* pathlist)
    {
       dirname = get_value(node);
       printf(next(node) ? "%s:" : "%s", dirname);
-/*
-      dir = opendir(dirname);
-      if (!dir && !silent)
-         fprintf(stderr,
-                 "warning: unavailable directory `%s' in variable `%s'.\n",
-                 dirname, varname);
-      dir && closedir(dir);
-*/
    }
 }
 
@@ -393,11 +419,11 @@ linked_list* make_pathlist(char* path_string)
    {
       if ((path_string[i] == ':') || (path_string[i] == '\0'))
       {
-	 path = (char*) malloc((i - start) + 1);
-	 strncpy(path, path_string + start, i - start);
-	 path[i - start] = '\0';
-	 add_to_tail(list, path);
-	 start = i + 1;
+         path = (char*) malloc((i - start) + 1);
+         strncpy(path, path_string + start, i - start);
+         path[i - start] = '\0';
+         add_to_tail(list, path);
+         start = i + 1;
       }
 
       i++;
@@ -424,17 +450,41 @@ variable_t* update_var(variable_t* evar, variable_t* vvar)
          switch (evar->type)
          {
             case VAR_LIT_SET:
-	       evar->pathlist = merge_paths(make_pathlist(evar->literal),
+               evar->pathlist = merge_paths(make_pathlist(evar->literal),
                                             vvar->pathlist);
                break;
 
             case VAR_PATH_SET:
             case VAR_PATH_ADD:
-	       evar->pathlist = merge_paths(evar->pathlist, vvar->pathlist);
-	       break;
+               evar->pathlist = merge_paths(evar->pathlist, vvar->pathlist);
+               break;
 
-	    default:
-	       break;
+            default:
+               break;
+         }
+         evar->type = VAR_PATH_ADD;
+         break;
+         
+      case VAR_PATH_TESTSET:
+         evar->pathlist = test_paths(vvar->pathlist);
+         evar->type = VAR_PATH_TESTSET;
+         break;
+
+      case VAR_PATH_TESTADD:
+         switch (evar->type)
+         {
+            case VAR_LIT_SET:
+               evar->pathlist = merge_paths(make_pathlist(evar->literal),
+                                            test_paths(vvar->pathlist));
+               break;
+
+            case VAR_PATH_SET:
+            case VAR_PATH_ADD:
+               evar->pathlist = merge_paths(evar->pathlist, test_paths(vvar->pathlist));
+               break;
+               
+            default:
+               break;
          }
          evar->type = VAR_PATH_ADD;
          break;
@@ -466,6 +516,28 @@ linked_list* merge_paths(linked_list* elist, linked_list* vlist)
       add_to_head(elist, get_value(vnode));
    }
 
+   return(elist);
+}
+
+linked_list* test_paths(linked_list* vlist)
+{
+   linked_list* elist = new_list();
+   list_node* vnode;
+   char* vpath;
+   FILE* test;
+   
+   for (vnode = list_tail(vlist) ; vnode ; vnode = previous(vnode))
+   {
+      vpath = (char*) get_value(vnode);
+      
+      test = fopen(vpath, "r");
+      if ( test )
+      {
+         add_to_head(elist, vpath);
+         fclose(test);
+      }
+   }
+   
    return(elist);
 }
 
@@ -505,4 +577,3 @@ void list_groups()
       fprintf(stderr, "\n");
    }
 } 
-
