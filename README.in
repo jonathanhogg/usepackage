@@ -1,0 +1,36 @@
+changequote(``,'')
+usepackage
+==========
+by Jonathan AH Hogg
+
+usepackage is an environment management program. It is based on the principle
+of "packages" that are "used". When a package is used, the information
+necessary to use it is drawn into the environment of the shell.
+
+
+Using usepackage:
+-----------------
+
+Add one of the following lines to your rc file.
+
+ * for csh derivatives:
+
+   alias use 'eval `INSTALL_DIR/bin/usepackage -c \!*`'
+
+ * for bourne shell derivatives:
+
+   use () { eval `INSTALL_DIR/bin/usepackage -b $*` }
+
+Then invoke to add packages to your environment by:
+
+   use <package1> [<package2>...]
+
+
+Customising packages:
+---------------------
+
+The file 'INSTALL_DIR/lib/packages' contains the information about
+each package. This file contains comments explaining its ``format''. Custom
+packages can be added by creating the file '.packages' in your home
+directory with the same ``format'' as the main packages file.
+

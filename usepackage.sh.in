@@ -1,0 +1,5 @@
+#!/bin/sh
+changequote(``,'')
+PATH=/bin:/usr/bin:/usr/local/bin:/usr/ucb:/ucb
+exec INSTALL_DIR/bin/`arch`/usepackage $*
+
