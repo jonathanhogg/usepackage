@@ -29,13 +29,12 @@
 
 # Installation root:
 
-ifndef prefix
-prefix = /usr/local/contrib
-endif
+prefix = @prefix@
+exec_prefix = @exec_prefix@
 
-# Install group:
-
-GROUP = contrib
+BINDIR = ${exec_prefix}/bin
+LIBDIR = ${exec_prefix}/lib
+MANDIR = @mandir@
 
 # List of package spec files to install:
 
@@ -48,28 +47,28 @@ MASTER_PACKAGE_FILE = packages.master
 
 # Path for finding package specs:
 
-DEFAULT_PACKAGE_PATH = $(prefix)/lib/usepackage:~:.
+DEFAULT_PACKAGE_PATH = ${prefix}/lib/usepackage:~:.
 
 
 #--- usual stuff about not editing below this line unless you're sure ---#
 
 
-CC = gcc
-CCOPTS = -O2 -DDEFAULT_PACKAGE_PATH=\"$(DEFAULT_PACKAGE_PATH)\" \
+CC = @CC@
+LINKCC = @CC@
+CFLAGS = @CFLAGS@
+LDFLAGS = @LDFLAGS@
+DEFINES = -DDEFAULT_PACKAGE_PATH=\"$(DEFAULT_PACKAGE_PATH)\" \
 	-DMASTER_PACKAGE_FILE=\"$(MASTER_PACKAGE_FILE)\"
-LINK = gcc
-
-M4 = m4
-STRIP = strip
-BISON = bison -d
-FLEX = flex -Cf -i
+M4 = @M4@
+LEX = @LEX@
+YACC = @YACC@ -d
 MV = mv
 RM = rm -f
 
-INSTALL_EXEC = install -m 771 -g $(GROUP)
-INSTALL_SCRIPT = install -m 775 -g $(GROUP)
-INSTALL_FILE = install -m 664 -g $(GROUP)
-INSTALL_DIR = install -m 775 -d -g $(GROUP)
+INSTALL = @INSTALL@
+INSTALL_EXEC = ${INSTALL} -m 555
+INSTALL_FILE = ${INSTALL} -m 444
+INSTALL_DIR = ${INSTALL} -m 755 -d
 
 
 #--- and below this line only if you're *really* sure what you're doing ---#
@@ -80,42 +79,44 @@ all: README usepackage use.bsh use.csh use.ksh use.1
 install: install-exec install-lib install-man
 
 install-exec: usepackage
-	$(STRIP) usepackage
-	$(INSTALL_DIR) $(prefix)/bin
-	$(INSTALL_EXEC) usepackage $(prefix)/bin/usepackage
+	$(INSTALL_DIR) ${BINDIR}
+	$(INSTALL_EXEC) usepackage ${BINDIR}/usepackage
 
 install-lib: README use.bsh use.csh use.ksh
-	$(INSTALL_DIR) $(prefix)/lib/usepackage
-	$(INSTALL_FILE) README $(prefix)/lib/usepackage/README
-	$(INSTALL_SCRIPT) use.bsh $(prefix)/lib/usepackage/use.bsh
-	$(INSTALL_SCRIPT) use.csh $(prefix)/lib/usepackage/use.csh
-	$(INSTALL_SCRIPT) use.ksh $(prefix)/lib/usepackage/use.ksh
+	$(INSTALL_DIR) ${LIBDIR}/usepackage
+	$(INSTALL_FILE) README ${LIBDIR}/usepackage/README
+	$(INSTALL_EXEC) use.bsh ${LIBDIR}/usepackage/use.bsh
+	$(INSTALL_EXEC) use.csh ${LIBDIR}/usepackage/use.csh
+	$(INSTALL_EXEC) use.ksh ${LIBDIR}/usepackage/use.ksh
 	for package in $(PACKAGE_FILES) ;\
 	do \
-		$(INSTALL_FILE) $$package $(prefix)/lib/usepackage/$$package ;\
+	    $(INSTALL_FILE) $$package ${LIBDIR}/usepackage/$$package ;\
 	done
 
 install-man: use.1
-	$(MKDIR_P) $(DEST)/man/man1
-	$(INSTALL_FILE) use.1 $(DEST)/man/man1
+	$(INSTALL_DIR) ${MANDIR}/man1
+	$(INSTALL_FILE) use.1 ${MANDIR}/man1
 
 OBJECTS = usepackage.o grammar.o scanner.o linked_list.o utils.o match.o
 
 usepackage: $(OBJECTS)
-	$(LINK) $(LDFLAGS) -o usepackage $(OBJECTS)
+	$(LINKCC) $(LDFLAGS) -o usepackage $(OBJECTS)
 
 grammar.c grammar.h: grammar.y
-	$(BISON) grammar.y
-	$(MV) grammar.tab.c grammar.c
-	$(MV) grammar.tab.h grammar.h
+	$(YACC) grammar.y
+	$(MV) y.tab.c grammar.c
+	$(MV) y.tab.h grammar.h
 
 scanner.c: scanner.l
-	$(FLEX) scanner.l
+	$(LEX) scanner.l
 	$(MV) lex.yy.c scanner.c
 
 clean:
-	$(RM)	README usepackage use.bsh use.csh use.ksh use.1 \
+	$(RM) README usepackage use.bsh use.csh use.ksh use.1 \
 		$(OBJECTS) scanner.c grammar.c grammar.h
+
+distclean: clean
+	$(RM) Makefile config.h config.cache config.log config.status
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(DEFINES) -c $*.c
