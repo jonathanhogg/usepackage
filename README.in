@@ -42,6 +42,37 @@ example:
    This is TeX, Version 3.1415 (C version 6.1)
    ...
 
+If the requested package is not available for your platform then an error
+message will be given.
+
+
+Available packages:
+-------------------
+
+As of going to press, the available packages are:
+
+	standard	- things everyone should have in their path
+	GNU		- ditto ;-)
+	X11		- X
+	X11-alt		- X for people who like that flaky 3D look
+	OpenWin		- Sun OpenWindows (only on SunOS/Solaris)
+	TeX		- TeX and LaTeX
+	MH		- scary mail handling system
+	Alsys		- Alsys Ada'83 compiler (only hawaii, albatross and
+			  walrus)
+
+	Magic		- VLSI layout tool (only on sparcs)
+	MEBS		- VHDL synthesis tool (only on sparcs)
+	VSystem		- VHDL simulator (only on sparcs)
+	Alliance	- VHDL simulator and layout tool (only on sparcs)
+
+	FP		- Haskell and friends
+	HOL		- HOL22 theorem prover (only on sparcs)
+	Lego		- Lego (only on sparcs)
+
+Please bear with me, many of these packages are moving targets. If there is
+something you want that is not here then read the next section.
+
 
 Customising packages:
 ---------------------
@@ -53,4 +84,5 @@ directory with the same [[format]] as the main packages file.
 
 If you need to add a package which you feel should be available more widely,
 then please email me and i'll include it into the main packages file.
+
 
