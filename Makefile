@@ -25,7 +25,7 @@ CC = gcc -O2 -DDEFAULT_PACKAGE_PATH=\"$(DEFAULT_PACKAGE_PATH)\" \
 LINK = gcc
 
 
-all: README usepackage use.bsh use.csh use.ksh
+all: README usepackage use.bsh use.csh use.ksh use.man
 
 install: install-exec install-packages install-man
 
