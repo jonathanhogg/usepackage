@@ -311,9 +311,9 @@ linked_list* make_pathlist(char* path_string)
             path = (char*) malloc((i - start) + 1);
             strncpy(path, path_string + start, i - start);
             path[i - start] = '\0';
+	    add_to_tail(list, path);
          }
-         add_to_tail(list, path);
-         start = i + 1;
+	 start = i + 1;
       }
 
       i++;
