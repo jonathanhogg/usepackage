@@ -25,6 +25,6 @@
 
 /* version.h */
 
-#define VERSION "v1-5"
+#define VERSION "v1-6"
 #define COPYRIGHT "(c) 1995-2001 Jonathan Hogg"
 
