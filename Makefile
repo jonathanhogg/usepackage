@@ -20,15 +20,19 @@ LINK = gcc
 
 all: README usepackage use.bsh use.csh use.ksh use.zsh
 
-install: all
+install: install-exec install-packages
+
+install-exec: usepackage
+	$(STRIP) usepackage
+	$(INSTALL_EXEC) usepackage $(DEST)/bin/usepackage
+
+install-lib: README use.bsh use.csh use.ksh use.zsh
 	$(INSTALL_DIR) $(DEST)/lib/usepackage
 	$(INSTALL_FILE) README $(DEST)/lib/usepackage/README
 	$(INSTALL_SCRIPT) use.bsh $(DEST)/lib/usepackage/use.bsh
 	$(INSTALL_SCRIPT) use.csh $(DEST)/lib/usepackage/use.csh
 	$(INSTALL_SCRIPT) use.ksh $(DEST)/lib/usepackage/use.ksh
 	$(INSTALL_SCRIPT) use.zsh $(DEST)/lib/usepackage/use.zsh
-	$(STRIP) usepackage
-	$(INSTALL_EXEC) usepackage $(DEST)/bin/usepackage
 	for package in packages.* ;\
 	do \
 		$(INSTALL_FILE) $$package $(DEST)/lib/usepackage/$$package ;\
@@ -50,7 +54,7 @@ scanner.c: scanner.l
 
 clean:
 	$(RM)	README usepackage use.bsh use.csh use.ksh use.zsh \
-		*.o scanner.c grammar.c grammar.h
+		$(OBJECTS) scanner.c grammar.c grammar.h
 
 %.o: %.c
 	$(CC) -c $*.c
