@@ -38,6 +38,10 @@ Alliance sun4* * * * :	PATH += /local/vlsi/software/alliance/archi/sparc/bin,
 			MBK_WORK_LIB = .,
 			MBK_IN_LO = "vst" ;
 
+VELAB sun4* SunOS * * <= VLSI :
+			PATH += /local/vlsi/software/velab,
+			VELAB_ROOT = /local/vlsi/software/velab ;
+
 XACT6000 sun4* * * * :	PATH += /local/vlsi/software/xact6000/bin,
 			XACT6000 = /local/vlsi/software/xact6000 ;
 
