@@ -60,6 +60,7 @@ none * * * * :		PATH = "",
 
 ### standard things that everyone should have: ###
 
+standard i86pc SunOS * * :	PATH += /usr/ccs/bin ;
 standard sun4* SunOS 4.* * :	PATH += /usr/lang ;
 standard sun4* * * * :	PATH += /local/sun4/bin,
 			MANPATH += /local/man ;
