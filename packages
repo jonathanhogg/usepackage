@@ -62,14 +62,14 @@ none * * * * :		PATH = "",
 ### standard things that everyone should have: ###
 
 standard * SunOS 5.* * :	PATH += /usr/ccs/bin ;
-standard sun4* SunOS 4.* * :	PATH += /usr/lang ;
-standard sun4* * * * :	PATH += /local/sun4/bin,
-			MANPATH += /local/man ;
-standard alpha * * * :	PATH += /local/alpha/bin,
-			MANPATH += /local/man ;
-standard * * * * :	PATH += /usr/ucb:/usr/bin:/usr/local/bin:
-				/usr/hosts:/usr/etc,
-			MANPATH += /usr/man:/usr/local/man ;
+standard * SunOS 4.* * :	PATH += /usr/lang ;
+standard sun4* * * * :		PATH += /local/sun4/bin:/usr/etc,
+				MANPATH += /usr/local/man:/local/man ;
+standard i86pc SunOS 5.* * :	PATH += /local/i386-unknown-solaris2/bin,
+				MANPATH += /local/i386-unknown-solaris2/man ;
+standard * * * * :		PATH += /usr/ucb:/usr/bin:/usr/local/bin:
+					/usr/hosts,
+				MANPATH += /usr/man ;
 
 
 ### GNU stuff: ###
@@ -176,7 +176,10 @@ CLAyTools * * * copinsay : PATH += /local/vlsi/claytools/1.11/bin ;
 
 ### MH mail system: ###
 
-MH sun4* * * * :	PATH += /local/sun4/mh/bin ;
+MH sun4* * * * :	PATH += /local/sun4/mh/bin,
+			MANPATH += /local/sun4/mh/man ;
+MH alpha * * * :	PATH += /usr/bin/mh,
+			MANPATH += /usr/man ;
 
 
 ### HOL: ###
