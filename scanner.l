@@ -38,7 +38,7 @@ path	(\.|\.?\/[^ \t\n:,;]*)
 		  return(PREFIX); }
 [ \t]+		/* ignore */
 \n		line_number++;
-.		fprintf(stderr, "parser: ignoring character `%s'\n", yytext);
+.		fprintf(stderr, "usepackage: ignoring character `%s'\n", yytext);
 
 %%
 

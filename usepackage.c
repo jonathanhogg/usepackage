@@ -67,14 +67,14 @@ void main(int argc, char *argv[])
 	       csh_user = 0;
 	       break;
 	    default:
-	       fprintf(stderr, "%s: unrecognised flag '%c'\n", argv[0], *f);
+	       fprintf(stderr, "usepackage: unrecognised flag '%c'\n", *f);
 	       exit(1);
 	 }
    }
 
    if (i == argc)
    {
-      fprintf(stderr, "usage: %s [-vcb] <package> [<package>...]\n\n", argv[0]);
+      fprintf(stderr, "usage: usepackage [-vcb] <package> [<package>...]\n\n");
       fprintf(stderr, "       -v : verbose\n");
       fprintf(stderr, "       -c : force csh style output\n");
       fprintf(stderr, "       -b : force sh style output\n");
@@ -94,7 +94,7 @@ void main(int argc, char *argv[])
    the_packages = get_packages();
    if (!the_packages)
    {
-      fprintf(stderr, "%s: couldn't load package information.\n", argv[0]);
+      fprintf(stderr, "usepackage: couldn't load package information.\n");
       exit(2);
    }
 
@@ -103,8 +103,9 @@ void main(int argc, char *argv[])
       DEBUG("# using package %s...\n", argv[i]);
       
       if (!use_package(argv[i]))
-         fprintf(stderr, "%s: no match for package `%s' on this host.\n",
-                 argv[0], argv[i]);
+         fprintf(stderr,
+                 "usepackage: no match for package `%s' on this host.\n",
+                 argv[i]);
    }
 
    print_env();

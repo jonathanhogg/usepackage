@@ -112,7 +112,7 @@ literal: LITERAL
 
 yyerror()
 {
-   fprintf(stderr, "parser: parse error on line %d, '%s'\n", line_number,
+   fprintf(stderr, "usepackage: parse error on line %d, '%s'\n", line_number,
            yytext);
    yyerrors++;
 }
