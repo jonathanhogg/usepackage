@@ -11,15 +11,21 @@
 
 extern char litbuf[1024];
 extern char *yytext;
-extern int line_number;
 extern FILE *yyin;
 extern char* the_home;
+extern char* main_package_filename;
 
 
 linked_list* loaded_packages;
 linked_list* loaded_groups;
 int yyerrors;
-int local_file;
+
+int stack_pointer;
+int line_number[10];
+char file_name[10][256];
+FILE* file[10];
+
+int include(char* filename);
 
 %}
 
@@ -123,7 +129,8 @@ literal: LITERAL
 
 yyerror()
 {
-   fprintf(stderr, "usepackage: parse error on line %d, '%s'\n", line_number,
+   fprintf(stderr, "usepackage: parse error on line %d of %s, input '%s'\n",
+           line_number[stack_pointer], file_name[stack_pointer],
            yytext);
    yyerrors++;
 }
@@ -135,15 +142,12 @@ int get_packages(linked_list** packages, linked_list** groups)
 #endif
 
    yyerrors = 0;
-   local_file = 0;
-   line_number = 1;
 
-   yyin = fopen(MAIN_PACKAGE_FILE, "r");
-   if (!yyin)
+   stack_pointer = -1;
+   if (include(main_package_filename))
       return(1);
 
    yyparse();
-   fclose(yyin);
 
    if (yyerrors)
       return(2);
@@ -155,21 +159,37 @@ int get_packages(linked_list** packages, linked_list** groups)
 
 int yywrap()
 {
-   char buf[256];
+   close(file[stack_pointer--]);
 
-   if (!local_file)
+   if (stack_pointer != -1)
    {
-      sprintf(buf, "%s/%s", the_home, USERS_PACKAGE_FILE);
-      yyin = fopen(buf, "r");
-      if (!yyin)
-         return(1);
-
-      DEBUG("# reading personal packages file\n");
-      local_file = 1;
-      line_number = 1;
+      yyin = file[stack_pointer];
       return(0);
    }
+
    return(1);
+}
+
+int include(char* filename)
+{
+   stack_pointer++;
+   line_number[stack_pointer] = 1;
+
+   if (filename[0] == '~')
+      sprintf(file_name[stack_pointer], "%s%s", the_home, filename+1);
+   else
+      strcpy(file_name[stack_pointer], filename);
+
+   if (!(file[stack_pointer] = fopen(file_name[stack_pointer], "r")))
+   {
+      DEBUG("# cannot open file `%s'\n", file_name[stack_pointer]);
+      stack_pointer--;
+      return(1);
+   }
+
+   DEBUG("# reading from `%s'...\n", file_name[stack_pointer]);
+   yyin = file[stack_pointer];
+   return(0);
 }
 
 

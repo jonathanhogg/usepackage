@@ -10,8 +10,7 @@
 
 /*** macros: ***/
 
-#define MAIN_PACKAGE_FILE	"/users/grad/jonathan/pub/lib/packages"
-#define USERS_PACKAGE_FILE	".packages"
+#define MAIN_PACKAGE_FILE	"/usr/local/lib/packages/main"
 
 #define VAR_LIT_SET 0
 #define VAR_PATH_SET 1

@@ -40,6 +40,8 @@ linked_list* the_packages;
 linked_list* the_groups;
 linked_list* the_environment;
 char* the_home;
+char* main_package_filename = MAIN_PACKAGE_FILE;
+
 
 /*** main program: ***/
 
@@ -68,6 +70,9 @@ void main(int argc, char *argv[])
 	    case 'b':
 	       csh_user = 0;
 	       break;
+	    case 'f':
+	       main_package_filename = argv[++i];
+	       break;
 	    default:
 	       fprintf(stderr, "usepackage: unrecognised flag '%c'\n", *f);
 	       exit(1);
@@ -76,11 +81,12 @@ void main(int argc, char *argv[])
 
    if (i == argc)
    {
-      fprintf(stderr, "usage: usepackage [-vscb] <package> [<package>...]\n\n");
+      fprintf(stderr, "usage: usepackage [-vscb] [-f <file>] <package> [<package>...]\n\n");
       fprintf(stderr, "       -v : verbose\n");
       fprintf(stderr, "       -s : silence match warnings\n");
       fprintf(stderr, "       -c : force csh style output\n");
       fprintf(stderr, "       -b : force sh style output\n");
+      fprintf(stderr, "       -f : use <file> as main packages file\n");
       exit(1);
    }
 
