@@ -63,7 +63,7 @@ reads package environment information from the configuration file as follows:
 .SS LOAD ORDER
 When
 .I Usepackage
-starts up, it loads an initial configutation file, the name of this file may 
+starts up, it loads an initial configuration file, the name of this file may 
 be given on the command line (see
 .IR OPTIONS ),
 otherwise it defaults to the builtin name "usepackage.conf" (see
@@ -114,6 +114,11 @@ matches "foo", "foobar" etc.
 .TP
 {foo,bar}
 matches "foo" or "bar".
+.PP
+The
+.I requires
+list specifies the names of other packages which must be sourced into the
+environment before the settings for this package are processed.
 .PP
 A
 .I setting
@@ -170,11 +175,6 @@ to variables. This is done with the test form of the above operators:
 .PP
 These operate as per the definitions above, but will ignore path components
 that don't exist.
-.PP
-The
-.I requires
-list specifies the names of other packages which must be sourced into the
-environment before the following variables when this line is matched.
 .SS GROUPS
 In addition to the package definitions in a packages file, there may also be
 group definitions. These have the following syntax:
@@ -319,7 +319,7 @@ the tilde (~) user-directory.
 If present in the environment, the last path component of this is used for
 shell matching (see
 .IR SYNTAX )
-and detecting style environment output should be used (see
+and detecting the style of environment output that should be used (see
 .IR OPTIONS ).
 .SH COPYRIGHT
 .nf

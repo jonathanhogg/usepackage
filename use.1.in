@@ -86,8 +86,8 @@ the tilde (~) user-directory.
 If present in the environment, the last path component of this is used for
 shell matching (see
 .IR SYNTAX )
-and detecting the style of environment output that should be used (see
-.IR OPTIONS ).
+and detecting the style of environment output that should be used, see
+.IR usepackage(1) .
 .SH COPYRIGHT
 .nf
 Usepackage Environment Manager
