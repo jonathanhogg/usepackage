@@ -304,30 +304,40 @@ void print_env(void)
    for (node = head(the_environment) ; node ; node = next(node))
    {
       var = (variable_t*) get_value(node);
-      if (csh_user)
-         printf("setenv %s ", var->name);
-      else
-         printf("%s=", var->name);
-
       switch (var->type)
       {
          case VAR_LIT_SET:
-            printf("\"%s\"", var->literal);
+            if (var->literal)
+            {
+	       if (csh_user)
+		  printf("setenv %s \"%s\";\n", var->name, var->literal);
+	       else
+		  printf("%s=\"%s\";\nexport %s;\n", var->name, var->literal, var->name);
+            }
             break;
 
          case VAR_PATH_ADD:
          case VAR_PATH_SET:
-            print_path(var->name, var->pathlist);
+            if (var->pathlist)
+            {
+	       if (csh_user)
+	       {
+		  printf("setenv %s ", var->name);
+		  print_path(var->name, var->pathlist);
+		  printf(";\n");
+	       }
+	       else
+	       {
+		  printf("%s=", var->name);
+		  print_path(var->name, var->pathlist);
+		  printf(";\nexport %s;\n", var->name);
+	       }
+            }
             break;
 
          default:
             break;
       }
-
-      if (!csh_user)
-         printf(" ;\nexport %s ;\n", var->name);
-      else
-         printf(" ;\n");
    }
 }
 
@@ -434,6 +444,8 @@ linked_list* make_pathlist(char* path_string)
 
 variable_t* update_var(variable_t* evar, variable_t* vvar)
 {
+   linked_list* testlist;
+
    switch (vvar->type)
    {
       case VAR_LIT_SET:
@@ -466,8 +478,16 @@ variable_t* update_var(variable_t* evar, variable_t* vvar)
          break;
          
       case VAR_PATH_TESTSET:
-         evar->pathlist = test_paths(vvar->pathlist);
-         evar->type = VAR_PATH_TESTSET;
+         testlist = test_paths(vvar->pathlist);
+         if (head(testlist))
+         {
+            evar->pathlist = testlist;
+         }
+         else
+         {
+            evar->pathlist = NULL;
+         }
+         evar->type = VAR_PATH_SET;
          break;
 
       case VAR_PATH_TESTADD:
@@ -502,18 +522,25 @@ linked_list* merge_paths(linked_list* elist, linked_list* vlist)
    list_node* vnode;
    char* vpath;
 
-   for (vnode = list_tail(vlist) ; vnode ; vnode = previous(vnode))
+   if (elist && vlist)
    {
-      vpath = (char*) get_value(vnode);
+      for (vnode = list_tail(vlist) ; vnode ; vnode = previous(vnode))
+      {
+	 vpath = (char*) get_value(vnode);
 
-      for (enode = head(elist) ; enode ; enode = next(enode))
-         if (!strcmp(vpath, (char*) get_value(enode)))
-         {
-            remove_node(elist, enode, 0);
-            break;
-         }
+	 for (enode = head(elist) ; enode ; enode = next(enode))
+	    if (!strcmp(vpath, (char*) get_value(enode)))
+	    {
+	       remove_node(elist, enode, 0);
+	       break;
+	    }
 
-      add_to_head(elist, get_value(vnode));
+	 add_to_head(elist, get_value(vnode));
+      }
+   }
+   else if (vlist)
+   {
+      return(vlist);
    }
 
    return(elist);
