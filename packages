@@ -179,9 +179,9 @@ MEBS sun4* * * * :	PATH += /local/vlsi/software/mebs/MEBS1.2/bin,
 			MEBS_ROOT = /local/vlsi/software/mebs/MEBS1.2 ;
 
 
-### V-System VHDL Simulator (albatross only): ###
+### V-System VHDL Simulator (albatross and hawaii only): ###
 
-VSystem * * * albatross :
+VSystem * * * {hawaii,albatross} :
 		PATH += /local/vlsi/software/V-System/modeltech/sun4 ;
 
 
