@@ -59,21 +59,21 @@ install: install-exec install-lib install-man
 
 install-exec: usepackage
 	$(STRIP) usepackage
-	$(INSTALL_EXEC) usepackage $(DEST)/bin/usepackage
+	$(INSTALL_EXEC) usepackage $(prefix)/bin/usepackage
 
 install-lib: README use.bsh use.csh use.ksh
-	$(INSTALL_DIR) $(DEST)/lib/usepackage
-	$(INSTALL_FILE) README $(DEST)/lib/usepackage/README
-	$(INSTALL_SCRIPT) use.bsh $(DEST)/lib/usepackage/use.bsh
-	$(INSTALL_SCRIPT) use.csh $(DEST)/lib/usepackage/use.csh
-	$(INSTALL_SCRIPT) use.ksh $(DEST)/lib/usepackage/use.ksh
+	$(INSTALL_DIR) $(prefix)/lib/usepackage
+	$(INSTALL_FILE) README $(prefix)/lib/usepackage/README
+	$(INSTALL_SCRIPT) use.bsh $(prefix)/lib/usepackage/use.bsh
+	$(INSTALL_SCRIPT) use.csh $(prefix)/lib/usepackage/use.csh
+	$(INSTALL_SCRIPT) use.ksh $(prefix)/lib/usepackage/use.ksh
 	for package in $(PACKAGE_FILES) ;\
 	do \
-		$(INSTALL_FILE) $$package $(DEST)/lib/usepackage/$$package ;\
+		$(INSTALL_FILE) $$package $(prefix)/lib/usepackage/$$package ;\
 	done
 
 install-man: use.man
-	$(INSTALL_FILE) use.man $(DEST)/man/man1/use.1
+	$(INSTALL_FILE) use.man $(prefix)/man/man1/use.1
 
 OBJECTS = usepackage.o grammar.o scanner.o linked_list.o utils.o match.o
 
@@ -97,7 +97,7 @@ clean:
 	$(CC) $(CCOPTS) -c $*.c
 
 %: %.in
-	$(M4) -DINSTALL_DIR=$(DEST) $*.in > $*
+	$(M4) -DINSTALL_DIR=$(prefix) $*.in > $*
 
 
 linked_list.o: linked_list.h
