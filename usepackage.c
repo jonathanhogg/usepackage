@@ -291,6 +291,15 @@ void print_path(char* varname, linked_list* pathlist)
    char* dirname;
    DIR* dir;
 
+   /* special case for the empty path: */
+   node = head(pathlist);
+   dirname = get_value(node);
+   if ((strlen(dirname) == 0) && !next(node))
+   {
+      printf("\"\"");
+      return;
+   }
+
    for (node = head(pathlist) ; node ; node = next(node))
    {
       dirname = get_value(node);
@@ -351,20 +360,17 @@ linked_list* make_pathlist(char* path_string)
    i = 0;
    end = strlen(path_string);
 
-   if (!end)
-      return(list);
+   /* if (!end)
+      return(list); */
 
    while (i <= end)
    {
       if ((path_string[i] == ':') || (path_string[i] == '\0'))
       {
-         if (i > start)
-         {
-            path = (char*) malloc((i - start) + 1);
-            strncpy(path, path_string + start, i - start);
-            path[i - start] = '\0';
-	    add_to_tail(list, path);
-         }
+	 path = (char*) malloc((i - start) + 1);
+	 strncpy(path, path_string + start, i - start);
+	 path[i - start] = '\0';
+	 add_to_tail(list, path);
 	 start = i + 1;
       }
 

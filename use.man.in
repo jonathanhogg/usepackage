@@ -134,14 +134,18 @@ variable definition may be one of three forms:
           var-name = "string"
           var-name = path-list
           var-name += path-list
+          var-name += "string"
 .fi
 .PP
 The first sets the given variable to a literal string value, the
-second sets the given variable to a path list and the third prepends the 
-current value of a variable with the given path list. Path lists are colon (:) 
-separated lists of directories and may contain shell-style tilde (~),
-user-relative, directories. When pre-pending paths to a variable, duplicate 
-paths are removed from the original value first.
+second sets the given variable to a path list, the third prepends the 
+current value of a variable with the given path list, and the fourth 
+interprets the literal string as a path list and prepends it to the current 
+value of the variable. Path lists are colon (:) separated lists of 
+directories and may contain shell-style tilde (~), user-relative, directories 
+which will be expanded automatically (except when the path list is given as a 
+literal string). When pre-pending paths to a variable, duplicate paths are 
+removed from the original value first.
 .PP
 The
 .I requires

@@ -102,6 +102,10 @@ variable: name EQUALS literal
           { $$ = new(variable_t);
             $$->name = $1; $$->type = VAR_PATH_SET;
             $$->literal = NULL; $$->pathlist = $3; } |
+	  name PLUSEQUALS literal
+          { $$ = new(variable_t); 
+            $$->name = $1; $$->type = VAR_PATH_ADD;
+            $$->literal = NULL; $$->pathlist = make_pathlist($3); } |
 	  name PLUSEQUALS pathlist
           { $$ = new(variable_t); 
             $$->name = $1; $$->type = VAR_PATH_ADD;
