@@ -75,7 +75,7 @@ or otherwise defaults to the builtin name "packages.master" (see
 This file is located by searching along a path which defaults to:
 .PP
 .nf
-     INSTALL_DIR/lib/usepackage:~:.
+     DEFAULT_PACKAGE_PATH
 .fi
 .PP
 This path may be overridden with the PACKAGES_PATH environment variable

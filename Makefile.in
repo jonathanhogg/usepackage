@@ -22,13 +22,6 @@
 ##############################################################################
 
 
-### Makefile ###
-
-#--- edit these variables to customise (or supply them as make args) ---#
-
-
-# Installation root:
-
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
@@ -36,29 +29,21 @@ BINDIR = ${exec_prefix}/bin
 LIBDIR = ${exec_prefix}/lib
 MANDIR = @mandir@
 
-# List of package spec files to install:
-
 PACKAGE_FILES = packages.master packages.vlsi packages.fp packages.rapids \
 		packages.contrib packages.our
 
-# Which package spec file to load first:
-
 MASTER_PACKAGE_FILE = packages.master
-
-# Path for finding package specs:
-
 DEFAULT_PACKAGE_PATH = ${prefix}/lib/usepackage:~:.
-
-
-#--- usual stuff about not editing below this line unless you're sure ---#
-
 
 CC = @CC@
 LINKCC = @CC@
 CFLAGS = @CFLAGS@
 LDFLAGS = @LDFLAGS@
-DEFINES = -DDEFAULT_PACKAGE_PATH=\"$(DEFAULT_PACKAGE_PATH)\" \
-	-DMASTER_PACKAGE_FILE=\"$(MASTER_PACKAGE_FILE)\"
+DEFINES = -DDEFAULT_PACKAGE_PATH=\"${DEFAULT_PACKAGE_PATH}\" \
+	-DMASTER_PACKAGE_FILE=\"${MASTER_PACKAGE_FILE}\"
+M4_DEFINES = -DINSTALL_DIR="${prefix}" \
+	-DDEFAULT_PACKAGE_PATH="${DEFAULT_PACKAGE_PATH}" \
+	-DMASTER_PACKAGE_FILE="${MASTER_PACKAGE_FILE}"
 M4 = @M4@
 LEX = @LEX@
 YACC = @YACC@ -d
@@ -69,10 +54,6 @@ INSTALL = @INSTALL@
 INSTALL_EXEC = ${INSTALL} -m 555
 INSTALL_FILE = ${INSTALL} -m 444
 INSTALL_DIR = ${INSTALL} -m 755 -d
-
-
-#--- and below this line only if you're *really* sure what you're doing ---#
-
 
 all: README usepackage use.bsh use.csh use.ksh use.1
 
@@ -119,11 +100,10 @@ distclean: clean
 	$(RM) Makefile config.h config.cache config.log config.status
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(DEFINES) -c $*.c
+	$(CC) ${CFLAGS} ${DEFINES} -c $*.c
 
 %: %.in
-	$(M4) -DINSTALL_DIR=$(DEST) \
-	      -DMASTER_PACKAGE_FILE=$(MASTER_PACKAGE_FILE) $*.in > $*
+	$(M4) ${M4_DEFINES} $*.in > $*
 
 
 linked_list.o: linked_list.h
