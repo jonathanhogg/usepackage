@@ -77,9 +77,10 @@ void	*s;
 
 
 void
-remove_node(l, n)
+remove_node(l, n, k)
 linked_list	*l;
 list_node	*n;
+int		k;
 {
    if (n->previous)
       n->previous->next = n->next;
@@ -89,9 +90,29 @@ list_node	*n;
       n->next->previous = n->previous;
    else
       l->tail = n->previous;
-   free(n->value);
+   if (k) free(n->value);
    free(n);
 } /* remove_node */
+
+
+void
+free_list(l, k)
+linked_list	*l;
+int		k;
+{
+   list_node *node;
+   list_node *next_node;
+
+   node = l->head;
+   while (node)
+   {
+      if (k) free(node->value);
+      next_node = node->next;
+      free(node);
+      node = next_node;
+   }
+   free(l);
+} /* free_list */
 
 
 list_node *
@@ -103,11 +124,11 @@ linked_list	*l;
 
 
 list_node *
-tail(l)
+list_tail(l)
 linked_list	*l;
 {
    return(l->tail);
-} /* tail */
+} /* list_tail */
 
 
 list_node *
@@ -127,10 +148,18 @@ list_node	*n;
 
 
 void *
-value(n)
+get_value(n)
 list_node	*n;
 {
    return(n->value);
 } /* value */
 
+
+void
+set_value(n, s)
+list_node	*n;
+void		*s;
+{
+   n->value = s;
+} /* value */
 

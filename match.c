@@ -5,6 +5,7 @@
 
 #include "linked_list.h"
 #include "packages.h"
+#include <string.h>
 
 
 /*** macros: ***/
@@ -14,7 +15,8 @@
 
 /*** prototypes: ***/
 
-int text_matches(char* text, match_t* match);
+int text_matches(char* text, linked_list* matches);
+
 
 /*** globals: ***/
 
@@ -24,10 +26,14 @@ int text_matches(char* text, match_t* match);
 int package_matches(package_t* package,
                     char* name, char* arch, char* os, char* host)
 {
-   text_matches(name, package->name) || return(0);
-   text_matches(arch, package->arch) || return(0);
-   text_matches(os, package->os) || return(0);
-   text_matches(host, package->host) || return(0);
+   if (!text_matches(name, package->name))
+      return(0);
+   if (!text_matches(arch, package->arch))
+      return(0);
+   if (!text_matches(os, package->os))
+      return(0);
+   if (!text_matches(host, package->host))
+      return(0);
    return(1);
 }
 
@@ -38,7 +44,7 @@ int text_matches(char* text, linked_list* matches)
 
    for (node = head(matches) ; node ; node = next(node))
    {
-      match = (match_t*) value(node);
+      match = (match_t*) get_value(node);
 
       switch (match->type)
       {
@@ -46,11 +52,13 @@ int text_matches(char* text, linked_list* matches)
 	    return(1);
 
 	 case MATCH_PREFIX:
-	    strncmp(text, match->text, strlen(match->text)) || return(1);
+	    if (!strncmp(text, match->text, strlen(match->text)))
+               return(1);
 	    break;
 
 	 case MATCH_EXACT:
-	    strcmp(text, match->text) || return(1);
+	    if (!strcmp(text, match->text))
+               return(1);
 	    break;
       }
    }

@@ -4,18 +4,26 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <sys/utsname.h>
 #include "linked_list.h"
 #include "packages.h"
 
+
 #define new(x) ((x*)malloc(sizeof(x)))
+#define DEBUG if (debugging) printf
+
 
 extern char litbuf[1024];
 extern char *yytext;
 extern int line_number;
 extern FILE *yyin;
+extern char* the_home;
+extern int debugging;
+
 
 linked_list* packages;
 int yyerrors;
+int local_file;
 
 %}
 
@@ -111,10 +119,16 @@ yyerror()
 linked_list* get_packages()
 {
 #ifdef YYDEBUG
-   yydebug = 1;
+   yydebug = debugging;
 #endif
+
    yyerrors = 0;
-   yyin = fopen("packages", "r");
+   local_file = 0;
+
+   yyin = fopen(MAIN_PACKAGE_FILE, "r");
+   if (!yyin)
+      return(NULL);
+
    yyparse();
    fclose(yyin);
 
@@ -122,6 +136,24 @@ linked_list* get_packages()
       return(NULL);
 
    return(packages);
+}
+
+int yywrap()
+{
+   char buf[256];
+
+   if (!local_file)
+   {
+      sprintf(buf, "%s/%s", the_home, USERS_PACKAGE_FILE);
+      yyin = fopen(buf, "r");
+      if (!yyin)
+         return(1);
+
+      DEBUG("# reading personal packages file\n");
+      local_file = 1;
+      return(0);
+   }
+   return(1);
 }
 
 

@@ -1,6 +1,7 @@
 
 usepackage: usepackage.o linked_list.o grammar.o scanner.o match.o
-	gcc -o usepackage usepackage.o linked_list.o grammar.o scanner.o -lfl
+	gcc -o usepackage usepackage.o linked_list.o grammar.o scanner.o \
+	    match.o -lfl
 
 grammar.c grammar.h: grammar.y linked_list.h packages.h
 	bison -d grammar.y
@@ -12,7 +13,7 @@ scanner.c: scanner.l linked_list.h grammar.h packages.h
 	mv lex.yy.c scanner.c
 
 %.o: %.c
-	gcc -c $*.c
+	gcc -c -O2 $*.c
 
 clean:
 	rm -f *.o scanner.c grammar.c grammar.h usepackage

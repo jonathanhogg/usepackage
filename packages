@@ -9,9 +9,8 @@
 # <arch>, <os>, and <host> may use a restricted shell-style
 # pattern matching ('*' for anything, '<pre>*' for prefix, '{<a>,<b>,...}'
 # for a choice. <variables> are of the form <name>=<value> or <name>+=<value>.
-# commas and white space must be quoted if used in a <value> and continuation
-# over a line may be done by escaping the end of line (except within quotes
-# in which case new lines are simply ignored).
+# a <value> is either a path list (colon separated) or a literal string in
+# double quotes. new-lines are ignored in path lists and in literal strings.
 #
 # e.g.:
 #
@@ -20,21 +19,22 @@
 #	frib sun4* * * : PATH+=/usr/local/frib/bin/sun4 ;
 #	frib alpha * * : PATH+=/usr/local/frib/bin/alpha ;
 #
-# NOTE: the sun SPARCs identify themselves as 'sun4m' or 'sun4c' not 'sun4'
+# NOTE: the sun SPARCs identify themselves as 'sun4m' or 'sun4c' not 'sun4',
+#       so use 'sun4*' to match both.
 #
 # package matching is done sequentially through the file and _every_ record
-# that matches will be evaluated.
+# that matches will be added to the environment. variable additions (+=) are
+# made to the front of the path list.
 #
 
 
 ### standard things that everyone should have: ###
 
-standard * * * :	PATH += /usr/bin:/usr/local/bin,
-			MANPATH += /usr/man:/usr/local/man ;
-
-standard {sun4*,alpha} * * :		MANPATH += /local/man ;
-standard sun4* * * :			PATH += /local/sun4/bin ;
+standard sun4* * * :			PATH += /local/sun4/bin:/usr/lang ;
 standard alpha * * :			PATH += /local/alpha/bin ;
+
+standard * * * :	PATH += /usr/ucb:/usr/bin:/usr/local/bin:/usr/hosts,
+			MANPATH += /usr/man:/usr/local/man:/local/man ;
 
 
 ### GNU stuff: ###
@@ -46,13 +46,15 @@ gnu alpha * * :		PATH += /usr/local/gnu/bin/alpha ;
 
 ### assume X is everywhere: ###
 
-X * * * :	PATH += /usr/X11/bin:/usr/X11/local/bin,
+X * * * :	PATH += /usr/X11/bin:/usr/X11/local/bin:/usr/X11/local/bin/pbm,
+		MANPATH += /usr/X11/man:/usr/X11/local/man,
 		LD_LIBRARY_PATH += /usr/X11/lib ;
 
 
 ### OpenWindows only on SunOS machines: ###
 
 OpenWin * SunOS * :	PATH += /usr/openwin/bin,
+			MANPATH += /usr/openwin/man,
 			LD_LIBRARY_PATH += /usr/openwin/lib ;
 
 
@@ -66,8 +68,9 @@ Ruby {sun4*,alpha} * * :
 
 ### MEBS is sun4 only: ###
 
-MEBS sun4* * * :	PATH += /local/com/vlsi/mebs/MEBS/bin,
-			MEBS_ROOT = /local/com/vlsi/mebs/MEBS ;
+MEBS sun4* * * :	PATH += /local/vlsi/mebs/MEBS/bin,
+			MANPATH += /local/vlsi/mebs/MEBS/man,
+			MEBS_ROOT = /local/vlsi/mebs/MEBS ;
 
 
 ### Alsys Ada can only be used on hawaii, albatross, and walrus: ###
@@ -80,10 +83,11 @@ Alsys * * {hawaii,albatross,walrus} :
 ### Alliance is sun4 only: ###
 
 Alliance sun4* * * :
-		PATH += /local/com/vlsi/alliance/alliance-2.0/bin,
-		MBK_CATA_LIB = . :
-			/local/com/vlsi/alliance/alliance-2.0/cells/scr :
-			/local/com/vlsi/alliance/alliance-2.0/cells/ring/pad12,
+		PATH += /local/vlsi/alliance/bin,
+		MANPATH += /local/vlsi/alliance/man,
+		MBK_CATA_LIB = .:
+			/local/vlsi/alliance/cells/scr:
+			/local/vlsi/alliance/cells/ring/pad12,
 		VH_BEHSFX = "vbe",
 		VH_PATSFX = "pat",
 		MBK_WORK_LIB = .,
@@ -103,4 +107,17 @@ TeX {alpha,sun4*} * * :
 
 TeX alpha * * :	PATH += /usr/local/tex/bin/alpha ;
 TeX sun4* * * :	PATH += /usr/local/tex/bin/sun4 ;
+
+
+### Haskell: ###
+
+Haskell * * * : MANPATH += /local/fp/man ;
+Haskell alpha * * : PATH += /local/fp/bin.alpha ;
+Haskell sun4 * * : PATH += /local/fp/bin.alpha ;
+
+
+### CLAyTools only licensed for copinsay at present: ###
+
+CLAyTools * * copinsay : PATH += /local/vlsi/claytools/1.11/bin ;
+
 

@@ -5,6 +5,10 @@
 #include "linked_list.h"
 
 
+#define MAIN_PACKAGE_FILE	"/users/grad/jonathan/pub/lib/packages"
+#define USERS_PACKAGE_FILE	".packages"
+
+
 #define VAR_LIT_SET 0
 #define VAR_PATH_SET 1
 #define VAR_PATH_ADD 2
