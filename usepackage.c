@@ -36,8 +36,8 @@
 #include <sys/utsname.h>
 #include <dirent.h>
 #include "linked_list.h"
+#include "config.h"
 #include "package.h"
-#include "version.h"
 #include "utils.h"
 
 
@@ -113,7 +113,8 @@ int main(int argc, char *argv[])
 
    if (!list_packages && (i >= argc))
    {
-      fprintf(stderr, "usepackage %s, Copyright %s\n\n", VERSION, COPYRIGHT);
+      fprintf(stderr, "%s %s, %s\n", PACKAGE_NAME, PACKAGE_VERSION, COPYRIGHT);
+      fprintf(stderr, "Bug reports and comments to: %s\n\n", PACKAGE_BUGREPORT);
       fprintf(stderr, "usage: use [-vscb] [-f <file>] <package> [<package>...]\n");
       fprintf(stderr, "       use -l\n\n");
       fprintf(stderr, "       -v : verbose\n");
@@ -125,9 +126,9 @@ int main(int argc, char *argv[])
       exit(1);
    }
 
-   DEBUG(stderr, "usepackage\n");
-   DEBUG(stderr, "Version: %s\n", VERSION);
-   DEBUG(stderr, "Copyright %s\n", COPYRIGHT);
+   DEBUG(stderr, "%s\n", PACKAGE_NAME);
+   DEBUG(stderr, "Version: %s\n", PACKAGE_VERSION);
+   DEBUG(stderr, "%s\n", COPYRIGHT);
 
    uname(&the_host_info);
    DEBUG(stderr, "host: %s\n", the_host_info.nodename);

@@ -43,7 +43,7 @@ extern int include(char* filename);
 
 %x lit
 
-name	[-a-z0-9_\.]*
+name	[-A-Za-z0-9_\.]*
 path	(\.|\~|\/|\$)[^ \t\n:,;]*
 
 

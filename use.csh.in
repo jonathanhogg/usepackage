@@ -1,5 +1,4 @@
 
 # setup usepackage for csh/tcsh users
-changequote([[,]])
-alias use '[[eval]] `INSTALL_DIR/bin/usepackage -c \!*`'
+alias use 'eval `@bindir@/usepackage -c \!*`'
 

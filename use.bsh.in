@@ -1,5 +1,4 @@
 
 # setup usepackage for sh/zsh/bash users
-changequote([[,]])
-use () { [[eval]] `INSTALL_DIR/bin/usepackage -b $*` ; }
+use () { eval `@bindir@/usepackage -b $*` ; }
 

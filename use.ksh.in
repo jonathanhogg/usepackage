@@ -1,8 +1,7 @@
 
 # setup usepackage for ksh users
-changequote([[,]])
 function use
 {
-   [[eval]] `INSTALL_DIR/bin/usepackage -b $*`
+   eval `@bindir@/usepackage -b $*`
 }
 

@@ -1,4 +1,3 @@
-changequote([[,]])
 usepackage
 ==========
 by Jonathan AH Hogg (jonathan@dcs.gla.ac.uk)
@@ -83,8 +82,8 @@ Customising packages:
 
 The file 'INSTALL_DIR/lib/usepackage/packages.master' contains
 the information about each package. This file contains comments explaining 
-its [[format]]. Custom packages can be added by creating the file '.packages' 
-in your home directory with the same [[format]] as the main packages file.
+its format. Custom packages can be added by creating the file '.packages' 
+in your home directory with the same format as the main packages file.
 
 If you need to add a package which you feel should be available more widely,
 then please email me and i'll include it into the main packages file.

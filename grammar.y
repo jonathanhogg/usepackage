@@ -36,6 +36,7 @@
 
 
 extern char litbuf[1024];
+int yydebug;
 extern char *yytext;
 extern FILE *yyin;
 extern char* main_package_filename;
@@ -91,7 +92,7 @@ entry: package
        group
        { add_to_tail(loaded_groups, (void*) $1); } |
        annotation
-       { add_to_tail(loaded_annotations, (void*) $1) } ;
+       { add_to_tail(loaded_annotations, (void*) $1); } ;
 
 package: matchlist matchlist matchlist matchlist matchlist requires COLON
          variables SEMICOLON 
@@ -111,7 +112,7 @@ group: name ASSIGN names SEMICOLON
 annotation: BEGIN_ANNOTATE name COLON literal END_ANNOTATE
             { $$ = new(annotation_t);
               $$->name = $2;
-              $$->description = $4 } ;
+              $$->description = $4; } ;
 
 variables: variable
            { $$ = new_list(); add_to_tail($$, (void*) $1); } |

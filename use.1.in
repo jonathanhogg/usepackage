@@ -4,13 +4,13 @@ use \- environment management program
 .SH SYNOPSIS
 .TP
 .I csh and derivatives:
- source INSTALL_DIR/lib/usepackage/use.csh
+ source @pkgdatadir@/use.csh
 .TP
 .I bourne shell and derivatives:
- source INSTALL_DIR/lib/usepackage/use.bsh
+ source @pkgdatadir@/use.bsh
 .TP
 .I korn shell:
- . INSTALL_DIR/lib/usepackage/use.ksh
+ . @pkgdatadir@/use.ksh
 .PP
 .B use
 [\-vscb] [\-f
@@ -253,19 +253,19 @@ as the shell startup script). These warnings may be silenced (see
 .IR OPTIONS ).
 .SH FILES
 .TP 15
-.SB INSTALL_DIR/lib/usepackage/packages.master
+.SB @pkgdatadir@/packages.master
 The default master packages file.
 .TP
-.SB INSTALL_DIR/lib/usepackage/use.csh
+.SB @pkgdatadir@/use.csh
 Shell setup for csh and derivatives.
 .TP
-.SB INSTALL_DIR/lib/usepackage/use.bsh
+.SB @pkgdatadir@/use.bsh
 Shell setup for bourne shell and derivatives.
 .TP
-.SB INSTALL_DIR/lib/usepackage/use.ksh
+.SB @pkgdatadir@/use.ksh
 Shell setup for ksh.
 .TP
-.SB INSTALL_DIR/bin/usepackage
+.SB @bindir@/usepackage
 The underlying
 .I Usepackage
 executable.
