@@ -283,6 +283,15 @@ armtools sun4* SunOS 4.* * :	PATH += /local/sun4/armtools/sunos/bin,
 				ARMLIB = /local/sun4/armtools/common/lib ;
 
 
+### MBONE tools: ###
+
+mbone sun4* SunOS 5.* * : PATH += /local/peg1/avtools/sparc-sun-solaris2/bin ;
+mbone sun4* SunOS 4.* * : PATH += /local/peg1/avtools/sparc-sun-sunos4/bin ;
+mbone alpha OSF1 V2.0 * : PATH += /local/peg1/avtools/alpha-dec-osf/bin ;
+mbone alpha OSF1 V3.2 * : PATH += /local/peg1/avtools/alpha-dec-osf3.2/bin ;
+mbone * * * * :	MANPATH += /local/peg1/avtools/man ;
+
+
 ### include users own packages information: ###
 
 (include ~/.packages)
