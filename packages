@@ -339,11 +339,11 @@ ghc-working alpha * * * :
 
 ### Fvwm window manager (courtesy of Adam Donlin): ###
 
-fvwm sun4* * * * :	PATH += ~donlina/lib/X11/fvwm,
-			LD_LIBRARY_PATH += ~donlina/lib/X11 ;
+fvwm sun4* * * * :	PATH += ~adam/lib/X11/fvwm,
+			LD_LIBRARY_PATH += ~adam/lib/X11 ;
 
-fvwm i86pc * * * :	PATH += ~donlina/lib/i86pc/X11/fvwm,
-			LD_LIBRARY_PATH += ~donlina/lib/i86pc/X11 ;
+fvwm i86pc * * * :	PATH += ~adam/lib/i86pc/X11/fvwm,
+			LD_LIBRARY_PATH += ~adam/lib/i86pc/X11 ;
 
 
 ### include users own packages information: ###
