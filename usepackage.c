@@ -272,12 +272,12 @@ linked_list* make_pathlist(char* path_string)
 
    list = new_list();
 
-   if (!path_string)
-      return(list);
-
    start = 0;
    i = 0;
    end = strlen(path_string);
+
+   if (!end)
+      return(list);
 
    while (i <= end)
    {

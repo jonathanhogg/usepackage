@@ -32,8 +32,10 @@
 
 ### empty path: ###
 
-empty * * * :		PATH = "",
+none * * * :		PATH = "",
 			MANPATH = "" ;
+			LD_LIBRARY_PATH = "" ;
+
 
 ### standard things that everyone should have: ###
 
