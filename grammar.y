@@ -112,7 +112,8 @@ literal: LITERAL
 
 yyerror()
 {
-   printf("\nParse error on line %d, '%s'\n", line_number, yytext);
+   fprintf(stderr, "parser: parse error on line %d, '%s'\n", line_number,
+           yytext);
    yyerrors++;
 }
 
@@ -124,6 +125,7 @@ linked_list* get_packages()
 
    yyerrors = 0;
    local_file = 0;
+   line_number = 1;
 
    yyin = fopen(MAIN_PACKAGE_FILE, "r");
    if (!yyin)
@@ -151,6 +153,7 @@ int yywrap()
 
       DEBUG("# reading personal packages file\n");
       local_file = 1;
+      line_number = 1;
       return(0);
    }
    return(1);

@@ -1,7 +1,7 @@
 
 usepackage: usepackage.o linked_list.o grammar.o scanner.o match.o
 	gcc -o usepackage usepackage.o linked_list.o grammar.o scanner.o \
-	    match.o -lfl
+	    match.o
 
 grammar.c grammar.h: grammar.y linked_list.h packages.h
 	bison -d grammar.y
@@ -9,7 +9,7 @@ grammar.c grammar.h: grammar.y linked_list.h packages.h
 	mv grammar.tab.h grammar.h
 
 scanner.c: scanner.l linked_list.h grammar.h packages.h
-	flex scanner.l
+	flex -i scanner.l
 	mv lex.yy.c scanner.c
 
 %.o: %.c
