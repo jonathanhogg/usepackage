@@ -136,7 +136,7 @@ opt * * * * :			PATH += /usr/local/opt/bin,
 
 >> sysadm : "system administration commands" <<
 
-sysadm * * * * :		PATH += /usr/sbin:/sbin:/etc ;
+sysadm * * * * :		PATH += /usr/local/sbin:/usr/sbin:/sbin:/etc ;
 
 
 ### PP mail stuff: ###
