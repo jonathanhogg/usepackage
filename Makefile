@@ -22,7 +22,7 @@ all: README usepackage use.bsh use.csh use.ksh use.zsh
 
 install: all
 	$(INSTALL_DIR) $(DEST)/lib/usepackage
-	$(INSTALL_FILE) README $(DEST)/README
+	$(INSTALL_FILE) README $(DEST)/lib/usepackage/README
 	$(INSTALL_SCRIPT) use.bsh $(DEST)/lib/usepackage/use.bsh
 	$(INSTALL_SCRIPT) use.csh $(DEST)/lib/usepackage/use.csh
 	$(INSTALL_SCRIPT) use.ksh $(DEST)/lib/usepackage/use.ksh
