@@ -61,7 +61,7 @@ linked_list* new_list(void)
 } /* new_list */
 
 
-void add_to_head(linked_list* l, void* s)
+list_node* add_to_head(linked_list* l, void* s)
 {
    list_node *node;
 
@@ -74,10 +74,11 @@ void add_to_head(linked_list* l, void* s)
    if (!l->tail)
       l->tail = node;
    l->head = node;
+   return(node);
 } /* add_to_head */
 
 
-void add_to_tail(linked_list* l, void* s)
+list_node* add_to_tail(linked_list* l, void* s)
 {
    list_node *node;
 
@@ -90,6 +91,7 @@ void add_to_tail(linked_list* l, void* s)
    if (!l->head)
       l->head = node;
    l->tail = node;
+   return(node);
 } /* add_to_tail */
 
 

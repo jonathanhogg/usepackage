@@ -1,5 +1,5 @@
 Usepackage Environment Manager
-Copyright (C) 1995-2003  Jonathan Hogg  <jonathan@onegoodidea.com>
+Copyright (C) 1995-2004  Jonathan Hogg  <jonathan@onegoodidea.com>
 .  
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -14,6 +14,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software 
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+2004-05-19  Jonathan Hogg  <jonathan@onegoodidea.com>
+
+	* usepackage.c: Changes to re-order variables that occur multiple
+	times in a set of packages to be pushed into the environment.
+	Based on a patch contributed by Brett Viren <bv@bnl.gov>.
+
+	* linked_list.c linked_list.h: Changes to return the new node from
+	add_to_head and add_to_tail.
 
 2003-11-16  Jonathan Hogg  <jonathan@onegoodidea.com>
 

@@ -249,7 +249,8 @@ void add_package(package_t* package)
          evar = get_value(enode);
          if (!strcmp(vvar->name, evar->name))
          {
-            set_value(enode, update_var(evar, vvar));
+            remove_node(the_environment, enode, 0);
+            add_to_tail(the_environment, update_var(evar, vvar));
             got_one = 1;
             break;
          }
@@ -403,8 +404,7 @@ list_node* get_into_env(variable_t* var)
          break;
    }
 
-   add_to_tail(the_environment, env_var);
-   return(list_tail(the_environment));
+   return(add_to_tail(the_environment, env_var));
 }
 
 linked_list* make_pathlist(char* path_string)

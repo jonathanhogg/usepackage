@@ -42,8 +42,8 @@ typedef struct {
 
 
 extern linked_list* new_list();
-extern void add_to_head(linked_list* l, void* s);
-extern void add_to_tail(linked_list* l, void* s);
+extern list_node* add_to_head(linked_list* l, void* s);
+extern list_node* add_to_tail(linked_list* l, void* s);
 extern void remove_node(linked_list* l, list_node* n, int k);
 extern void free_list(linked_list* l, int k);
 extern list_node* next(list_node* n);
