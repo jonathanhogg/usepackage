@@ -16,14 +16,17 @@ Java sun4* SunOS 5.* * :
 
 
 ### Hot-Java: ###
+#
+# hotjava doesn't like the gnu version of 'uname' so i bring standard to
+# the front just in case.
 
-HotJava sun4* SunOS 5.* * <= Java:
+HotJava sun4* SunOS 5.* * <= standard :
 		PATH += /local/java/hotjava/bin ;
 
 
 ### Persistent-Java: ###
 
-PJama sun4* SunOS 5.* * <= Java:
+PJama sun4* SunOS 5.* * <= Java :
 		PJHOME = /local/java/pjama,
 		PATH += /local/java/pjama/bin/sparc/green_threads,
 		LD_LIBRARY_PATH += /local/java/pjama/lib/sparc/green_threads,
