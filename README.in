@@ -13,14 +13,14 @@ Using usepackage:
 
 Add one of the following lines to your shell rc file.
 
- * for csh/tcsh:	source INSTALL_DIR/use.csh
- * for sh/zsh/bash:	source INSTALL_DIR/use.bsh
- * for ksh:		. INSTALL_DIR/use.ksh
+ * for csh/tcsh:	source INSTALL_DIR/lib/usepackage/use.csh
+ * for sh/zsh/bash:	source INSTALL_DIR/lib/usepackage/use.bsh
+ * for ksh:		. INSTALL_DIR/lib/usepackage/use.ksh
 
  * if you use zsh on the Pentiums or on Solaris machines and suffer horrible
    core dumps, then you might like to try using this line instead:
 
-   source INSTALL_DIR/use.zsh
+   source INSTALL_DIR/lib/usepackage/use.zsh
 
 Then invoke `use' to add packages to your environment like:
 
@@ -74,10 +74,10 @@ is the case when a package is added at the command line).
 Customising packages:
 ---------------------
 
-The file 'INSTALL_DIR/lib/packages' contains the information about
-each package. This file contains comments explaining its [[format]]. Custom
-packages can be added by creating the file '.packages' in your home
-directory with the same [[format]] as the main packages file.
+The file 'INSTALL_DIR/lib/usepackage/packages.master' contains
+the information about each package. This file contains comments explaining 
+its [[format]]. Custom packages can be added by creating the file '.packages' 
+in your home directory with the same [[format]] as the main packages file.
 
 If you need to add a package which you feel should be available more widely,
 then please email me and i'll include it into the main packages file.
