@@ -105,6 +105,7 @@ As of going to press, the available packages are:
 	HOL		- HOL22 theorem prover 
 	Lego		- Lego
 	Pegasus		- The Pegasus tools
+	MBONE		- MBONE video and audio conferencing tools
 
 Please bear with me, many of these packages are moving targets. If there is
 something you want that is not here then read the next section.
