@@ -78,7 +78,7 @@ dot * * * * :		PATH += . ;
 arch sun4* SunOS 5.* * :	ARCH="solaris", HW_OS="sparc-sun-solaris2" ;
 arch alpha OSF1 * * :		ARCH="alpha", HW_OS="alpha-dec-osf1" ;
 arch i86pc SunOS 5.* * :	ARCH="i86pc", HW_OS="i386-unknown-solaris2" ;
-arch mips IRIX * * :		ARCH="mips", HW_OS="mips-sgi-irix" ;
+arch IP22 IRIX * * :		ARCH="mips", HW_OS="mips-sgi-irix" ;
 arch {i86pc,i586} Linux * * :	ARCH="linux", HW_OS="i386-unknown-linux" ;
 
 
