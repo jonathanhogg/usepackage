@@ -1,6 +1,8 @@
 #
 # usepackage standard packages file
 #
+# $Id$
+#
 # format:
 #
 # 	<packagename> <arch> <os> <host> :
