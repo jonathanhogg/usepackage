@@ -26,7 +26,7 @@ EXTRA_DIST = usepackage.conf
 CLEANFILES = use.1 use.bsh use.csh use.ksh
 MAINTAINERCLEANFILES = grammar.c scanner.c configure Makefile.in \
 	depcomp install-sh missing mkinstalldirs aclocal.m4 config.log \
-	config.status config.h.in
+	config.status config.h.in use.1 usepackage.1
 
 AM_YFLAGS = -d
 AM_CPPFLAGS = -DDEFAULT_PACKAGE_PATH='"$(sysconfdir):~:."'
