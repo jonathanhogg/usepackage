@@ -67,6 +67,8 @@ void main(int argc, char *argv[])
       exit(1);
    }
 
+   DEBUG("# usepackage\n# (Release $Name$)\n");
+
    uname(&the_host_info);
    DEBUG("# host: %s\n", the_host_info.nodename);
    DEBUG("# operating system: %s\n", the_host_info.sysname);
