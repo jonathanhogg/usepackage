@@ -12,12 +12,12 @@
 >> our : "standard OUR setup" <<
 
 
-our * * {slimy,slicker,slinger} <= our-vars :
+our * * * {slimy,slicker,slinger} <= our-vars :
         PATH += /our/bin,
         MANPATH += /our/man,
         LD_LIBRARY_PATH += /our/lib ;
 
-our-vars * * {slimy,slicker,slinger}:
+our-vars * * * {slimy,slicker,slinger}:
 	OUR_SITE = "glasli1",
 	OUR_NSROOT = /our,
 	OUR_INCDIR = /our/share/our-unix-rollout/common/perl ;
@@ -25,7 +25,7 @@ our-vars * * {slimy,slicker,slinger}:
 
 ### OUR software development: ###
 
->> our : "OUR software development" <<
+>> our-swdevp : "OUR software development" <<
 
 our-swdevp * * * {slimy,slicker,slinger} <= our :
         PATH += /our/swdevp/bin,
@@ -35,7 +35,7 @@ our-swdevp * * * {slimy,slicker,slinger} <= our :
 
 ### OUR hardware development: ###
 
->> our : "OUR hardware development" <<
+>> our-hwdesign : "OUR hardware development" <<
 
 our-hwdesign * * * {slimy,slicker,slinger} <= our :
         PATH += /our/hwdesign/bin,
@@ -44,7 +44,7 @@ our-hwdesign * * * {slimy,slicker,slinger} <= our :
 
 ### OUR sysadmin: ###
 
->> our : "OUR system administration" <<
+>> our-sysadmin : "OUR system administration" <<
 
 our-sysadmin * * * {slimy,slicker,slinger} <= our :
         PATH += /our/sbin:/our/sysadmin/bin:/our/sysadmin/sbin,

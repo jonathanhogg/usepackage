@@ -18,7 +18,7 @@ GROUP = contrib
 # List of package spec files to install:
 
 PACKAGE_FILES = packages.master packages.vlsi packages.fp packages.rapids \
-		packages.contrib
+		packages.contrib packages.our
 
 # Which package spec file to load first:
 
