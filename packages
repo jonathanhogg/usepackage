@@ -48,8 +48,9 @@
 
 ### groups: ###
 
-standard-user-setup := standard, GNU, X11 ;
+X11-user-setup := standard, GNU, X11 ;
 openwin-user-setup := standard, GNU, OpenWin ;
+vlsi-tools := Magic, MEBS, VSystem, Alliance ;
 
 
 ### empty path: ###
@@ -59,14 +60,23 @@ none * * * * :		PATH = "",
 			LD_LIBRARY_PATH = "" ;
 
 
+### useful side-effect use of usepackage: ###
+
+arch sun4* SunOS 4.* * :	ARCH = "sun4" ;
+arch sun4* SunOS 5.* * :	ARCH = "solaris" ;
+arch alpha * * * :		ARCH = "alpha" ;
+arch i86pc * * * :		ARCH = "i86pc" ;
+
+
 ### standard things that everyone should have: ###
 
-standard * SunOS 5.* * :	PATH += /usr/ccs/bin ;
-standard * SunOS 4.* * :	PATH += /usr/lang ;
-standard sun4* * * * :		PATH += /local/sun4/bin:/usr/etc,
-				MANPATH += /usr/local/man:/local/man ;
 standard i86pc SunOS 5.* * :	PATH += /local/i386-unknown-solaris2/bin,
 				MANPATH += /local/i386-unknown-solaris2/man ;
+standard sun4* * * * :		PATH += /local/sun4/bin:/usr/etc,
+				MANPATH += /usr/local/man:/local/man ;
+standard sun4* SunOS 5.* * :	PATH += /local/sparc-sun-solaris2/bin ;
+standard * SunOS 5.* * :	PATH += /usr/ccs/bin ;
+standard * SunOS 4.* * :	PATH += /usr/lang ;
 standard * * * * :		PATH += /usr/ucb:/usr/bin:/usr/local/bin:
 					/usr/hosts,
 				MANPATH += /usr/man ;
@@ -208,6 +218,28 @@ modula3 alpha * * * :	PATH += /local/modula3/alpha-dec-osf2/bin ;
 
 Frame sun4* SunOS 5.* * :	FMHOME = /local/sparc-sun-solaris2/frame,
 				PATH += /local/sparc-sun-solaris2/frame/bin ;
+
+
+### Java: ###
+
+Java sun4* SunOS 5.* * :	PATH += /local/java/jdk/bin:
+					/local/java/hotjava/bin,
+				CLASSPATH += /local/java/jdk/lib/classes.zip ;
+
+
+### SPARCworks: ###
+
+SPARCworks sun4* SunOS 5.* * :	PATH += /opt/SUNWspro/bin,
+				MANPATH += /opt/SUNWspro/man,
+				LD_LIBRARY_PATH += /opt/SUNWspro/lib ;
+
+
+### Pine mailer: ###
+
+pine sun4* * * * :		PATH += ~jonathan/pub/bin/sun4 ;
+pine alpha * * * :		PATH += ~jonathan/pub/bin/alpha ;
+pine i86pc * * * :		PATH += ~jonathan/pub/bin/i86pc ;
+pine * * * * :			MANPATH += ~jonathan/pub/man ;
 
 
 ### include users own packages information: ###
