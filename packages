@@ -80,13 +80,17 @@ GNU * * * * :		PATH += /usr/local/gnu/bin,
 			MANPATH += /usr/local/gnu/man ;
 
 
-### assume X is everywhere (but local stuff only on suns): ###
+### X11 on i86pc solaris machines is part of OpenWindows, otherwise ###
+### its in the normal place, except for the extra bits on the suns: ###
 
+X11 i86pc SunOS * * :	PATH += /usr/openwin/bin,
+			MANPATH += /usr/openwin/man,
+			LD_LIBRARY_PATH += /usr/openwin/lib ;
 X11 sun4* * * * :	PATH += /usr/X11/local/bin:/usr/X11/local/bin/pbm,
 			MANPATH += /usr/X11/local/man;
-X11 * * * * :		PATH += /usr/X11/bin,
-			MANPATH += /usr/X11/man,
-			LD_LIBRARY_PATH += /usr/X11/lib ;
+X11 {sun4*,alpha} * * * :	PATH += /usr/X11/bin,
+				MANPATH += /usr/X11/man,
+				LD_LIBRARY_PATH += /usr/X11/lib ;
 
 
 ### OpenWindows on any SunOS machine: ###
@@ -141,10 +145,10 @@ TeX * * * * :	PATH += /usr/local/tex/bin,
 ### Functional Programming: ###
 
 FP * * * * :		MANPATH += /local/fp/man ;
-GNU sun4* SunOS 4.* * :	PATH += /local/fp/bin/sparc-sun-sunos4 ;
-GNU sun4* SunOS 5.* * :	PATH += /local/fp/bin/sparc-sun-solaris2 ;
-GNU alpha OSF1 * * :	PATH += /local/fp/bin/alpha-dec-osf2 ;
-GNU i86pc SunOS 5.* * :	PATH += /local/fp/bin/i386-unknown-solaris2 ;
+FP sun4* SunOS 4.* * :	PATH += /local/fp/bin/sparc-sun-sunos4 ;
+FP sun4* SunOS 5.* * :	PATH += /local/fp/bin/sparc-sun-solaris2 ;
+FP alpha OSF1 * * :	PATH += /local/fp/bin/alpha-dec-osf2 ;
+FP i86pc SunOS 5.* * :	PATH += /local/fp/bin/i386-unknown-solaris2 ;
 
 
 ### CLAyTools only licensed for copinsay at present: ###
