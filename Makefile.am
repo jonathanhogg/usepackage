@@ -10,13 +10,24 @@ EXTRA_DIST = usepackage.conf
 CLEANFILES = use.1 use.bsh use.csh use.ksh
 MAINTAINERCLEANFILES = grammar.c scanner.c configure Makefile.in \
 	depcomp install-sh missing mkinstalldirs aclocal.m4 config.log \
-	config.status 
+	config.status config.h.in
 
 AM_YFLAGS = -d
 AM_CPPFLAGS = -DDEFAULT_PACKAGE_PATH='"$(sysconfdir):~:."'
 
-%: %.in
-	$(SED) "s,\@pkgdatadir\@,$(pkgdatadir),;s,\@bindir\@,$(bindir),;s,\@sysconfdir\@,$(sysconfdir)," < $*.in > $*
+SUBS = "s,\@pkgdatadir\@,$(pkgdatadir),;s,\@bindir\@,$(bindir),;s,\@sysconfdir\@,$(sysconfdir),"
+
+use.1: use.1.in
+	$(SED) $(SUBS) < use.1.in > use.1
+
+use.bsh: use.bsh.in
+	$(SED) $(SUBS) < use.bsh.in > use.bsh
+
+use.csh: use.csh.in
+	$(SED) $(SUBS) < use.csh.in > use.csh
+
+use.ksh: use.ksh.in
+	$(SED) $(SUBS) < use.ksh.in > use.ksh
 
 install-data-local: usepackage.conf
 	@$(NORMAL_INSTALL)

@@ -38,7 +38,7 @@ The environment information is specified in packages files, see
 Output verbose information to the standard error stream.
 .TP
 .I \-s
-Silence warnings for un-matched packages. The is useful in a shell
+Silence warnings for un-matched packages. This is useful in a shell
 .I rc
 script when a package is known not to be available on all architectures that 
 the shell is used on, see
@@ -70,12 +70,12 @@ reads package environment information from package files as follows:
 The first packages file to be read-in is the master packages file, the name
 of this file may be given on the command line (see
 .IR OPTIONS )
-or otherwise defaults to the builtin name "packages.master" (see
+or otherwise defaults to the builtin name "usepackage.conf" (see
 .IR FILES ).
 This file is located by searching along a path which defaults to:
 .PP
 .nf
-     DEFAULT_PACKAGE_PATH
+     @sysconfdir@:~:.
 .fi
 .PP
 This path may be overridden with the PACKAGES_PATH environment variable
@@ -85,7 +85,7 @@ A packages file may contain inclusion directives which cause the sourcing of
 other files at a given points. An inclusion directive looks like:
 .PP
 .nf
-     (`include' file-name)
+     (include file-name)
 .fi
 .PP
 The same location mechanism is used to find "file-name" as for the master
@@ -213,7 +213,7 @@ The following fragment of a packages file illustrates the main features:
 
      # include standard packages:
 
-     (`include' packages.standard)
+     (include packages.standard)
 
      # security hole:
 
@@ -253,7 +253,7 @@ as the shell startup script). These warnings may be silenced (see
 .IR OPTIONS ).
 .SH FILES
 .TP 15
-.SB @pkgdatadir@/packages.master
+.SB @pkgdatadir@/usepackage.conf
 The default master packages file.
 .TP
 .SB @pkgdatadir@/use.csh

@@ -23,5 +23,9 @@ Changes between usepackage version 1.6 and 1.6.1
 * Fixed up the contact information.
 * A bit more portable hopefully.
 
-Initial distribution version 1.6
+Initial public release 1.6
+
+* Usepackage has been in use for some time, and had even been available
+  for download, but no attempt was made previously to publicise it. This
+  release represents the first posted to freshmeat.net.
 

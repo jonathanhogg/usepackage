@@ -16,6 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+2002-05-29  Jonathan Hogg  <jonathan@onegoodidea.com>
+
+	* Tagged version 1.6.1 for release.
+
+	* Makefile.am: removed pattern matching dependency line for .in
+	files and replaced it with explicit rules. The pattern matching
+	line doesn't work with BSD make and it's been so long since I used
+	anything but GNU make I can't remember how to do the equivalent.
+
 2002-05-27  Jonathan Hogg  <jonathan@onegoodidea.com>
 
 	* README: Updated to be less Glasgow-centric and match the new
