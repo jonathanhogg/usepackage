@@ -92,7 +92,7 @@ void main(int argc, char *argv[])
 
    DEBUG("# usepackage\n");
    DEBUG("# Version: %s\n", VERSION);
-   DEBUG("# Copyright (c) Jonathan Hogg, 1995\n");
+   DEBUG("# Copyright (c) 1995-96 Jonathan Hogg\n");
 
    uname(&the_host_info);
    DEBUG("# host: %s\n", the_host_info.nodename);
@@ -159,8 +159,26 @@ void add_package(package_t* package)
    variable_t* vvar;
    list_node* enode;
    list_node* vnode;
+   list_node* rnode;
+   group_t* group;
+   char* name;
    int got_one;
    
+   if (package->requires)
+   {
+      DEBUG("# (pre-using required packages list)\n");
+
+      for (rnode=list_tail(package->requires) ; rnode ; rnode=previous(rnode))
+      {
+         name = (char*) get_value(rnode);
+
+	 if (group = get_group(name))
+	    use_group(group);
+	 else
+	    use_package(name);
+      }
+   }
+
    for (vnode = head(package->variables) ; vnode ; vnode = next(vnode))
    {
       vvar = get_value(vnode);

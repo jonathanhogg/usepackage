@@ -11,7 +11,7 @@
 /*** macros: ***/
 
 #ifndef MAIN_PACKAGE_FILE
-#define MAIN_PACKAGE_FILE "/users/grad/jonathan/projects/usepackage/packages"
+#define MAIN_PACKAGE_FILE "./packages"
 #endif
 
 #define VAR_LIT_SET 0
@@ -35,6 +35,7 @@ typedef struct {
    linked_list* version;
    linked_list* host;
    linked_list* variables;
+   linked_list* requires;
 } package_t;
 
 typedef struct {

@@ -39,10 +39,10 @@ int include(char* filename);
 }
 
 %token COLON SEMICOLON COMMA EQUALS PLUSEQUALS LITERAL NAME PATH
-%token LEFTPAREN RIGHTPAREN PREFIX WILDCARD ASSIGN
+%token LEFTPAREN RIGHTPAREN PREFIX WILDCARD ASSIGN WITH
 
 %type <package> package
-%type <list> variables pathlist matchlist matches names
+%type <list> variables pathlist matchlist matches names requires
 %type <string> name literal path prefix
 %type <variable> variable
 %type <match> match
@@ -59,11 +59,16 @@ entry: package
        group
        { add_to_tail(loaded_groups, (void*) $1); } ;
 
-package: matchlist matchlist matchlist matchlist matchlist COLON
+package: matchlist matchlist matchlist matchlist matchlist requires COLON
          variables SEMICOLON 
          { $$ = new(package_t);
            $$->name = $1; $$->arch = $2; $$->os = $3; $$->version = $4;
-           $$->host = $5; $$->variables = $7; } ;
+           $$->host = $5; $$->requires = $6; $$->variables = $8; } ;
+
+requires: /* nothing */
+          { $$ = NULL; } |
+          WITH names
+          { $$ = $2; } ;
 
 group: name ASSIGN names SEMICOLON
        { $$ = new(group_t); $$->name = $1; $$->packages = $3;} ;

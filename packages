@@ -5,7 +5,7 @@
 #
 # format:
 #
-# 	<packagename> <arch> <os> <release> <host> :
+# 	<packagename> <arch> <os> <release> <host> [<= <requires>...] :
 #		<variable>[, <variable>...] ;
 #
 # <packagename>, <arch>, <os>, and <host> may use a restricted shell-style
@@ -15,6 +15,9 @@
 # double quotes. new-lines are ignored in path lists and in literal strings.
 # a path may begin with '~' or '~user' which will be expanded respectively
 # to the home directory of the user invoking usepackage or the specified user.
+# the optional <requires> list is a comma-separated list of package or
+# group names that must be loaded into the environment before this package.
+# whatever you do, DON'T create a mutually dependant loop!
 #
 # e.g.:
 #
@@ -22,6 +25,7 @@
 #	frib * * * mymachine : PATH+=/special/frib/bin ;
 #	frib sun4* * * * : PATH+=/usr/local/frib/bin/sun4 ;
 #	frib alpha * * * : PATH+=/usr/local/frib/bin/alpha ;
+#	cvs * * * * <= gnu : CVSROOT=/usr/local/src/cvsroot ;
 #
 # NOTE: the sun SPARCs identify themselves as 'sun4m' or 'sun4c' not 'sun4',
 #       so use 'sun4*' to match both.
@@ -183,8 +187,7 @@ VSystem * * * albatross :
 
 ### Alsys Ada can only be used on hawaii, albatross, and walrus: ###
 
-Alsys * * * {hawaii,albatross,walrus} :
-		PATH += /usr/bin,
+Alsys * * * {hawaii,albatross,walrus} <= standard :
 		ALSYCOMP_DIR = /export/mirror/sun4/alyscomp ;
 
 
