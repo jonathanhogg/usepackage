@@ -4,6 +4,7 @@
 usepackage: usepackage.o linked_list.o grammar.o scanner.o match.o
 	gcc -o usepackage usepackage.o linked_list.o grammar.o scanner.o \
 	    match.o
+	strip usepackage
 
 grammar.c grammar.h: grammar.y linked_list.h packages.h
 	bison -d grammar.y
@@ -11,11 +12,11 @@ grammar.c grammar.h: grammar.y linked_list.h packages.h
 	mv grammar.tab.h grammar.h
 
 scanner.c: scanner.l linked_list.h grammar.h packages.h
-	flex -i scanner.l
+	flex -Cf -i scanner.l
 	mv lex.yy.c scanner.c
 
 %.o: %.c
-	gcc -c -g $*.c
+	gcc -O2 -c $*.c
 
 clean:
 	rm -f *.o scanner.c grammar.c grammar.h usepackage

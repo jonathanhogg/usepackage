@@ -9,16 +9,11 @@
 #include "packages.h"
 
 
-#define new(x) ((x*)malloc(sizeof(x)))
-#define DEBUG if (debugging) printf
-
-
 extern char litbuf[1024];
 extern char *yytext;
 extern int line_number;
 extern FILE *yyin;
 extern char* the_home;
-extern int debugging;
 
 
 linked_list* loaded_packages;
@@ -51,15 +46,18 @@ int local_file;
 
 entries: /* nothing */
          { loaded_packages = new_list(); loaded_groups = new_list(); } |
-         entries package
-         { add_to_tail(loaded_packages, (void*) $2); } |
-         entries group
-         { add_to_tail(loaded_groups, (void*) $2); } |
+         entries entry ;
 
-package: matchlist matchlist matchlist matchlist COLON variables SEMICOLON 
+entry: package
+       { add_to_tail(loaded_packages, (void*) $1); } |
+       group
+       { add_to_tail(loaded_groups, (void*) $1); } ;
+
+package: matchlist matchlist matchlist matchlist matchlist COLON
+         variables SEMICOLON 
          { $$ = new(package_t);
-           $$->name = $1; $$->arch = $2; $$->os = $3;
-           $$->host = $4; $$->variables = $6; } ;
+           $$->name = $1; $$->arch = $2; $$->os = $3; $$->version = $4;
+           $$->host = $5; $$->variables = $7; } ;
 
 group: name ASSIGN names SEMICOLON
        { $$ = new(group_t); $$->name = $1; $$->packages = $3;} ;

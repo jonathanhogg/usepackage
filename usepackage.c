@@ -15,12 +15,6 @@
 #include "packages.h"
 
 
-/*** macros: ***/
-
-#define DEBUG if (debugging) printf
-#define new(x) ((x*)malloc(sizeof(x)))
-
-
 /*** prototypes: ***/
 
 int is_csh_user(void);
@@ -91,12 +85,13 @@ void main(int argc, char *argv[])
    }
 
    DEBUG("# usepackage\n");
-   DEBUG("# Version: $Revision$");
-   DEBUG("# Copyright (c) Jonathan Hogg\n");
+   DEBUG("# Version: $Revision$\n");
+   DEBUG("# Copyright (c) Jonathan Hogg, 1995\n");
 
    uname(&the_host_info);
    DEBUG("# host: %s\n", the_host_info.nodename);
-   DEBUG("# operating system: %s\n", the_host_info.sysname);
+   DEBUG("# operating system: %s %s\n", the_host_info.sysname,
+         the_host_info.release);
    DEBUG("# architecture: %s\n", the_host_info.machine);
 
    if (csh_user == -1) csh_user = is_csh_user();
@@ -152,7 +147,8 @@ void use_package(char* name)
       package = (package_t*) get_value(node);
 
       if (package_matches(package, name, the_host_info.machine,
-			  the_host_info.sysname, the_host_info.nodename))
+			  the_host_info.sysname, the_host_info.release,
+                          the_host_info.nodename))
       {
 	 add_package(package);
          got_one = 1;

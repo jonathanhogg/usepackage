@@ -8,11 +8,6 @@
 #include <string.h>
 
 
-/*** macros: ***/
-
-#define DEBUG if (debugging) printf
-
-
 /*** prototypes: ***/
 
 int text_matches(char* text, linked_list* matches);
@@ -23,14 +18,16 @@ int text_matches(char* text, linked_list* matches);
 
 /*** functions: ***/
 
-int package_matches(package_t* package,
-                    char* name, char* arch, char* os, char* host)
+int package_matches(package_t* package, char* name, char* arch,
+                    char* os, char* version, char* host)
 {
    if (!text_matches(name, package->name))
       return(0);
    if (!text_matches(arch, package->arch))
       return(0);
    if (!text_matches(os, package->os))
+      return(0);
+   if (!text_matches(version, package->version))
       return(0);
    if (!text_matches(host, package->host))
       return(0);

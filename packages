@@ -5,7 +5,7 @@
 #
 # format:
 #
-# 	<packagename> <arch> <os> <host> :
+# 	<packagename> <arch> <os> <release> <host> :
 #		<variable>[, <variable>...] ;
 #
 # <packagename>, <arch>, <os>, and <host> may use a restricted shell-style
@@ -16,17 +16,18 @@
 #
 # e.g.:
 #
-#	X * * * : PATH+=/usr/X11/bin, LD_LIBRARY_PATH+=/usr/X11/lib ;
-#	frib * * mymachine : PATH+=/special/frib/bin ;
-#	frib sun4* * * : PATH+=/usr/local/frib/bin/sun4 ;
-#	frib alpha * * : PATH+=/usr/local/frib/bin/alpha ;
+#	X * * * * : PATH+=/usr/X11/bin, LD_LIBRARY_PATH+=/usr/X11/lib ;
+#	frib * * * mymachine : PATH+=/special/frib/bin ;
+#	frib sun4* * * * : PATH+=/usr/local/frib/bin/sun4 ;
+#	frib alpha * * * : PATH+=/usr/local/frib/bin/alpha ;
 #
 # NOTE: the sun SPARCs identify themselves as 'sun4m' or 'sun4c' not 'sun4',
 #       so use 'sun4*' to match both.
 #
 # package matching is done sequentially through the file and _every_ record
 # that matches will be added to the environment. path additions (+=) are
-# made to the front of a path list. matches are case insensitive.
+# made to the head of a path list and duplicates are removed from the tail.
+# matches are case insensitive.
 #
 #
 # groups format:
@@ -38,8 +39,8 @@
 #
 # e.g.:
 #
-#	standard-user-settings := standard X TeX ;
-#	openwin-user-settings := standard OpenWin TeX ;
+#	standard-user-settings := standard, X, TeX ;
+#	openwin-user-settings := standard, OpenWin, TeX ;
 #
 
 
@@ -52,50 +53,49 @@ vlsi-tools := Ruby, MEBS, Alliance, CLAyTools ;
 
 ### empty path: ###
 
-none * * * :		PATH = "",
+none * * * * :		PATH = "",
 			MANPATH = "",
 			LD_LIBRARY_PATH = "" ;
 
 
 ### standard things that everyone should have: ###
 
-standard sun4* * * :	PATH += /local/sun4/bin:/usr/lang ;
-standard alpha * * :	PATH += /local/alpha/bin ;
-standard * * * :	PATH += /usr/ucb:/usr/bin:/usr/local/bin:
+standard sun4* SunOS 4.* * :	PATH += /usr/lang ;
+standard sun4* * * * :	PATH += /local/sun4/bin ;
+standard alpha * * * :	PATH += /local/alpha/bin ;
+standard * * * * :	PATH += /usr/ucb:/usr/bin:/usr/local/bin:
 				/usr/hosts:/usr/etc,
 			MANPATH += /usr/man:/usr/local/man:/local/man ;
 
 
 ### GNU stuff: ###
-# (some GNU things, like man, appear to be pathalogical so GNU-bust ensures
-#  the normal system versions of these appear first.)
 
-GNU* sun4* * * :	PATH += /usr/local/gnu/bin/sun4 ;
-GNU* alpha * * :	PATH += /usr/local/gnu/bin/alpha ;
-GNU* * * * :		PATH += /usr/local/gnu/bin,
+GNU sun4* SunOS 4.* * :	PATH += /usr/local/gnu/bin/sparc-sun-sunos4 ;
+GNU sun4* SunOS 5.* * :	PATH += /usr/local/gnu/bin/sparc-sun-solaris2 ;
+GNU alpha OSF1 * * :	PATH += /usr/local/gnu/bin/alpha-dec-osf2 ;
+GNU * * * * :		PATH += /usr/local/gnu/bin,
 			MANPATH += /usr/local/gnu/man ;
-GNU-bust * * * :	PATH += /usr/ucb/bin ;
 
 
-### assume X is everywhere (but more stuff on suns): ###
+### assume X is everywhere (but local stuff only on suns): ###
 
-X11 sun4* * * :	PATH += /usr/X11/local/bin:/usr/X11/local/bin/pbm,
-		MANPATH += /usr/X11/local/man;
-X11 * * * :	PATH += /usr/X11/bin,
-		MANPATH += /usr/X11/man,
-		LD_LIBRARY_PATH += /usr/X11/lib ;
+X11 sun4* * * * :	PATH += /usr/X11/local/bin:/usr/X11/local/bin/pbm,
+			MANPATH += /usr/X11/local/man;
+X11 * * * * :		PATH += /usr/X11/bin,
+			MANPATH += /usr/X11/man,
+			LD_LIBRARY_PATH += /usr/X11/lib ;
 
 
-### OpenWindows only on SunOS machines: ###
+### OpenWindows on any SunOS machine: ###
 
-OpenWin * SunOS * :	PATH += /usr/openwin/bin,
+OpenWin * SunOS * * :	PATH += /usr/openwin/bin,
 			MANPATH += /usr/openwin/man,
 			LD_LIBRARY_PATH += /usr/openwin/lib ;
 
 
 ### Ruby compiler: ###
 
-Ruby {sun4*,alpha} * * :
+Ruby * * * * :
 		PATH += /local/vlsi/ruby/bin,
 		MANPATH += /local/vlsi/ruby/man,
 		RUBY_ROOT = /local/vlsi/ruby ;
@@ -103,21 +103,21 @@ Ruby {sun4*,alpha} * * :
 
 ### MEBS is sun4 only: ###
 
-MEBS sun4* * * :	PATH += /local/vlsi/mebs/MEBS1.2/bin,
+MEBS sun4* * * * :	PATH += /local/vlsi/mebs/MEBS1.2/bin,
 			MANPATH += /local/vlsi/mebs/MEBS1.2/man,
 			MEBS_ROOT = /local/vlsi/mebs/MEBS1.2 ;
 
 
 ### Alsys Ada can only be used on hawaii, albatross, and walrus: ###
 
-Alsys * * {hawaii,albatross,walrus} :
+Alsys * * * {hawaii,albatross,walrus} :
 		PATH += /usr/bin,
 		ALSYCOMP_DIR = /export/mirror/sun4/alyscomp ;
 
 
 ### Alliance is sun4 only: ###
 
-Alliance sun4* * * :
+Alliance sun4* * * * :
 		PATH += /local/vlsi/alliance/bin,
 		MANPATH += /local/vlsi/alliance/man,
 		MBK_CATA_LIB = .:
@@ -131,7 +131,7 @@ Alliance sun4* * * :
 
 ### TeX: ###
 
-TeX * * * :	PATH += /usr/local/tex/bin,
+TeX * * * * :	PATH += /usr/local/tex/bin,
 		MANPATH += /usr/local/tex/man,
 		MY_TEXINPUTS = .:
 			/usr/local/tex/inputs:
@@ -143,13 +143,13 @@ TeX * * * :	PATH += /usr/local/tex/bin,
 
 ### Functional Programming: ###
 
-FP * * * :	MANPATH += /local/fp/man ;
-FP alpha * * :	PATH += /local/fp/bin.alpha ;
-FP sun4* * * :	PATH += /local/fp/bin.sun4 ;
+FP * * * * :		MANPATH += /local/fp/man ;
+FP alpha * * * :	PATH += /local/fp/bin.alpha ;
+FP sun4* * * * :	PATH += /local/fp/bin.sun4 ;
 
 
 ### CLAyTools only licensed for copinsay at present: ###
 
-CLAyTools * * copinsay : PATH += /local/vlsi/claytools/1.11/bin ;
+CLAyTools * * * copinsay : PATH += /local/vlsi/claytools/1.11/bin ;
 
 
