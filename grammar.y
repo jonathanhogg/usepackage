@@ -21,7 +21,8 @@ extern char* the_home;
 extern int debugging;
 
 
-linked_list* packages;
+linked_list* loaded_packages;
+linked_list* loaded_groups;
 int yyerrors;
 int local_file;
 
@@ -33,28 +34,35 @@ int local_file;
    package_t* package;
    variable_t* variable;
    match_t* match;
+   group_t* group;
 }
 
 %token COLON SEMICOLON COMMA EQUALS PLUSEQUALS LITERAL NAME PATH
-%token LEFTPAREN RIGHTPAREN PREFIX WILDCARD
+%token LEFTPAREN RIGHTPAREN PREFIX WILDCARD ASSIGN
 
 %type <package> package
-%type <list> variables pathlist matchlist matches
+%type <list> variables pathlist matchlist matches names
 %type <string> name literal path prefix
 %type <variable> variable
 %type <match> match
+%type <group> group
 
 %%
 
-packages: /* nothing */
-          { packages = new_list(); } |
-          packages package
-          { add_to_tail(packages, (void*) $2); } ;
+entries: /* nothing */
+         { loaded_packages = new_list(); loaded_groups = new_list(); } |
+         entries package
+         { add_to_tail(loaded_packages, (void*) $2); } |
+         entries group
+         { add_to_tail(loaded_groups, (void*) $2); } |
 
 package: matchlist matchlist matchlist matchlist COLON variables SEMICOLON 
          { $$ = new(package_t);
            $$->name = $1; $$->arch = $2; $$->os = $3;
            $$->host = $4; $$->variables = $6; } ;
+
+group: name ASSIGN names SEMICOLON
+       { $$ = new(group_t); $$->name = $1; $$->packages = $3;} ;
 
 variables: variable
            { $$ = new_list(); add_to_tail($$, (void*) $1); } |
@@ -96,6 +104,11 @@ pathlist: path
           pathlist COLON path
           { add_to_tail($$ = $1, (void*) $3); } ;
 
+names: name
+       { $$ = new_list(); add_to_tail($$, (void*) $1); } |
+       names COMMA name
+       { add_to_tail($$ = $1, (void*) $3); } ;
+
 path: PATH
 	{ $$ = strdup(litbuf); } ;
 
@@ -117,7 +130,7 @@ yyerror()
    yyerrors++;
 }
 
-linked_list* get_packages()
+int get_packages(linked_list** packages, linked_list** groups)
 {
 #ifdef YYDEBUG
    yydebug = debugging;
@@ -129,15 +142,17 @@ linked_list* get_packages()
 
    yyin = fopen(MAIN_PACKAGE_FILE, "r");
    if (!yyin)
-      return(NULL);
+      return(1);
 
    yyparse();
    fclose(yyin);
 
    if (yyerrors)
-      return(NULL);
+      return(2);
 
-   return(packages);
+   *packages = loaded_packages;
+   *groups = loaded_groups;
+   return(0);
 }
 
 int yywrap()

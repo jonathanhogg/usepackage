@@ -38,8 +38,13 @@ typedef struct {
    linked_list* pathlist;
 } variable_t;
 
+typedef struct {
+   char* name;
+   linked_list* packages;
+} group_t;
 
-extern linked_list* get_packages();
+
+extern int get_packages(linked_list** packages, linked_list** groups);
 extern int package_matches(package_t* package,
                            char* name, char* arch, char* os, char* host);
 

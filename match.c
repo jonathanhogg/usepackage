@@ -52,12 +52,12 @@ int text_matches(char* text, linked_list* matches)
 	    return(1);
 
 	 case MATCH_PREFIX:
-	    if (!strncmp(text, match->text, strlen(match->text)))
+	    if (!strncasecmp(text, match->text, strlen(match->text)))
                return(1);
 	    break;
 
 	 case MATCH_EXACT:
-	    if (!strcmp(text, match->text))
+	    if (!strcasecmp(text, match->text))
                return(1);
 	    break;
       }

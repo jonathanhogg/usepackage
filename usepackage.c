@@ -25,7 +25,9 @@
 
 int is_csh_user(void);
 void add_package(package_t* package);
-int use_package(char* name);
+void use_package(char* name);
+void use_group(group_t* group);
+group_t* get_group(char* name);
 void print_env(void);
 list_node* get_into_env(variable_t* var);
 linked_list* make_pathlist(char* path_string);
@@ -37,9 +39,11 @@ linked_list* merge_paths(linked_list* elist, linked_list* vlist);
 /*** globals: ***/
 
 int debugging = 0;
-int csh_user;
+int silent = 0;
+int csh_user = -1;
 struct utsname the_host_info;
 linked_list* the_packages;
+linked_list* the_groups;
 linked_list* the_environment;
 char* the_home;
 
@@ -48,9 +52,8 @@ char* the_home;
 void main(int argc, char *argv[])
 {
    int first,i;
-   char *f;
-
-   csh_user = -1;
+   char* f;
+   group_t* group;
 
    for (i=1; i<argc && *argv[i] == '-'; i++)
    {
@@ -59,6 +62,11 @@ void main(int argc, char *argv[])
 	 {
 	    case 'v':
 	       debugging = 1;
+	       silent = 0;
+	       break;
+	    case 's':
+	       debugging = 0;
+	       silent = 1;
 	       break;
 	    case 'c':
 	       csh_user = 1;
@@ -74,8 +82,9 @@ void main(int argc, char *argv[])
 
    if (i == argc)
    {
-      fprintf(stderr, "usage: usepackage [-vcb] <package> [<package>...]\n\n");
+      fprintf(stderr, "usage: usepackage [-vscb] <package> [<package>...]\n\n");
       fprintf(stderr, "       -v : verbose\n");
+      fprintf(stderr, "       -s : silence match warnings\n");
       fprintf(stderr, "       -c : force csh style output\n");
       fprintf(stderr, "       -b : force sh style output\n");
       exit(1);
@@ -91,8 +100,7 @@ void main(int argc, char *argv[])
 
    if (csh_user == -1) csh_user = is_csh_user();
    the_environment = new_list();
-   the_packages = get_packages();
-   if (!the_packages)
+   if (get_packages(&the_packages, &the_groups))
    {
       fprintf(stderr, "usepackage: couldn't load package information.\n");
       exit(2);
@@ -100,12 +108,10 @@ void main(int argc, char *argv[])
 
    for (first = i, i = argc - 1 ; i >= first ; i--)
    {
-      DEBUG("# using package %s...\n", argv[i]);
-      
-      if (!use_package(argv[i]))
-         fprintf(stderr,
-                 "usepackage: no match for package `%s' on this host.\n",
-                 argv[i]);
+      if (group = get_group(argv[i]))
+         use_group(group);
+      else
+         use_package(argv[i]);
    }
 
    print_env();
@@ -132,12 +138,14 @@ int is_csh_user(void)
    return ((!strcmp(shell, "csh")) || (!strcmp(shell, "tcsh")));
 }
 
-int use_package(char* name)
+void use_package(char* name)
 {
    package_t* package;
    list_node* node;
    int got_one = 0;
 
+   DEBUG("# using package %s...\n", name);
+      
    for (node = head(the_packages) ; node ; node = next(node))
    {
       package = (package_t*) get_value(node);
@@ -150,7 +158,10 @@ int use_package(char* name)
       }
    }
 
-   return(got_one);
+   if ((!silent) && (!got_one))
+      fprintf(stderr,
+	      "usepackage: no match for package `%s' on this host.\n",
+	      name);
 }
 
 void add_package(package_t* package)
@@ -182,6 +193,31 @@ void add_package(package_t* package)
 	 set_value(enode, update_var(evar, vvar));
       }
    }
+}
+
+void use_group(group_t* group)
+{
+   list_node* node;
+
+   DEBUG("# (expanding group `%s')\n", group->name);
+
+   for (node = list_tail(group->packages) ; node ; node = previous(node))
+      use_package((char*) get_value(node));
+}
+
+group_t* get_group(char* name)
+{
+   list_node* node;
+   group_t* group;
+
+   for (node = head(the_groups) ; node ; node = next(node))
+   {
+      group = (group_t*) get_value(node);
+      if (!strcasecmp(name, group->name))
+         return(group);
+   }
+
+   return(NULL);
 }
 
 void print_env(void)

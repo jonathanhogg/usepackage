@@ -26,8 +26,9 @@ path	(\.|\.?\/[^ \t\n:,;]*)
 "{"		return(LEFTPAREN);
 "}"		return(RIGHTPAREN);
 "*"		return(WILDCARD);
-"+="[ \t]*	return(PLUSEQUALS);
-"="[ \t]*	return(EQUALS);
+"+="		return(PLUSEQUALS);
+"="		return(EQUALS);
+":="		return(ASSIGN);
 "\""		bufp=litbuf; bufp[0] = '\0'; BEGIN(lit);
 <lit>[^\"\n]*	strcpy(bufp, yytext); bufp += yyleng;
 <lit>\n		line_number++;
