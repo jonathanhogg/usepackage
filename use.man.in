@@ -1,0 +1,49 @@
+.TH USE 1 "$Date$" "contrib" "USER COMMANDS"
+.SH NAME
+use \- environment management program
+.SH SYNOPSIS
+.NF
+.TP
+.I csh and derivatives:
+ source INSTALL_DIR/lib/usepackage/use.csh
+.TP
+.I bourne shell and derivatives:
+ source INSTALL_DIR/lib/usepackage/use.bsh
+.TP
+.I korn shell:
+ . INSTALL_DIR/lib/usepackage/use.ksh
+.FI
+.PP
+.B use
+[\-vscb] [\-f
+.IR file ]
+.I package [...]
+.SH DESCRIPTION
+For each given
+.IR package ,
+.B use
+sources the appropriate environment information into the current shell.
+.SS OPTIONS
+.TP
+.I \-v
+Output verbose information to the standard error stream.
+.TP
+.I \-s
+Silence warnings for un-matched packages. Useful in a shell
+.I rc
+script when a package is known not to be available on all architectures that 
+the shell is used on.
+.TP
+.I \-c
+Force
+.I csh
+style environment output (this is used only in the underlying sourcing
+mechanism).
+.TP
+.I \-b
+Force bourne shell style environment output (this is used only in the 
+underlying sourcing mechanism).
+.TP
+.I \-f file
+Specify an alternate master package definition file.
+
