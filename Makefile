@@ -6,10 +6,10 @@ INSTALL_GROUP = vlsi
 endif 
 
 LINK = gcc
-INSTALL_EXEC = install -m 711 -g $(INSTALL_GROUP)
-INSTALL_SCRIPT = install -m 755 -g $(INSTALL_GROUP)
-INSTALL_FILE = install -m 644 -g $(INSTALL_GROUP)
-INSTALL_DIR = install -m 755 -d -g $(INSTALL_GROUP)
+INSTALL_EXEC = install -m 771 -g $(INSTALL_GROUP)
+INSTALL_SCRIPT = install -m 775 -g $(INSTALL_GROUP)
+INSTALL_FILE = install -m 664 -g $(INSTALL_GROUP)
+INSTALL_DIR = install -m 775 -d -g $(INSTALL_GROUP)
 M4 = m4
 STRIP = strip
 BISON = bison -d
