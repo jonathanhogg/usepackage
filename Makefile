@@ -1,28 +1,54 @@
 
-# Makefile
+### Makefile ###
 
+
+#--- edit these variables to customise (or supply them as make args) ---#
+
+
+# Install group:
 
 GROUP = contrib
+
+# Installation root:
+
 DEST = /usr/local/contrib
+
+# List of package spec files to install:
+
 PACKAGE_FILES = packages.master packages.vlsi packages.fp packages.rapids \
 		packages.contrib
+
+# Which package spec file to load first:
+
 MASTER_PACKAGE_FILE = packages.master
+
+# Path for finding package specs:
+
 DEFAULT_PACKAGE_PATH = $(DEST)/lib/usepackage:~:.
 
 
-INSTALL_EXEC = install -m 771 -g $(GROUP)
-INSTALL_SCRIPT = install -m 775 -g $(GROUP)
-INSTALL_FILE = install -m 664 -g $(GROUP)
-INSTALL_DIR = install -m 775 -d -g $(GROUP)
+#--- usual stuff about not editing below this line unless you're sure ---#
+
+
+CC = gcc
+CCOPTS = -O2 -DDEFAULT_PACKAGE_PATH=\"$(DEFAULT_PACKAGE_PATH)\" \
+	-DMASTER_PACKAGE_FILE=\"$(MASTER_PACKAGE_FILE)\"
+LINK = gcc
+
 M4 = m4
 STRIP = strip
 BISON = bison -d
 FLEX = flex -Cf -i
 MV = mv
 RM = rm -f
-CC = gcc -O2 -DDEFAULT_PACKAGE_PATH=\"$(DEFAULT_PACKAGE_PATH)\" \
-	-DMASTER_PACKAGE_FILE=\"$(MASTER_PACKAGE_FILE)\"
-LINK = gcc
+
+INSTALL_EXEC = install -m 771 -g $(GROUP)
+INSTALL_SCRIPT = install -m 775 -g $(GROUP)
+INSTALL_FILE = install -m 664 -g $(GROUP)
+INSTALL_DIR = install -m 775 -d -g $(GROUP)
+
+
+#--- and below this line only if you're *really* sure what you're doing ---#
 
 
 all: README usepackage use.bsh use.csh use.ksh use.man
@@ -66,7 +92,7 @@ clean:
 		$(OBJECTS) scanner.c grammar.c grammar.h
 
 %.o: %.c
-	$(CC) -c $*.c
+	$(CC) $(CCOPTS) -c $*.c
 
 %: %.in
 	$(M4) -DINSTALL_DIR=$(DEST) $*.in > $*
