@@ -1,0 +1,19 @@
+
+Using usepackage:
+----------------
+
+Add one of the following lines to your rc file.
+
+ * for csh derivatives:
+
+   alias use 'eval `usepackage -c \!*`'
+
+ * for bourne shell derivatives:
+
+   use () { eval `usepackage -b $*` }
+
+Then invoke to add packages to your environment by:
+
+   use <package1> [<package2>...]
+
+
