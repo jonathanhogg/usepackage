@@ -30,7 +30,7 @@ packages: /* nothing */
           { add_to_tail($$ = $1, (void *)$2); } ;
 
 package: name pattern COLON variables SEMICOLON 
-         { printf("ok\n"); $$ = NULL; } ;
+         { printf("done\n"); $$ = NULL; } ;
 
 name: NAME { printf("package %s...", litbuf); } ;
 
