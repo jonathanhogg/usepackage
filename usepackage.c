@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/utsname.h>
+#include <dirent.h>
 #include "linked_list.h"
 #include "package.h"
 #include "version.h"
@@ -26,7 +27,7 @@ void print_env(void);
 list_node* get_into_env(variable_t* var);
 linked_list* make_pathlist(char* path_string);
 variable_t* update_var(variable_t* evar, variable_t* vvar);
-void print_path(linked_list* pathlist);
+void print_path(char* varname, linked_list* pathlist);
 linked_list* merge_paths(linked_list* elist, linked_list* vlist);
 
 
@@ -251,7 +252,7 @@ void print_env(void)
 
          case VAR_PATH_ADD:
          case VAR_PATH_SET:
-            print_path(var->pathlist);
+            print_path(var->name, var->pathlist);
             break;
 
          default:
@@ -265,12 +266,25 @@ void print_env(void)
    }
 }
 
-void print_path(linked_list* pathlist)
+void print_path(char* varname, linked_list* pathlist)
 {
    list_node* node;
+   char* dirname;
+   DIR* dir;
 
    for (node = head(pathlist) ; node ; node = next(node))
-      printf(next(node) ? "%s:" : "%s", (char*) get_value(node));
+   {
+      dirname = get_value(node);
+      printf(next(node) ? "%s:" : "%s", dirname);
+/*
+      dir = opendir(dirname);
+      if (!dir && !silent)
+         fprintf(stderr,
+                 "# warning: unavailable directory `%s' in variable `%s'.\n",
+                 dirname, varname);
+      dir && closedir(dir);
+*/
+   }
 }
 
 list_node* get_into_env(variable_t* var)
