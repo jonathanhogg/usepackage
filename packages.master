@@ -205,6 +205,13 @@ CDE * SunOS * * :		PATH += /usr/dt/bin,
 				     /usr/dt/lib/%T/%N%S ;
 
 
+### Motif: ###
+
+>> Motif : "the Motif libraries (without the rest of CDE)" <<
+
+* * SunOS * * :			LD_LIBRARY_PATH += /usr/dt/lib ;
+
+
 ### TeX: ###
 
 >> TeX : "TeX, LaTeX, BibTeX and friends" <<

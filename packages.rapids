@@ -32,7 +32,7 @@ HotJava sun4* SunOS 5.* * <= standard :
 
 >> PJama : "Persistent Java project compiler and interpreter" <<
 
-PJama sun4* SunOS 5.* * <= Java :
+PJama sun4* SunOS 5.* * <= Java, Motif :
 		PJHOME = /local/java/pjama,
 		PATH += /local/java/pjama/bin/sparc/green_threads,
 		LD_LIBRARY_PATH += /local/java/pjama/lib/sparc/green_threads,
