@@ -6,7 +6,7 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include "linked_list.h"
-#include "packages.h"
+#include "package.h"
 #include "utils.h"
 
 
@@ -14,6 +14,7 @@ extern char litbuf[1024];
 extern char *yytext;
 extern FILE *yyin;
 extern char* main_package_filename;
+extern linked_list* make_pathlist(char* path_string);
 
 
 linked_list* loaded_packages;
@@ -182,20 +183,45 @@ int yywrap()
 
 int include(char* filename)
 {
-   stack_pointer++;
-   line_number[stack_pointer] = 1;
+   static linked_list* include_path = NULL;
+   list_node* node;
+   char* dir;
+   char the_file_name[256];
+   FILE* the_file = NULL;
+   char* path;
 
-   strcpy(file_name[stack_pointer], expand(filename));
-
-   if (!(file[stack_pointer] = fopen(file_name[stack_pointer], "r")))
+   if (!include_path)
    {
-      DEBUG("# cannot open file `%s'\n", file_name[stack_pointer]);
-      stack_pointer--;
+      path = getenv(PACKAGE_PATH_VAR);
+      if (!path)
+         path = DEFAULT_PACKAGE_PATH;
+
+      include_path = make_pathlist(path);
+   }
+
+   strcpy(the_file_name, expand(filename));
+   if (the_file_name[0] == '/')
+      the_file = fopen(the_file_name, "r");
+
+   for (node = head(include_path) ; !the_file && node ; node = next(node))
+   {
+      dir = (char*) get_value(node);
+      sprintf(the_file_name, "%s/%s", expand(dir), filename);
+      the_file = fopen(the_file_name, "r");
+   }
+
+   if (!the_file)
+   {
+      DEBUG(stderr, "# cannot open file `%s'\n", filename);
       return(1);
    }
 
-   DEBUG("# reading from `%s'...\n", file_name[stack_pointer]);
-   yyin = file[stack_pointer];
+   DEBUG(stderr, "# reading from `%s'...\n", the_file_name);
+   stack_pointer++;
+   strcpy(file_name[stack_pointer], the_file_name);
+   line_number[stack_pointer] = 1;
+   yyin = file[stack_pointer] = the_file;
+
    return(0);
 }
 

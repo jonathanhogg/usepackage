@@ -10,8 +10,16 @@
 
 /*** macros: ***/
 
-#ifndef MAIN_PACKAGE_FILE
-#define MAIN_PACKAGE_FILE "./packages"
+#ifndef MASTER_PACKAGE_FILE
+#define MASTER_PACKAGE_FILE "packages.master"
+#endif
+
+#ifndef PACKAGE_PATH_VAR
+#define PACKAGE_PATH_VAR "PACKAGES_PATH"
+#endif
+
+#ifndef DEFAULT_PACKAGE_PATH
+#define DEFAULT_PACKAGE_PATH "/usr/local/lib/usepackage:~:."
 #endif
 
 #define VAR_LIT_SET 0
@@ -22,7 +30,7 @@
 #define MATCH_PREFIX 1
 #define MATCH_WILD 2
 
-#define DEBUG if (debugging) printf
+#define DEBUG if (debugging) fprintf
 #define new(x) ((x*)malloc(sizeof(x)))
 
 

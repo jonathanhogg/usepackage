@@ -1,8 +1,14 @@
 
 # Makefile
 
+
 GROUP = contrib
 DEST = /usr/local/contrib
+PACKAGE_FILES = packages.master packages.vlsi packages.fp packages.rapids \
+		packages.contrib
+MASTER_PACKAGE_FILE = packages.master
+DEFAULT_PACKAGE_PATH = $(DEST)/lib/usepackage:~:.
+
 
 INSTALL_EXEC = install -m 771 -g $(GROUP)
 INSTALL_SCRIPT = install -m 775 -g $(GROUP)
@@ -14,7 +20,8 @@ BISON = bison -d
 FLEX = flex -Cf -i
 MV = mv
 RM = rm -f
-CC = gcc -O2 -DMAIN_PACKAGE_FILE=\"$(DEST)/lib/usepackage/packages.master\"
+CC = gcc -O2 -DDEFAULT_PACKAGE_PATH=\"$(DEFAULT_PACKAGE_PATH)\" \
+	-DMASTER_PACKAGE_FILE=\"$(MASTER_PACKAGE_FILE)\"
 LINK = gcc
 
 
@@ -33,7 +40,7 @@ install-lib: README use.bsh use.csh use.ksh use.zsh
 	$(INSTALL_SCRIPT) use.csh $(DEST)/lib/usepackage/use.csh
 	$(INSTALL_SCRIPT) use.ksh $(DEST)/lib/usepackage/use.ksh
 	$(INSTALL_SCRIPT) use.zsh $(DEST)/lib/usepackage/use.zsh
-	for package in packages.?* ;\
+	for package in $(PACKAGE_FILES) ;\
 	do \
 		$(INSTALL_FILE) $$package $(DEST)/lib/usepackage/$$package ;\
 	done
@@ -64,8 +71,8 @@ clean:
 
 
 linked_list.o: linked_list.h
-match.o: packages.h linked_list.h
-usepackage.o: packages.h linked_list.h utils.h version.h
-grammar.o: packages.h linked_list.h utils.h
-scanner.o: packages.h grammar.h
+match.o: package.h linked_list.h
+usepackage.o: package.h linked_list.h utils.h version.h
+grammar.o: package.h linked_list.h utils.h
+scanner.o: package.h grammar.h
 

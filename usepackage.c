@@ -11,7 +11,7 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include "linked_list.h"
-#include "packages.h"
+#include "package.h"
 #include "version.h"
 #include "utils.h"
 
@@ -39,7 +39,7 @@ struct utsname the_host_info;
 linked_list* the_packages;
 linked_list* the_groups;
 linked_list* the_environment;
-char* main_package_filename = MAIN_PACKAGE_FILE;
+char* main_package_filename = MASTER_PACKAGE_FILE;
 
 
 /*** main program: ***/
@@ -75,13 +75,14 @@ void main(int argc, char *argv[])
 	       break;
 	    default:
 	       fprintf(stderr, "usepackage: unrecognised flag '%c'\n", *f);
-	       exit(1);
+               exit(1);
 	 }
    }
 
    if (i >= argc)
    {
-      fprintf(stderr, "usage: usepackage [-vscb] [-f <file>] <package> [<package>...]\n\n");
+      fprintf(stderr, "usepackage %s, Copyright %s\n\n", VERSION, COPYRIGHT);
+      fprintf(stderr, "usage: use [-vscb] [-f <file>] <package> [<package>...]\n\n");
       fprintf(stderr, "       -v : verbose\n");
       fprintf(stderr, "       -s : silence match warnings\n");
       fprintf(stderr, "       -c : force csh style output\n");
@@ -90,15 +91,15 @@ void main(int argc, char *argv[])
       exit(1);
    }
 
-   DEBUG("# usepackage\n");
-   DEBUG("# Version: %s\n", VERSION);
-   DEBUG("# Copyright (c) 1995-96 Jonathan Hogg\n");
+   DEBUG(stderr, "# usepackage\n");
+   DEBUG(stderr, "# Version: %s\n", VERSION);
+   DEBUG(stderr, "# Copyright %s\n", COPYRIGHT);
 
    uname(&the_host_info);
-   DEBUG("# host: %s\n", the_host_info.nodename);
-   DEBUG("# operating system: %s %s\n", the_host_info.sysname,
+   DEBUG(stderr, "# host: %s\n", the_host_info.nodename);
+   DEBUG(stderr, "# operating system: %s %s\n", the_host_info.sysname,
          the_host_info.release);
-   DEBUG("# architecture: %s\n", the_host_info.machine);
+   DEBUG(stderr, "# architecture: %s\n", the_host_info.machine);
 
    csh_user = is_csh_user();
    if (sh_override != -1) csh_user = sh_override;
@@ -132,7 +133,7 @@ void use_package(char* name)
    list_node* node;
    int got_one = 0;
 
-   DEBUG("# using package %s...\n", name);
+   DEBUG(stderr, "# using package `%s'...\n", name);
       
    for (node = head(the_packages) ; node ; node = next(node))
    {
@@ -149,7 +150,7 @@ void use_package(char* name)
 
    if ((!silent) && (!got_one))
       fprintf(stderr,
-	      "usepackage: no match for package `%s' on this host.\n",
+	      "# warning: no match for package `%s' on this host.\n",
 	      name);
 }
 
@@ -166,7 +167,7 @@ void add_package(package_t* package)
    
    if (package->requires)
    {
-      DEBUG("# (pre-using required packages list)\n");
+      DEBUG(stderr, "# (pre-using required packages list)\n");
 
       for (rnode=list_tail(package->requires) ; rnode ; rnode=previous(rnode))
       {
@@ -206,7 +207,7 @@ void use_group(group_t* group)
 {
    list_node* node;
 
-   DEBUG("# (expanding group `%s')\n", group->name);
+   DEBUG(stderr, "# (expanding group `%s')\n", group->name);
 
    for (node = list_tail(group->packages) ; node ; node = previous(node))
       use_package((char*) get_value(node));
@@ -232,7 +233,7 @@ void print_env(void)
    list_node* node;
    variable_t* var;
 
-   DEBUG("# dumping environment...\n");
+   DEBUG(stderr, "# dumping environment...\n");
 
    for (node = head(the_environment) ; node ; node = next(node))
    {

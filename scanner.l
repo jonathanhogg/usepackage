@@ -2,7 +2,7 @@
 /* scanner.l */
 
 #include <string.h>
-#include "packages.h"
+#include "package.h"
 #include "grammar.h"
 
 char litbuf[1024];

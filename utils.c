@@ -42,7 +42,7 @@ char* expand(char* filepath)
    {
       i++;
 
-      if (filepath[i] == '/')
+      if (!filepath[i] || filepath[i] == '/')
       {
 	 pwent = getpwuid(getuid());
 
@@ -70,6 +70,11 @@ char* expand(char* filepath)
       }
 
       strcat(newpath, pwent->pw_dir);
+   }
+   else if ((filepath[i] == '.') && (!filepath[i+1] || filepath[i+1] == '/'))
+   {
+      i++;
+      getcwd(newpath, 256);
    }
 
    strcat(newpath, filepath + i);
