@@ -103,7 +103,7 @@ OpenWin * SunOS * * :	PATH += /usr/openwin/bin,
 			LD_LIBRARY_PATH += /usr/openwin/lib,
 			OPENWINHOME = /usr/openwin ;
 OpenWin sun4* SunOS 4.* * :	PATH += /usr/AnswerBook/SysSoft1_4:
-					/local/sun4/guide/bin ;
+					/local/sun4/guide/bin,
 				MANPATH += /local/sun4/guide/man ;
 
 
@@ -118,7 +118,7 @@ Ruby * * * * :
 ### Berkeley Magic: ###
 
 Magic sun4* * * * :	PATH += /local/vlsi/magic/bin,
-Magic sun4* * * * :	MANPATH += /local/vlsi/magic/man,
+			MANPATH += /local/vlsi/magic/man ;
 
 
 ### MEBS is sun4 only: ###
