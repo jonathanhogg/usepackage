@@ -1,0 +1,11 @@
+
+# setup usepackage for broken zsh users
+changequote(``,'')
+export HW_OS=`PATH=/bin:/usr/local/bin /usr/local/gnu/bin/hw_os`
+use ()
+{
+   INSTALL_DIR/bin/$HW_OS/usepackage -b $* > /tmp/use.$$
+   source /tmp/use.$$
+   rm /tmp/use.$$
+}
+

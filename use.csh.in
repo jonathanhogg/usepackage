@@ -1,0 +1,6 @@
+
+# setup usepackage for csh/tcsh users
+changequote(``,'')
+setenv HW_OS `set path = (/bin /usr/local/bin) ; /usr/local/gnu/bin/hw_os`
+alias use 'eval `INSTALL_DIR/bin/'$HW_OS'/usepackage -c \!*`'
+

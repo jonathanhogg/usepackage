@@ -1,5 +1,0 @@
-#!/bin/sh
-changequote(``,'')
-HW_OS=`PATH=/bin:/usr/local/bin /usr/local/gnu/bin/hw_os`
-exec INSTALL_DIR/bin/$HW_OS/usepackage $*
-

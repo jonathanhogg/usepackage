@@ -19,37 +19,33 @@ ifdef INSTALL_IN
 
 CC = gcc -O2 -DMAIN_PACKAGE_FILE=\"$(INSTALL_IN)/lib/packages\"
 
-target: install
-
-else
-
-CC = gcc -g
-
-target: usepackage
-
-endif
-
-OBJECTS = usepackage.o grammar.o scanner.o linked_list.o utils.o match.o
-
-install: noobjects README usepackage packages usepackage.sh
+install: noobjects README usepackage packages use.bsh use.csh use.ksh use.zsh
 	$(INSTALL_DIR) $(INSTALL_IN)
 	$(INSTALL_FILE) README $(INSTALL_IN)/README
 	$(INSTALL_DIR) $(INSTALL_IN)/bin
-	$(INSTALL_SCRIPT) usepackage.sh $(INSTALL_IN)/bin/usepackage 
+	$(INSTALL_SCRIPT) use.bsh $(INSTALL_IN)/use.bsh
+	$(INSTALL_SCRIPT) use.csh $(INSTALL_IN)/use.csh
+	$(INSTALL_SCRIPT) use.ksh $(INSTALL_IN)/use.ksh
+	$(INSTALL_SCRIPT) use.zsh $(INSTALL_IN)/use.zsh
 	$(STRIP) usepackage
 	$(INSTALL_DIR) $(INSTALL_IN)/bin/$(HW_OS)
 	$(INSTALL_EXEC) usepackage $(INSTALL_IN)/bin/$(HW_OS)/usepackage
 	$(INSTALL_DIR) $(INSTALL_IN)/lib
 	$(INSTALL_FILE) packages $(INSTALL_IN)/lib/packages
 
+%: %.in
+	$(M4) -DINSTALL_DIR=$(INSTALL_IN) $*.in > $*
+
+else
+
+CC = gcc -g
+
+endif
+
+OBJECTS = usepackage.o grammar.o scanner.o linked_list.o utils.o match.o
+
 usepackage: $(OBJECTS)
 	$(LINK) -o usepackage $(OBJECTS)
-
-README: README.in
-	$(M4) -DINSTALL_DIR=$(INSTALL_IN) README.in > README
-
-usepackage.sh: usepackage.sh.in
-	$(M4) -DINSTALL_DIR=$(INSTALL_IN) usepackage.sh.in > usepackage.sh
 
 grammar.c grammar.h: grammar.y
 	$(BISON) grammar.y
@@ -64,11 +60,10 @@ scanner.c: scanner.l
 	$(CC) -c $*.c
 
 noobjects:
-	$(RM) *.o usepackage.sh README
+	$(RM) *.o README use.bsh use.csh use.ksh use.zsh
 
-clean:
-	$(RM) *.o scanner.c grammar.c grammar.h usepackage usepackage.sh \
-		README
+clean: noobjects
+	$(RM) scanner.c grammar.c grammar.h usepackage \
 
 
 linked_list.o: linked_list.h
