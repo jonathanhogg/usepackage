@@ -1,9 +1,25 @@
+# Usepackage Environment Manager
+# Copyright (C) 1995-2002  Jonathan Hogg  <jonathan@onegoodidea.com>
+#  
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, 
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software 
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 bin_PROGRAMS = usepackage
 usepackage_SOURCES = grammar.y match.c usepackage.c linked_list.c \
 	scanner.l utils.c linked_list.h package.h utils.h use.bsh.in \
-	use.csh.in use.ksh.in use.1.in
-man_MANS = use.1
+	use.csh.in use.ksh.in use.1.in usepackage.1.in
+man_MANS = use.1 usepackage.1
 pkgdata_DATA = use.bsh use.csh use.ksh
 EXTRA_DIST = usepackage.conf
 
@@ -19,6 +35,9 @@ SUBS = "s,\@pkgdatadir\@,$(pkgdatadir),;s,\@bindir\@,$(bindir),;s,\@sysconfdir\@
 
 use.1: use.1.in
 	$(SED) $(SUBS) < use.1.in > use.1
+
+usepackage.1: usepackage.1.in
+	$(SED) $(SUBS) < usepackage.1.in > usepackage.1
 
 use.bsh: use.bsh.in
 	$(SED) $(SUBS) < use.bsh.in > use.bsh

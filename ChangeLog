@@ -24,6 +24,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 	* Updated copyright and license stuff to latest versions from FSF.
 
+	* use.1.in, usepackage.1.in: split the manual page into two, one
+	for the front-end (use) and one for the backend (usepackage).
+
 2002-05-29  Jonathan Hogg  <jonathan@onegoodidea.com>
 
 	* Tagged version 1.6.1 for release.

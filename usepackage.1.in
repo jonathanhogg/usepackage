@@ -1,0 +1,299 @@
+.TH USE 1 "$Date$" "Usepackage" "User Commands"
+.SH NAME
+usepackage \- 
+.I Usepackage
+Environment Manager
+.SH SYNOPSIS
+See 
+.IR use(1) .
+.SH DESCRIPTION
+.I Usepackage
+is an environment management program. It is based on the principle of
+.I packages
+\- collections of executables that share a common set of necessary
+environment variables, such as PATH, MANPATH or LD_LIBRARY_PATH.
+.PP
+For each given
+.IR package ,
+.B use
+sources the appropriate environment information into the current shell.
+The environment information is specified in packages files, see
+.IR PACKAGES .
+.PP
+The
+.B usepackage
+executable is the backend program used to generate environment information 
+suitable for sourcing into a running shell. The
+.B use
+frontend should be invoked to actually effect changes to the environment,
+see
+.IR use(1) .
+.SS OPTIONS
+.TP
+.I \-v
+Output verbose information to the standard error stream.
+.TP
+.I \-s
+Silence warnings for un-matched packages. This is useful in a shell
+.I rc
+script when a package is known not to be available on all architectures that 
+the shell is used on, see
+.IR PACKAGES .
+.TP
+.I \-c
+Force
+.I csh
+style environment output.
+.TP
+.I \-b
+Force bourne shell style environment output.
+.TP
+.I \-f file
+Specify an alternate initial configuration file, see
+.IR PACKAGES .
+.TP
+.I \-l
+List available packages and groups, see
+.IR ANNOTATIONS
+and
+.IR GROUPS .
+.SH PACKAGES
+.I Usepackage
+reads package environment information from the configuration file as follows:
+.SS LOAD ORDER
+When
+.I Usepackage
+starts up, it loads an initial configutation file, the name of this file may 
+be given on the command line (see
+.IR OPTIONS ),
+otherwise it defaults to the builtin name "usepackage.conf" (see
+.IR FILES ).
+This file is located by searching along a path which defaults to:
+.PP
+.nf
+     @sysconfdir@:~:.
+.fi
+.PP
+This path may be overridden with the PACKAGES_PATH environment variable
+(see
+.IR ENVIRONMENT ).
+A packages file may contain inclusion directives which cause the sourcing of 
+other files at a given points. An inclusion directive looks like:
+.PP
+.nf
+     (include file-name)
+.fi
+.PP
+The same location mechanism is used to find "file-name" as for the initial
+configuration file. A package file name may also be given as an absolute file 
+name or may be shell-style user directory, tilde (~), relative.
+.SS SYNTAX
+A package file consists of comments, delimited by a leading hash (#), 
+or package definitions of the form: 
+.PP
+.nf
+     package platform os version host [<= requires ...] :
+          variable-def [, variable-def ...] ;
+.fi
+.PP
+The
+.IR package ,
+.IR arch ,
+.IR os ,
+.IR release
+and
+.I host
+parts may be simple shell-style patterns of the form:
+.TP 15
+*
+matches anything.
+.TP
+foo*
+matches "foo", "foobar" etc.
+.TP
+{foo,bar}
+matches "foo" or "bar".
+.PP
+When
+.I Usepackage
+searches for the definition for a particular package, it compares each line
+in the packages file against the name of the package given (package) and
+system-dependant information for the execution host, as obtained by
+.IR uname (2).
+This information is the hardware implementation (platform), the operating 
+system name (os), the operating system version (version) and the hostname
+(host). Comparisons are case-insensitive. If a match is obtained then the 
+given variable definitions are processed to modify the environment. A 
+variable definition may be one of three forms:
+.PP
+.nf
+          var-name = "string"
+          var-name = path-list
+          var-name += path-list
+          var-name += "string"
+.fi
+.PP
+The first sets the given variable to a literal string value, the
+second sets the given variable to a path list, the third prepends the 
+current value of a variable with the given path list, and the fourth 
+interprets the literal string as a path list and prepends it to the current 
+value of the variable. Path lists are colon (:) separated lists of 
+directories and may contain shell-style tilde (~), user-relative, directories 
+which will be expanded automatically (except when the path list is given as a 
+literal string). When pre-pending paths to a variable, duplicate paths are 
+removed from the original value first.
+.PP
+The
+.I requires
+list specifies the names of other packages which must be sourced into the
+environment before the following variables when this line is matched.
+.SS GROUPS
+In addition to the package definitions in a packages file, there may also be
+group definitions. These have the following syntax:
+.PP
+.nf
+     group := package [, package ...] ;
+.fi
+.PP
+.I Usepackage
+searches for a given package name in the defined groups first, if the given
+name matchs a group name then the packages defined as part of that group are
+sourced into the environment together. A group definition may not reference
+other groups and may not contain patterns.
+.SS ANNOTATIONS
+In order to give useful package information to the user, annotations may be
+placed in the packages file that give summaries of packages. These annotations
+have the form:
+.PP
+.nf
+     >> name : "description" <<
+.fi
+.PP
+.I Usepackage
+collects these annotations together and displays them when called with the
+.I -l
+flag, see
+.IR OPTIONS .
+These annotations have no impact on the package mechanism and need not
+necessarily be beside or correspond to the package definitions (although
+this is the sensible way to arrange things).
+.SS EXAMPLE
+The following fragment of a packages file illustrates the main features:
+.PP
+.nf
+     # GNU software is available everywhere:
+
+     >> GNU : "The GNU project software" <<
+
+     GNU * * * * :             PATH += /usr/local/gnu/bin,
+                               MANPATH += /usr/local/gnu/man ;
+
+     # CVS requires RCS which is found in the GNU package, but
+     # is only available on SPARC Solaris machines:
+
+     >> CVS : "Concurrent Versions System revision control" <<
+
+     CVS sun4* SunOS 5.* * <= GNU :
+                               CVSROOT = /usr/src/cvsroot,
+                               CVSEDITOR = "vi",
+                               PATH += /usr/local/cvs/bin,
+                               MANPATH += /usr/local/cvs/man ;
+
+     # User bin directories (Solaris will run SunOS 4 binaries):
+
+     >> user : "User's own programs" <<
+
+     user sun4* SunOS * * :    PATH += ~/bin/sun4 ;
+     user sun4* SunOS 5.* * :  PATH += ~/bin/solaris ;
+     user alpha OSF * * :      PATH += ~/bin/alpha ;
+
+     # include standard packages:
+
+     (include packages.standard)
+
+     # security hole:
+
+     dot * * * * :             PATH += . ;
+
+     # groups:
+
+     user-setup := standard, user ;
+     programmer-setup := standard, CVS, user, dot ;
+.fi
+.PP
+Note the use of Operating System version numbers to distinguish between
+SunOS 4 and Solaris (SunOS 5), the use of "sun4*" to match the multiple
+different platform versions of SPARC machines (sun4m, sun4c, etc.) and the
+fact that package "user" on a SPARC Solaris machine will match both of the 
+first two lines of the "user" package section, resulting in the "solaris"
+directory and the "sun4" directory being added into the PATH.
+.PP
+Assuming the appropriate shell setup script has been sources (see
+.IR SYNOPSIS ),
+then the following command will cause the CVS environment (including the
+GNU environment) to be sourced:
+.PP
+.nf
+     $ use CVS
+.fi
+.PP
+Note that on a DEC Alpha machine, this will generate a warning like:
+.PP
+.nf
+     $ use CVS
+     warning: no match for package `CVS' on this host.
+.fi
+.PP
+In a shell script which is executed on a number of different platforms (such
+as the shell startup script). These warnings may be silenced (see
+.IR OPTIONS ).
+.SH FILES
+.TP 15
+.SB @pkgdatadir@/usepackage.conf
+The default master packages file.
+.TP
+.SB @pkgdatadir@/use.csh
+Shell setup for csh and derivatives.
+.TP
+.SB @pkgdatadir@/use.bsh
+Shell setup for bourne shell and derivatives.
+.TP
+.SB @pkgdatadir@/use.ksh
+Shell setup for ksh.
+.TP
+.SB @bindir@/usepackage
+The underlying
+.I Usepackage
+executable.
+.SH ENVIRONMENT
+Other than the reading and re-definition of environment variables for package 
+setup,
+.B use
+also uses the following environment variables for user configuration:
+.TP 15
+.SB PACKAGES_PATH
+Colon-separated path list giving the directories to search for configuration
+files. Shell-style tilde (~) user-directory escapes are expanded.
+.SH COPYRIGHT
+.nf
+Usepackage Environment Manager
+Copyright (C) 1995-2002  Jonathan Hogg
+.fi
+.PP
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+.PP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.PP
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+.SH SEE ALSO
+use(1), csh(1), sh(1), ksh(1), env(1), environ(5), getenv(3C), uname(1),
+uname(2)
+
