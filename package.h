@@ -43,7 +43,7 @@
 #endif
 
 #ifndef DEFAULT_PACKAGE_PATH
-#define DEFAULT_PACKAGE_PATH "/usr/local/etc:~:."
+#define DEFAULT_PACKAGE_PATH "/usr/local/etc:/usr/etc:/etc:~:."
 #endif
 
 #define VAR_LIT_SET 0
