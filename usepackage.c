@@ -13,6 +13,7 @@
 #include <sys/utsname.h>
 #include "linked_list.h"
 #include "packages.h"
+#include "version.h"
 
 
 /*** prototypes: ***/
@@ -92,7 +93,7 @@ void main(int argc, char *argv[])
    }
 
    DEBUG("# usepackage\n");
-   DEBUG("# Version: $Revision$\n");
+   DEBUG("# Version: %s\n", VERSION);
    DEBUG("# Copyright (c) Jonathan Hogg, 1995\n");
 
    uname(&the_host_info);

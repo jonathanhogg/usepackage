@@ -65,5 +65,5 @@ clean:
 
 linked_list.o: linked_list.h
 match.o: packages.h linked_list.h
-usepackage.o: packages.h linked_list.h
+usepackage.o: packages.h linked_list.h version.h
 
