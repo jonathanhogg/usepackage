@@ -63,6 +63,11 @@ typedef struct {
    linked_list* packages;
 } group_t;
 
+typedef struct {
+   char* name;
+   char* description;
+} annotation_t;
+
 
 /*** globals: ***/
 
@@ -71,7 +76,8 @@ extern int debugging;
 
 /*** prototypes: ***/
 
-extern int get_packages(linked_list** packages, linked_list** groups);
+extern int get_packages(linked_list** packages, linked_list** groups,
+                        linked_list** annotations);
 extern int package_matches(package_t* package, char* name, char* arch,
                            char* os, char* version, char* host);
 

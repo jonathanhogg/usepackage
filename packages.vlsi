@@ -11,19 +11,25 @@ VHDL-tools := VSystem, Alliance, MEBS, VELAB ;
 Xilinx-tools := XACT6000, XACT5 ;
 Schematic-tools := PowerView, Magic ;
 Ruby-tools := TRuby, Ruby ;
-NatSemi-tools := CLAyTools ;
 
+
+>> Magic : "Magic VLSI design system" <<
 
 Magic sun4* * * * :	PATH += /local/vlsi/software/magic/bin,
 			MANPATH += /local/vlsi/software/magic/man ;
+
+>> MEBS : "MEBS VHDL synthesis system" <<
 
 MEBS sun4* * * * :	PATH += /local/vlsi/software/mebs/MEBS1.2/bin,
 			MANPATH += /local/vlsi/software/mebs/MEBS1.2/man,
 			MEBS_ROOT = /local/vlsi/software/mebs/MEBS1.2 ;
 
+>> VSystem : "VSystem VHDL graphical compiler and simulation system" <<
+
 VSystem * * * {hawaii,albatross} :
 		PATH += /local/vlsi/software/V-System/modeltech/sunos5 ;
 
+>> Alliance : "Alliance VHDL simulation system" <<
 
 Alliance sun4* * * * :	PATH += /local/vlsi/software/alliance/archi/sparc/bin,
 			LD_LIBRARY_PATH +=
@@ -38,26 +44,42 @@ Alliance sun4* * * * :	PATH += /local/vlsi/software/alliance/archi/sparc/bin,
 			MBK_WORK_LIB = .,
 			MBK_IN_LO = "vst" ;
 
+>> VELAB : "VHDL elaborator" <<
+
 VELAB sun4* SunOS * * :	PATH += /local/vlsi/software/velab,
 			VELAB_ROOT = /local/vlsi/software/velab ;
+
+>> XACT6000 : "XACT6000 FPGA tools" <<
 
 XACT6000 sun4* * * * :	PATH += /local/vlsi/software/xact6000/bin,
 			XACT6000 = /local/vlsi/software/xact6000 ;
 
+>> XACT5 : "XACT5 FPGA tools" <<
+
 XACT5 sun4* * * * :     XACT += /local/vlsi/software/xact/xact,
                         PATH += /local/vlsi/software/xact/bin/sparc ;
+
+>> PowerView : "PowerView schematic editor" <<
 
 PowerView sun4* * * * : XACT += /local/vlsi/software/powerview,
                         PATH += /local/vlsi/software/powerview/bin/sparc ;
 
+>> CLAyTools : "NatSemi CLAy FPGA tools" <<
+
 CLAyTools * * * copinsay : PATH += /local/vlsi/claytools/1.11/bin ;
+
+>> TRuby : "TRuby compiler and proof system" <<
 
 TRuby sun4* * * * : PATH += /local/vlsi/software/t-ruby/sparc-sun-sunos4/bin ;
 TRuby alpha * * * : PATH += /local/vlsi/software/t-ruby/alpha-dec-osf2/bin ;
 
+>> Ruby : "Glasgow Ruby Compiler" <<
+
 Ruby * * * * :		RUBY_ROOT = /local/vlsi/software/ruby,
 			PATH += /local/vlsi/software/ruby/bin,
 			MANPATH += /local/vlsi/software/ruby/man ;
+
+>> NP-Tools : "NP-Tools proof system" <<
 
 NP-Tools sun4* * * * :
 		PATH += /local/vlsi/software/np-tools/np-tools/bin,

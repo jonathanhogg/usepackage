@@ -29,6 +29,8 @@ linked_list* make_pathlist(char* path_string);
 variable_t* update_var(variable_t* evar, variable_t* vvar);
 void print_path(char* varname, linked_list* pathlist);
 linked_list* merge_paths(linked_list* elist, linked_list* vlist);
+void list_annotations();
+void list_groups();
 
 
 /*** globals: ***/
@@ -39,6 +41,7 @@ int csh_user;
 struct utsname the_host_info;
 linked_list* the_packages;
 linked_list* the_groups;
+linked_list* the_annotations;
 linked_list* the_environment;
 char* main_package_filename = MASTER_PACKAGE_FILE;
 
@@ -51,6 +54,7 @@ void main(int argc, char *argv[])
    char* f;
    group_t* group;
    int sh_override = -1;
+   int list_packages = 0;
 
    for (i=1; i<argc && *argv[i] == '-'; i++)
    {
@@ -74,42 +78,57 @@ void main(int argc, char *argv[])
 	    case 'f':
 	       main_package_filename = argv[++i];
 	       break;
+	    case 'l':
+	       list_packages = 1;
+	       break;
 	    default:
 	       fprintf(stderr, "usepackage: unrecognised flag '%c'\n", *f);
                exit(1);
 	 }
    }
 
-   if (i >= argc)
+   if (!list_packages && (i >= argc))
    {
       fprintf(stderr, "usepackage %s, Copyright %s\n\n", VERSION, COPYRIGHT);
-      fprintf(stderr, "usage: use [-vscb] [-f <file>] <package> [<package>...]\n\n");
+      fprintf(stderr, "usage: use [-vscb] [-f <file>] <package> [<package>...]\n");
+      fprintf(stderr, "       use -l\n\n");
       fprintf(stderr, "       -v : verbose\n");
       fprintf(stderr, "       -s : silence match warnings\n");
       fprintf(stderr, "       -c : force csh style output\n");
       fprintf(stderr, "       -b : force sh style output\n");
       fprintf(stderr, "       -f : use <file> as main packages file\n");
+      fprintf(stderr, "       -l : list available packages\n");
       exit(1);
    }
 
-   DEBUG(stderr, "# usepackage\n");
-   DEBUG(stderr, "# Version: %s\n", VERSION);
-   DEBUG(stderr, "# Copyright %s\n", COPYRIGHT);
+   DEBUG(stderr, "usepackage\n");
+   DEBUG(stderr, "Version: %s\n", VERSION);
+   DEBUG(stderr, "Copyright %s\n", COPYRIGHT);
 
    uname(&the_host_info);
-   DEBUG(stderr, "# host: %s\n", the_host_info.nodename);
-   DEBUG(stderr, "# operating system: %s %s\n", the_host_info.sysname,
+   DEBUG(stderr, "host: %s\n", the_host_info.nodename);
+   DEBUG(stderr, "operating system: %s %s\n", the_host_info.sysname,
          the_host_info.release);
-   DEBUG(stderr, "# architecture: %s\n", the_host_info.machine);
+   DEBUG(stderr, "architecture: %s\n", the_host_info.machine);
 
    csh_user = is_csh_user();
    if (sh_override != -1) csh_user = sh_override;
 
    the_environment = new_list();
-   if (get_packages(&the_packages, &the_groups))
+   if (get_packages(&the_packages, &the_groups, &the_annotations))
    {
       fprintf(stderr, "usepackage: couldn't load package information.\n");
       exit(2);
+   }
+
+   if (list_packages)
+   {
+      fprintf(stderr, "usepackage %s, Copyright %s\n\n", VERSION, COPYRIGHT);
+      fprintf(stderr, "Available packages are:\n\n");
+      list_annotations();
+      fprintf(stderr, "\nAvailable groups are:\n\n");
+      list_groups();
+      exit(0);
    }
 
    for (first = i, i = argc - 1 ; i >= first ; i--)
@@ -134,7 +153,7 @@ void use_package(char* name)
    list_node* node;
    int got_one = 0;
 
-   DEBUG(stderr, "# using package `%s'...\n", name);
+   DEBUG(stderr, "using package `%s'...\n", name);
       
    for (node = head(the_packages) ; node ; node = next(node))
    {
@@ -151,7 +170,7 @@ void use_package(char* name)
 
    if ((!silent) && (!got_one))
       fprintf(stderr,
-	      "# warning: no match for package `%s' on this host.\n",
+	      "warning: no match for package `%s' on this host.\n",
 	      name);
 }
 
@@ -168,7 +187,7 @@ void add_package(package_t* package)
    
    if (package->requires)
    {
-      DEBUG(stderr, "# (pre-using required packages list)\n");
+      DEBUG(stderr, "(pre-using required packages list)\n");
 
       for (rnode=list_tail(package->requires) ; rnode ; rnode=previous(rnode))
       {
@@ -208,7 +227,7 @@ void use_group(group_t* group)
 {
    list_node* node;
 
-   DEBUG(stderr, "# (expanding group `%s')\n", group->name);
+   DEBUG(stderr, "(expanding group `%s')\n", group->name);
 
    for (node = list_tail(group->packages) ; node ; node = previous(node))
       use_package((char*) get_value(node));
@@ -234,7 +253,7 @@ void print_env(void)
    list_node* node;
    variable_t* var;
 
-   DEBUG(stderr, "# dumping environment...\n");
+   DEBUG(stderr, "dumping environment...\n");
 
    for (node = head(the_environment) ; node ; node = next(node))
    {
@@ -280,7 +299,7 @@ void print_path(char* varname, linked_list* pathlist)
       dir = opendir(dirname);
       if (!dir && !silent)
          fprintf(stderr,
-                 "# warning: unavailable directory `%s' in variable `%s'.\n",
+                 "warning: unavailable directory `%s' in variable `%s'.\n",
                  dirname, varname);
       dir && closedir(dir);
 */
@@ -417,4 +436,41 @@ linked_list* merge_paths(linked_list* elist, linked_list* vlist)
 
    return(elist);
 }
+
+void list_annotations()
+{
+   list_node* node;
+   annotation_t* annotation;
+ 
+   for (node = head(the_annotations); node; node = next(node))
+   {
+      annotation = (annotation_t*) get_value(node);
+ 
+      fprintf(stderr, "   %s - %s\n", annotation->name,
+              annotation->description);
+   }
+}
+ 
+void list_groups()
+{
+   list_node* gnode;
+   list_node* pnode;
+   group_t* group;
+
+   for (gnode = head(the_groups) ; gnode ; gnode = next(gnode))
+   {
+      group = (group_t*) get_value(gnode);
+
+      fprintf(stderr, "  %s - ", group->name);
+
+      for (pnode = head(group->packages) ; pnode ; pnode = next(pnode))
+      {
+         fprintf(stderr, "%s", (char*) get_value(pnode));
+         if (next(pnode))
+            fprintf(stderr, ", ");
+      }
+
+      fprintf(stderr, "\n");
+   }
+} 
 

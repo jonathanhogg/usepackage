@@ -20,6 +20,7 @@ extern linked_list* make_pathlist(char* path_string);
 
 linked_list* loaded_packages;
 linked_list* loaded_groups;
+linked_list* loaded_annotations;
 int yyerrors;
 
 int stack_pointer;
@@ -38,10 +39,12 @@ int include(char* filename);
    variable_t* variable;
    match_t* match;
    group_t* group;
+   annotation_t* annotation;
 }
 
 %token COLON SEMICOLON COMMA EQUALS PLUSEQUALS LITERAL NAME PATH
 %token LEFTPAREN RIGHTPAREN PREFIX WILDCARD ASSIGN WITH
+%token BEGIN_ANNOTATE END_ANNOTATE
 
 %type <package> package
 %type <list> variables pathlist matchlist matches names requires
@@ -49,17 +52,22 @@ int include(char* filename);
 %type <variable> variable
 %type <match> match
 %type <group> group
+%type <annotation> annotation
 
 %%
 
 entries: /* nothing */
-         { loaded_packages = new_list(); loaded_groups = new_list(); } |
+         { loaded_packages = new_list();
+           loaded_groups = new_list();
+           loaded_annotations = new_list(); } |
          entries entry ;
 
 entry: package
        { add_to_tail(loaded_packages, (void*) $1); } |
        group
-       { add_to_tail(loaded_groups, (void*) $1); } ;
+       { add_to_tail(loaded_groups, (void*) $1); } |
+       annotation
+       { add_to_tail(loaded_annotations, (void*) $1) } ;
 
 package: matchlist matchlist matchlist matchlist matchlist requires COLON
          variables SEMICOLON 
@@ -74,6 +82,12 @@ requires: /* nothing */
 
 group: name ASSIGN names SEMICOLON
        { $$ = new(group_t); $$->name = $1; $$->packages = $3;} ;
+
+
+annotation: BEGIN_ANNOTATE name COLON literal END_ANNOTATE
+            { $$ = new(annotation_t);
+              $$->name = $2;
+              $$->description = $4 } ;
 
 variables: variable
            { $$ = new_list(); add_to_tail($$, (void*) $1); } |
@@ -147,7 +161,8 @@ yyerror()
    yyerrors++;
 }
 
-int get_packages(linked_list** packages, linked_list** groups)
+int get_packages(linked_list** packages, linked_list** groups,
+                 linked_list** annotations)
 {
 #ifdef YYDEBUG
    yydebug = debugging;
@@ -166,6 +181,7 @@ int get_packages(linked_list** packages, linked_list** groups)
 
    *packages = loaded_packages;
    *groups = loaded_groups;
+   *annotations = loaded_annotations;
    return(0);
 }
 
@@ -213,11 +229,11 @@ int include(char* filename)
 
    if (!the_file)
    {
-      DEBUG(stderr, "# cannot open file `%s'\n", filename);
+      DEBUG(stderr, "cannot open file `%s'\n", filename);
       return(1);
    }
 
-   DEBUG(stderr, "# reading from `%s'...\n", the_file_name);
+   DEBUG(stderr, "reading from `%s'...\n", the_file_name);
    stack_pointer++;
    strcpy(file_name[stack_pointer], the_file_name);
    line_number[stack_pointer] = 1;
@@ -225,5 +241,4 @@ int include(char* filename)
 
    return(0);
 }
-
 

@@ -6,6 +6,8 @@
 # [see packages.master]
 #
 
+>> FP : "Functional Programming group stuff (including ghc and hugs)" <<
+
 FP * * * * :            PATH += /local/fp/bin,
                         MANPATH += /local/fp/man ;
 FP sun4* SunOS 4.* * :  PATH += /local/fp/bin/sparc-sun-sunos4 ;

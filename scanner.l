@@ -36,6 +36,8 @@ path	(\.|\~|\.?\/[^ \t\n:,;]*|\~[^ \t\n:,;]+)
 "="		return(EQUALS);
 ":="		return(ASSIGN);
 "<="		return(WITH);
+">>"		return(BEGIN_ANNOTATE);
+"<<"		return(END_ANNOTATE);
 "\""		bufp=litbuf; bufp[0] = '\0'; BEGIN(lit);
 <lit>[^\"\n]*	strcpy(bufp, yytext); bufp += yyleng;
 <lit>\n		{ strcpy(bufp, yytext); bufp += yyleng;

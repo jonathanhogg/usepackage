@@ -9,6 +9,8 @@
 
 ### Java: ###
  
+>> Java : "Java compiler and interpreter" <<
+
 Java sun4* SunOS 5.* * :
 		PATH += /local/java/jdk/bin,
 		LD_LIBRARY_PATH += /local/java/jdk/lib/sparc/green_threads,
@@ -20,11 +22,15 @@ Java sun4* SunOS 5.* * :
 # hotjava doesn't like the gnu version of 'uname' so i bring standard to
 # the front just in case.
 
+>> HotJava : "Sun's HotJava browser" <<
+
 HotJava sun4* SunOS 5.* * <= standard :
 		PATH += /local/java/hotjava/bin ;
 
 
 ### Persistent-Java: ###
+
+>> PJama : "Persistent Java project compiler and interpreter" <<
 
 PJama sun4* SunOS 5.* * <= Java :
 		PJHOME = /local/java/pjama,

@@ -9,6 +9,8 @@
 
 ### main contrib stuff: ###
 
+>> contrib : "contributed software (email contrib@dcs)" <<
+
 contrib * * * * :		PATH += /usr/local/contrib/bin,
 				MANPATH += /usr/local/contrib/man,
 				LD_LIBRARY_PATH += /usr/local/contrib/lib,
