@@ -102,7 +102,8 @@ GNU * * * * :		PATH += /usr/local/gnu/bin,
 
 X11* sun* SunOS 5.* * :	PATH += /local/sun4/X11/bin:/local/sun4/X11/local/bin,
 			MANPATH += /local/sun4/X11/man:
-				/local/sun4/X11/local/man ;
+				/local/sun4/X11/local/man,
+			LD_LIBRARY_PATH += /local/sun4/X11/lib ;
 X11* * SunOS 5.* * :
 			PATH += /usr/openwin/bin,
 			MANPATH += /usr/openwin/man,
