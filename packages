@@ -32,9 +32,10 @@
 
 ### standard things that everyone should have: ###
 
-standard sun4* * * :			PATH += /local/sun4/bin:/usr/lang ;
-standard alpha * * :			PATH += /local/alpha/bin ;
-standard * * * :	PATH += /usr/ucb:/usr/bin:/usr/local/bin:/usr/hosts,
+standard sun4* * * :	PATH += /local/sun4/bin:/usr/lang ;
+standard alpha * * :	PATH += /local/alpha/bin ;
+standard * * * :	PATH += /usr/ucb:/usr/bin:/usr/local/bin:
+				/usr/hosts:/usr/etc,
 			MANPATH += /usr/man:/usr/local/man:/local/man ;
 
 
@@ -110,9 +111,9 @@ TeX * * * :	PATH += /usr/local/tex/bin,
 
 ### Haskell: ###
 
-Haskell * * * : MANPATH += /local/fp/man ;
-Haskell alpha * * : PATH += /local/fp/bin.alpha ;
-Haskell sun4 * * : PATH += /local/fp/bin.alpha ;
+FP * * * :	MANPATH += /local/fp/man ;
+FP alpha * * :	PATH += /local/fp/bin.alpha ;
+FP sun4 * * :	PATH += /local/fp/bin.alpha ;
 
 
 ### CLAyTools only licensed for copinsay at present: ###
