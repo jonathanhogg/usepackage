@@ -22,10 +22,12 @@ MEBS sun4* * * * :	PATH += /local/vlsi/software/mebs/MEBS1.2/bin,
 			MEBS_ROOT = /local/vlsi/software/mebs/MEBS1.2 ;
 
 VSystem * * * {hawaii,albatross} :
-		PATH += /local/vlsi/software/V-System/modeltech/sun4 ;
+		PATH += /local/vlsi/software/V-System/modeltech/sunos5 ;
 
 
-Alliance sun4* * * * :	PATH += /local/vlsi/software/alliance/bin,
+Alliance sun4* * * * :	PATH += /local/vlsi/software/alliance/archi/sparc/bin,
+			LD_LIBRARY_PATH +=
+			  /local/vlsi/software/alliance/archi/sparc/lib,
 			MANPATH += /local/vlsi/software/alliance/man,
 			MBK_CATA_LIB =
 			  .:

@@ -52,9 +52,9 @@
 
 ### basic groups: ###
 
-CDE-user := standard, bsd, opt, gnu, contrib, CDE, X11 ;
-OpenWin-user := standard, bsd, opt, gnu, contrib, OpenWin, X11 ;
-X11-user := standard, bsd, opt, gnu, contrib, X11 ;
+CDE-user := standard, bsd, opt, gnu, contrib, CDE, X11-common ;
+OpenWin-user := standard, bsd, opt, gnu, contrib, OpenWin, X11-common ;
+X11-user := standard, bsd, opt, gnu, contrib, X11-local, X11-common ;
 
 
 ### empty path: ###
@@ -75,12 +75,11 @@ dot * * * * :		PATH += . ;
 # enough namespace for all the architectures we now use, so i'm including
 # the HW_OS variable which is becoming the standard.
 
-arch sun4* SunOS 4.* * :	ARCH="sun4", HW_OS="sparc-sun-sunos4" ;
 arch sun4* SunOS 5.* * :	ARCH="solaris", HW_OS="sparc-sun-solaris2" ;
 arch alpha OSF1 * * :		ARCH="alpha", HW_OS="alpha-dec-osf1" ;
 arch i86pc SunOS 5.* * :	ARCH="i86pc", HW_OS="i386-unknown-solaris2" ;
 arch mips IRIX * * :		ARCH="mips", HW_OS="mips-sgi-irix" ;
-# arch i86px linux? * * :	ARCH="linux", HW_OS="i386-unknown-linux" ;
+arch i86pc Linux * * :		ARCH="linux", HW_OS="i386-unknown-linux" ;
 
 
 ### standard things that everyone should have: ###
@@ -115,7 +114,13 @@ sysadm * * * * :	PATH += /usr/sbin:/sbin:/etc ;
 
 ### X11: ###
 
-X11 * * * * :		PATH += /usr/local/X11/bin,
+X11-local * * * * :	PATH += /usr/X11/bin,
+			MANPATH += /usr/X11/man,
+			LD_LIBRARY_PATH += /usr/X11/lib,
+			XFILESEARCHPATH
+			  += /usr/X11/lib/%T/%N%S ;
+
+X11-common * * * * :	PATH += /usr/local/X11/bin,
 			MANPATH += /usr/local/X11/man,
 			LD_LIBRARY_PATH += /usr/local/X11/lib,
 			XFILESEARCHPATH
@@ -135,7 +140,7 @@ OpenWin * SunOS * * :	PATH += /usr/openwin/bin,
 
 ### CDE: ###
 
-CDE * * * * :		PATH += /usr/dt/bin,
+CDE * SunOS * * :	PATH += /usr/dt/bin,
 			MANPATH += /usr/dt/man,
 			LD_LIBRARY_PATH += /usr/dt/lib,
 			XFILESEARCHPATH
@@ -149,16 +154,16 @@ TeX * * * * :	PATH += /usr/local/tex/bin,
 		MANPATH += /usr/local/tex/man ;
 
 
-### contrib stuff: ###
-
-(include /usr/local/contrib/lib/usepackage/packages.contrib)
-
-
 ### SPARCworks: ###
 
 SPARCworks * SunOS 5.* * :	PATH += /opt/SUNWspro/bin,
 				MANPATH += /opt/SUNWspro/man,
 				LD_LIBRARY_PATH += /opt/SUNWspro/lib ;
+
+
+### contrib stuff: ###
+
+(include /usr/local/contrib/lib/usepackage/packages.contrib)
 
 
 ### Group packages: ###
@@ -168,7 +173,7 @@ SPARCworks * SunOS 5.* * :	PATH += /opt/SUNWspro/bin,
 (include /usr/local/contrib/lib/usepackage/packages.rapids)
 
 
-### include users own packages information: ###
+### include user's own packages information: ###
 
 (include ~/.packages)
 
