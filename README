@@ -1,6 +1,23 @@
-usepackage
-==========
-by Jonathan AH Hogg (jonathan@dcs.gla.ac.uk)
+Copyright 1995-2002 Jonathan Hogg
+
+This file is part of the usepackage distribution.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+				Usepackage
 
 usepackage is an environment management program. It is based on the principle
 of "packages" that are "used". When a package is used, the information
@@ -8,20 +25,15 @@ necessary to invoke it is drawn into the environment of the shell. A summary
 of how to setup and use the system is given below; see the manual page for 
 more information.
 
-
 Using usepackage:
 -----------------
 
-Add one of the following lines to your shell rc file.
+Add one of the following lines to your shell rc file (modify depending on
+where you installed usepackage):
 
- * for csh/tcsh:	source INSTALL_DIR/lib/usepackage/use.csh
- * for sh/zsh/bash:	source INSTALL_DIR/lib/usepackage/use.bsh
- * for ksh:		. INSTALL_DIR/lib/usepackage/use.ksh
-
- * if you use zsh on the Pentiums or on Solaris machines and suffer horrible
-   core dumps, then you might like to try using this line instead:
-
-   source INSTALL_DIR/lib/usepackage/use.zsh
+ * for csh/tcsh:	source /usr/local/share/usepackage/use.csh
+ * for sh/zsh/bash:	source /usr/local/share/usepackage/use.bsh
+ * for ksh:		. /usr/local/share/usepackage/use.ksh
 
 Then invoke `use' to add packages to your environment like:
 
@@ -37,29 +49,35 @@ above example.
 The 'use' command can be called at any time to use another package, for
 example:
 
-   > latex foo
+   % latex foo
    latex: Command not found.
-   > use tex
-   > latex foo
+   % use tex
+   % latex foo
    This is TeX, Version 3.1415 (C version 6.1)
    ...
 
 If the requested package is not available for your platform then a warning
 message will be given of the form:
 
-   > use java
+   % use java
    usepackage: no match for package `java' on this host.
 
 These messages can be suppressed with the `-s' flag (for instance if you log 
 onto platforms for which certain packages that you use are not available):
 
-   > use -s java
+   % use -s java
 
 You can obtain a usage summary by typing 'use' with no arguments and a list
 of available packages with:
 
-   > use -l
+   % use -l
+   usepackage 1.6.1, Copyright Copyright 1995-2002 Jonathan Hogg
 
+   Available packages are:
+
+      none - empty paths
+      dot - add current directory to PATH (possible security hole)
+      [...]
 
 A Recommendation:
 -----------------
@@ -76,16 +94,25 @@ that the `man' command works much better with a short MANPATH variable and
 even better if the pages you request are near the head of the MANPATH (which
 is the case when a package is added at the command line).
 
-
 Customising packages:
 ---------------------
 
-The file 'INSTALL_DIR/lib/usepackage/packages.master' contains
-the information about each package. This file contains comments explaining 
-its format. Custom packages can be added by creating the file '.packages' 
-in your home directory with the same format as the main packages file.
+The file 'usepackage.conf' contains the information about each package. This 
+file contains comments explaining its format. Per-user packages can be added by 
+creating the file '.packages' in your home directory with the same format as 
+the main packages file (assuming the 'include' line in 'usepackage.conf' is
+kept). The syntax is also documented in the 'use' manual page.
 
-If you need to add a package which you feel should be available more widely,
-then please email me and i'll include it into the main packages file.
+
+				REPORTING BUGS
+
+If you find a bug in usepackage, please let me know about it. You can email me
+at <jonathan@onegoodidea.com>. There is also a mailing list for anyone
+interested in usepackage, which you can join by sending an empty message to
+<usepackage-subscribe@onegoodidea.com>.
+
+The latest distribution of usepackage can be found at:
+
+	http://www.onegoodidea.com/source.html
 
 
