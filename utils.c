@@ -57,6 +57,7 @@ char* expand(char* filepath)
          j = i;
          while (filepath[i] && (filepath[i] != '/')) i++;
          strncpy(username, filepath + j, i - j);
+         username[i-j] = '\0';
 	 pwent = getpwnam(username);
 
 	 if (!pwent)
