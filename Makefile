@@ -27,7 +27,7 @@ LINK = gcc
 
 all: README usepackage use.bsh use.csh use.ksh use.man
 
-install: install-exec install-packages install-man
+install: install-exec install-lib install-man
 
 install-exec: usepackage
 	$(STRIP) usepackage
