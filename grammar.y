@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2005  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2006  Jonathan Hogg  <jonathan@onegoodidea.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,20 +67,22 @@ int include(char* filename);
    group_t* group;
    annotation_t* annotation;
    script_t* script;
+   alias_t* alias;
 }
 
-%token COLON SEMICOLON COMMA EQUALS PLUSEQUALS QEQUALS QPLUSEQUALS LITERAL NAME PATH
+%token COLON SEMICOLON COMMA EQUALS PLUSEQUALS EQUALSPLUS QEQUALS QPLUSEQUALS LITERAL NAME PATH
 %token LEFTPAREN RIGHTPAREN PREFIX WILDCARD ASSIGN WITH
-%token BEGIN_ANNOTATE END_ANNOTATE SCRIPT
+%token BEGIN_ANNOTATE END_ANNOTATE SCRIPT ALIAS
 
 %type <package> package settings
 %type <list> pathlist matchlist matches names requires
-%type <string> name literal path prefix
+%type <string> name literal path prefix aliasvalue
 %type <variable> variable
 %type <match> match
 %type <group> group
 %type <annotation> annotation
 %type <script> script
+%type <alias> alias
 
 %%
 
@@ -146,18 +148,29 @@ settings: variable
           { $$ = new(package_t);
             $$->variables = new_list();
             $$->scripts = new_list();
+            $$->aliases = new_list();
             add_to_tail($$->variables, (void*) $1); } |
           script
           { $$ = new(package_t);
             $$->variables = new_list();
             $$->scripts = new_list();
+            $$->aliases = new_list();
             add_to_tail($$->scripts, (void*) $1); } |
+          alias
+          { $$ = new(package_t);
+            $$->variables = new_list();
+            $$->scripts = new_list();
+            $$->aliases = new_list();
+            add_to_tail($$->aliases, (void*) $1); } |
           settings COMMA variable
           { $$ = $1;
             add_to_tail($$->variables, (void*) $3); } |
           settings COMMA script
           { $$ = $1;
-            add_to_tail($$->scripts, (void*) $3); } ;
+            add_to_tail($$->scripts, (void*) $3); } |
+          settings COMMA alias
+          { $$ = $1;
+            add_to_tail($$->aliases, (void*) $3); } ;
 
 variable: name EQUALS literal
           { $$ = new(variable_t);
@@ -171,9 +184,17 @@ variable: name EQUALS literal
           { $$ = new(variable_t); 
             $$->name = $1; $$->type = VAR_PATH_ADD;
             $$->literal = NULL; $$->pathlist = make_pathlist($3); } |
+	  name EQUALSPLUS literal
+          { $$ = new(variable_t); 
+            $$->name = $1; $$->type = VAR_PATH_APPEND;
+            $$->literal = NULL; $$->pathlist = make_pathlist($3); } |
 	  name PLUSEQUALS pathlist
           { $$ = new(variable_t); 
             $$->name = $1; $$->type = VAR_PATH_ADD;
+            $$->literal = NULL; $$->pathlist = $3; } |
+	  name EQUALSPLUS pathlist
+          { $$ = new(variable_t); 
+            $$->name = $1; $$->type = VAR_PATH_APPEND;
             $$->literal = NULL; $$->pathlist = $3; } |
 	  name QEQUALS pathlist
           { $$ = new(variable_t); 
@@ -191,6 +212,13 @@ variable: name EQUALS literal
 script: SCRIPT
 	{ $$ = new(script_t);
 	  $$->text = strdup(litbuf); } ;
+
+alias: ALIAS name EQUALS aliasvalue
+	{ $$ = new(alias_t);
+	  $$->name = $2;
+	  $$->text = $4; } ;
+
+aliasvalue: name | path | literal ;
 
 matchlist: match
        { $$ = new_list(); add_to_tail($$, (void*) $1); } |
@@ -226,14 +254,16 @@ prefix: PREFIX
 	{ $$ = strdup(litbuf); } ;
 
 name: NAME
-	{ $$ = strdup(litbuf); } ;
+	{ $$ = strdup(litbuf); } |
+      ALIAS
+	{ $$ = "alias"; } ;
 
 literal: LITERAL
 	{ $$ = strdup(litbuf); } ;
 
 %%
 
-yyerror()
+int yyerror()
 {
    if (stack_pointer < 0)
       fprintf(stderr, "usepackage: parse error, unexpected end of input (possibly missing semicolon?)\n");
@@ -244,6 +274,7 @@ yyerror()
 	      yytext);
    }
    yyerrors++;
+   return yyerrors;
 }
 
 int get_packages(linked_list** packages, linked_list** groups,

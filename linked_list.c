@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2005  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2006  Jonathan Hogg  <jonathan@onegoodidea.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -137,7 +137,6 @@ list_node* list_tail(linked_list* l)
 {
    return(l->tail);
 } /* list_tail */
-
 
 list_node* next(list_node* n)
 {

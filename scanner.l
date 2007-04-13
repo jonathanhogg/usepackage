@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2005  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2006  Jonathan Hogg  <jonathan@onegoodidea.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,12 +59,15 @@ path	(\.|\~|\/|\$)[^ \t\n:,;]*
 "*"		return(WILDCARD);
 "="		return(EQUALS);
 "+="		return(PLUSEQUALS);
+"=+"		return(EQUALSPLUS);
 "?="		return(QEQUALS);
 "?+="		return(QPLUSEQUALS);
 ":="		return(ASSIGN);
 "<="		return(WITH);
 ">>"		return(BEGIN_ANNOTATE);
 "<<"		return(END_ANNOTATE);
+
+"alias"		return(ALIAS);
 
 "\""		bufp=litbuf; bufp[0] = '\0'; BEGIN(lit);
 <lit>[^\"\n]*	strcpy(bufp, yytext); bufp += yyleng;

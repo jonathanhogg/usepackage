@@ -122,8 +122,8 @@ environment before the settings for this package are processed.
 .PP
 A
 .I setting
-is either a variable definition (as described below) or a section of text
-to be directly evaluated in the shell, delimited with
+is either a variable definition, an alias definition (both described below)
+or a section of text to be directly evaluated in the shell, delimited with
 .IR <[
 and
 .IR ]> ,
@@ -146,17 +146,20 @@ given variable definitions and script sections are processed to modify the
 environment. A  variable definition may have one of the following forms:
 .PP
 .nf
-          var-name = "string"
-          var-name = path-list
-          var-name += path-list
-          var-name += "string"
+     var-name = "string"
+     var-name = path-list
+     var-name += path-list
+     var-name += "string"
+     var-name =+ path-list
+     var-name =+ "string"
 .fi
 .PP
 The first sets the given variable to a literal string value, the
 second sets the given variable to a path list, the third prepends the 
 current value of a variable with the given path list, and the fourth 
 interprets the literal string as a path list and prepends it to the current 
-value of the variable. Path lists are colon (:) separated lists of 
+value of the variable. The fourth and fifth forms do the same, but append to
+the current value of the variable. Path lists are colon (:) separated lists of 
 directories and may contain shell-style tilde (~), user-relative, directories 
 which will be expanded automatically (except when the path list is given as a 
 literal string). When pre-pending paths to a variable, duplicate paths are 
@@ -168,13 +171,23 @@ can optionally test for the existence of paths before setting or adding them
 to variables. This is done with the test form of the above operators:
 .PP
 .nf
-          var-name ?= path-list
-          var-name ?+= path-list
-          var-name ?+= "string"
+     var-name ?= path-list
+     var-name ?+= path-list
+     var-name ?+= "string"
 .fi
 .PP
 These operate as per the definitions above, but will ignore path components
 that don't exist.
+.PP
+An alias definition has one of the following forms:
+.PP
+.nf
+     alias name = name
+     alias name = path
+     alias name = "string"
+.fi
+.PP
+These will define a matching shell alias.
 .SS GROUPS
 In addition to the package definitions in a packages file, there may also be
 group definitions. These have the following syntax:
@@ -235,6 +248,12 @@ The following fragment of a packages file illustrates the main features:
      user sun4* SunOS :        PATH ?+= ~/bin/sun4 ;
      user sun4* SunOS 5.* :    PATH ?+= ~/bin/solaris ;
      user alpha OSF :          PATH ?+= ~/bin/alpha ;
+
+     # Useful aliases:
+
+     aliases : alias more = less,
+               alias ls = "ls --color",
+               alias cc = /usr/bin/gcc ;
 
      # Special function for zsh:
      
@@ -324,7 +343,7 @@ and detecting the style of environment output that should be used (see
 .SH COPYRIGHT
 .nf
 Usepackage Environment Manager
-Copyright (C) 1995-2005  Jonathan Hogg
+Copyright (C) 1995-2006  Jonathan Hogg
 .fi
 .PP
 This program is free software; you can redistribute it and/or modify

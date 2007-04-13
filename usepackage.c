@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2005  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2006  Jonathan Hogg  <jonathan@onegoodidea.com>
  *  
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,10 +54,12 @@ linked_list* make_pathlist(char* path_string);
 variable_t* update_var(variable_t* evar, variable_t* vvar);
 void print_path(char* varname, linked_list* pathlist);
 linked_list* merge_paths(linked_list* elist, linked_list* vlist);
+linked_list* merge_paths_appended(linked_list* elist, linked_list* vlist);
 linked_list* test_paths(linked_list* vlist);
 void list_annotations();
 void list_groups();
 void print_scripts(void);
+void print_aliases(void);
 
 
 /*** globals: ***/
@@ -72,6 +74,7 @@ linked_list* the_groups;
 linked_list* the_annotations;
 linked_list* the_environment;
 linked_list* the_scripts;
+linked_list* the_aliases;
 char* main_package_filename = MASTER_PACKAGE_FILE;
 
 
@@ -150,6 +153,7 @@ int main(int argc, char *argv[])
 
    the_environment = new_list();
    the_scripts = new_list();
+   the_aliases = new_list();
    
    if (get_packages(&the_packages, &the_groups, &the_annotations))
    {
@@ -179,6 +183,8 @@ int main(int argc, char *argv[])
    print_env();
 
    print_scripts();
+
+   print_aliases();
 
    return(0);
 }
@@ -267,7 +273,12 @@ void add_package(package_t* package)
    {
       text = ((script_t*) get_value(vnode))->text;
       add_to_tail(the_scripts, (void*) text);
-   }   
+   }
+   
+   for (vnode = head(package->aliases) ; vnode ; vnode = next(vnode))
+   {
+      add_to_tail(the_aliases, get_value(vnode));
+   }
 }
 
 void use_group(group_t* group)
@@ -356,6 +367,27 @@ void print_scripts(void)
    }
 }
 
+void print_aliases(void)
+{
+   list_node* node;
+   alias_t* alias;
+
+   DEBUG(stderr, "dumping aliases...\n");
+
+   for (node = head(the_aliases) ; node ; node = next(node))
+   {
+      alias = (alias_t*) get_value(node);
+      if (csh_user)
+      {
+         printf("alias %s %s ;\n", alias->name, alias->text);
+      }
+      else
+      {
+         printf("alias %s=\"%s\" ;\n", alias->name, alias->text);
+      }
+   }
+}
+
 void print_path(char* varname, linked_list* pathlist)
 {
    list_node* node;
@@ -374,7 +406,10 @@ void print_path(char* varname, linked_list* pathlist)
    for (node = head(pathlist) ; node ; node = next(node))
    {
       dirname = get_value(node);
-      printf(next(node) ? "%s:" : "%s", dirname);
+      if(strlen(dirname))
+      {
+        printf(next(node) ? "%s:" : "%s", dirname);
+      }
    }
 }
 
@@ -396,6 +431,7 @@ list_node* get_into_env(variable_t* var)
          env_var->pathlist = NULL;
          break;
 
+      case VAR_PATH_APPEND:
       case VAR_PATH_ADD:
          env_var->pathlist = make_pathlist(getenv(var->name));
          break;
@@ -446,6 +482,7 @@ variable_t* update_var(variable_t* evar, variable_t* vvar)
 {
    linked_list* testlist;
 
+
    switch (vvar->type)
    {
       case VAR_LIT_SET:
@@ -469,6 +506,26 @@ variable_t* update_var(variable_t* evar, variable_t* vvar)
             case VAR_PATH_SET:
             case VAR_PATH_ADD:
                evar->pathlist = merge_paths(evar->pathlist, vvar->pathlist);
+               break;
+
+            default:
+               break;
+         }
+         evar->type = VAR_PATH_ADD;
+         break;
+
+       case VAR_PATH_APPEND:
+         switch (evar->type)
+         {
+            case VAR_LIT_SET:
+               evar->pathlist = merge_paths_appended(make_pathlist(evar->literal),
+                                            vvar->pathlist);
+               break;
+
+            case VAR_PATH_SET:
+            case VAR_PATH_ADD:
+            case VAR_PATH_APPEND:
+               evar->pathlist = merge_paths_appended(evar->pathlist, vvar->pathlist);
                break;
 
             default:
@@ -536,6 +593,39 @@ linked_list* merge_paths(linked_list* elist, linked_list* vlist)
 	    }
 
 	 add_to_head(elist, get_value(vnode));
+      }
+   }
+   else if (vlist && head(vlist))
+   {
+      return(vlist);
+   }
+
+   return(elist);
+}
+
+linked_list* merge_paths_appended(linked_list* elist, linked_list* vlist)
+{
+   list_node* enode;
+   list_node* vnode;
+   char* vpath;
+
+
+   if (elist && vlist)
+   {
+      for (vnode = head(vlist) ; vnode ; vnode = next(vnode))
+      {
+	 vpath = (char*) get_value(vnode);
+
+	 for (enode = head(elist) ; enode ; enode = next(enode)) {
+	    if (!strcmp(vpath, (char*) get_value(enode)))
+	    {
+	       remove_node(elist, enode, 0);
+	       break;
+	    }
+	 }
+
+	 add_to_tail(elist, get_value(vnode));
+
       }
    }
    else if (vlist && head(vlist))

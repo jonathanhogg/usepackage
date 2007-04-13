@@ -1,5 +1,5 @@
 # Usepackage Environment Manager
-# Copyright (C) 1995-2005  Jonathan Hogg  <jonathan@onegoodidea.com>
+# Copyright (C) 1995-2006  Jonathan Hogg  <jonathan@onegoodidea.com>
 #  
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ man_MANS = use.1 usepackage.1
 pkgdata_DATA = use.bsh use.csh use.ksh
 EXTRA_DIST = usepackage.conf
 
-CLEANFILES = use.1 use.bsh use.csh use.ksh
+CLEANFILES = use.1 use.bsh use.csh use.ksh use.html usepackage.html
 MAINTAINERCLEANFILES = grammar.c scanner.c configure Makefile.in \
 	depcomp install-sh missing mkinstalldirs aclocal.m4 config.log \
 	config.status config.h.in use.1 usepackage.1
@@ -38,6 +38,12 @@ use.1: use.1.in
 
 usepackage.1: usepackage.1.in
 	$(SED) $(SUBS) < usepackage.1.in > usepackage.1
+
+use.html: use.1
+	$(RMAN) -S -f HTML -r '%s.html' use.1 > use.html
+
+usepackage.html: usepackage.1
+	$(RMAN) -S -f HTML -r '%s.html' usepackage.1 > usepackage.html
 
 use.bsh: use.bsh.in
 	$(SED) $(SUBS) < use.bsh.in > use.bsh
@@ -58,4 +64,6 @@ install-data-local: usepackage.conf
 	   echo " $(INSTALL_DATA) usepackage.conf $(DESTDIR)$(sysconfdir)/"; \
 	   $(INSTALL_DATA) usepackage.conf $(DESTDIR)$(sysconfdir)/; \
 	 fi
+
+html: use.html usepackage.html
 

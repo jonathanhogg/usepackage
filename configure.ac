@@ -1,5 +1,5 @@
 # Usepackage Environment Manager
-# Copyright (C) 1995-2005  Jonathan Hogg  <jonathan@onegoodidea.com>
+# Copyright (C) 1995-2006  Jonathan Hogg  <jonathan@onegoodidea.com>
 #  
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software 
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-AC_INIT(usepackage,1.8,jonathan@onegoodidea.com,usepackage)
-AM_INIT_AUTOMAKE(usepackage,1.8)
+AC_INIT(usepackage,1.9d2,jonathan@onegoodidea.com,usepackage)
+AM_INIT_AUTOMAKE(usepackage,1.9d2)
 
 AM_CONFIG_HEADER(config.h)
 AC_PROG_CC
@@ -24,6 +24,7 @@ AM_PROG_LEX
 AC_PROG_YACC
 AC_CHECK_PROGS(SED,sed)
 AC_CHECK_PROGS(INSTALL,install install-sh install.sh)
+AC_CHECK_PROGS(RMAN,rman)
 AC_CHECK_HEADER(stdio.h)
 AC_CHECK_HEADER(stdlib.h)
 AC_CHECK_HEADER(string.h)
@@ -31,14 +32,14 @@ AC_CHECK_HEADER(sys/utsname.h)
 AC_CHECK_HEADER(dirent.h)
 
 AH_VERBATIM([MAILING_LIST],
-[/* Mialing list address. */
+[/* Mailing list address. */
 #ifndef MAILING_LIST
-# define MAILING_LIST "usepackage-subscribe@onegoodidea.com"
+# define MAILING_LIST "usepackage@onegoodidea.com"
 #endif])
 AH_VERBATIM([COPYRIGHT],
 [/* Copyright string for the executable. */
 #ifndef COPYRIGHT
-# define COPYRIGHT "Copyright (C) 1995-2005  Jonathan Hogg"
+# define COPYRIGHT "Copyright (C) 1995-2006  Jonathan Hogg"
 #endif])
 
 AC_OUTPUT(Makefile)
