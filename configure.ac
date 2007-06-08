@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software 
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-AC_INIT(usepackage,1.10,jonathan@onegoodidea.com,usepackage)
-AM_INIT_AUTOMAKE(usepackage,1.10)
+AC_INIT(usepackage,1.9d2,jonathan@onegoodidea.com,usepackage)
+AM_INIT_AUTOMAKE(usepackage,1.9d2)
 
 AM_CONFIG_HEADER(config.h)
 AC_PROG_CC

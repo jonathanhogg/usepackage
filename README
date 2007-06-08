@@ -107,5 +107,12 @@ kept). The syntax is also documented in the `usepackage' manual page.
 				REPORTING BUGS
 
 If you find a bug in usepackage, please let me know about it. You can email me
-at <jonathan@onegoodidea.com>.
+at <jonathan@onegoodidea.com>. There is also a mailing list for anyone
+interested in usepackage, which you can join by sending an empty message to
+<usepackage-subscribe@onegoodidea.com>.
+
+The latest distribution of usepackage can be found at:
+
+	http://www.onegoodidea.com/source.html
+
 
