@@ -1,5 +1,5 @@
 # Usepackage Environment Manager
-# Copyright (C) 1995-2006  Jonathan Hogg  <jonathan@onegoodidea.com>
+# Copyright (C) 1995-2007  Jonathan Hogg  <jonathan@onegoodidea.com>
 #  
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ AH_VERBATIM([MAILING_LIST],
 AH_VERBATIM([COPYRIGHT],
 [/* Copyright string for the executable. */
 #ifndef COPYRIGHT
-# define COPYRIGHT "Copyright (C) 1995-2006  Jonathan Hogg"
+# define COPYRIGHT "Copyright (C) 1995-2007  Jonathan Hogg"
 #endif])
 
 AC_OUTPUT(Makefile)
