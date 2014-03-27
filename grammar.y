@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2007  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2014  Jonathan Hogg  <jonathan@onegoodidea.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,6 +55,8 @@ char file_name[10][256];
 FILE* file[10];
 
 int include(char* filename);
+int yyerror();
+extern int yylex();
 
 %}
 
@@ -303,7 +305,7 @@ int get_packages(linked_list** packages, linked_list** groups,
 
 int yywrap()
 {
-   close(file[stack_pointer--]);
+   fclose(file[stack_pointer--]);
 
    if (stack_pointer != -1)
    {

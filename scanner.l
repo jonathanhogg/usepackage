@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2007  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2014  Jonathan Hogg  <jonathan@onegoodidea.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@ static char *bufp;
 extern int stack_pointer;
 extern int line_number[10];
 extern char file_name[10][256];
-extern FILE* file[10];
 
 extern int include(char* filename);
 

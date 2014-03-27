@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2007  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2014  Jonathan Hogg  <jonathan@onegoodidea.com>
  *  
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include "utils.h"
 
 

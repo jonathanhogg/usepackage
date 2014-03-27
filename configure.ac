@@ -1,5 +1,5 @@
 # Usepackage Environment Manager
-# Copyright (C) 1995-2007  Jonathan Hogg  <jonathan@onegoodidea.com>
+# Copyright (C) 1995-2014  Jonathan Hogg  <jonathan@onegoodidea.com>
 #  
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_INIT(usepackage,1.10,jonathan@onegoodidea.com,usepackage)
-AM_INIT_AUTOMAKE(usepackage,1.10)
+AM_INIT_AUTOMAKE
 
 AM_CONFIG_HEADER(config.h)
 AC_PROG_CC
@@ -31,15 +31,10 @@ AC_CHECK_HEADER(string.h)
 AC_CHECK_HEADER(sys/utsname.h)
 AC_CHECK_HEADER(dirent.h)
 
-AH_VERBATIM([MAILING_LIST],
-[/* Mailing list address. */
-#ifndef MAILING_LIST
-# define MAILING_LIST "usepackage@onegoodidea.com"
-#endif])
 AH_VERBATIM([COPYRIGHT],
 [/* Copyright string for the executable. */
 #ifndef COPYRIGHT
-# define COPYRIGHT "Copyright (C) 1995-2007  Jonathan Hogg"
+# define COPYRIGHT "Copyright (C) 1995-2014  Jonathan Hogg"
 #endif])
 
 AC_OUTPUT(Makefile)

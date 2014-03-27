@@ -2,7 +2,7 @@
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2007  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2014  Jonathan Hogg  <jonathan@onegoodidea.com>
  *  
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,7 +123,6 @@ int main(int argc, char *argv[])
    {
       fprintf(stderr, "\n%s %s, %s\n", PACKAGE_NAME, PACKAGE_VERSION, COPYRIGHT);
       fprintf(stderr, "Bug reports and comments to: %s\n", PACKAGE_BUGREPORT);
-      fprintf(stderr, "Discussion/announcement list: %s\n\n", MAILING_LIST);
       fprintf(stderr, "usage: use [-vs] [-f <file>] <package> [<package>...]\n");
       fprintf(stderr, "       use -l\n\n");
       fprintf(stderr, "       -v : verbose\n");
@@ -174,7 +173,7 @@ int main(int argc, char *argv[])
 
    for (first = i, i = argc - 1 ; i >= first ; i--)
    {
-      if (group = get_group(argv[i]))
+      if ((group = get_group(argv[i])))
          use_group(group);
       else
          use_package(argv[i]);
@@ -239,7 +238,7 @@ void add_package(package_t* package)
       {
          name = (char*) get_value(rnode);
 
-         if (group = get_group(name))
+         if ((group = get_group(name)))
             use_group(group);
          else
             use_package(name);
