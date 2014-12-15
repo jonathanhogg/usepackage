@@ -58,6 +58,8 @@
 #define MATCH_PREFIX 1
 #define MATCH_WILD 2
 
+#define INCLUDE_STACK_DEPTH 10
+
 #define DEBUG if (debugging) fprintf
 #define new(x) ((x*)malloc(sizeof(x)))
 

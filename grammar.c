@@ -130,6 +130,9 @@
 #include "utils.h"
 
 
+#define INCLUDE_STACK_DEPTH 10
+
+
 extern char litbuf[1024];
 int yydebug;
 extern char *yytext;
@@ -137,16 +140,14 @@ extern FILE *yyin;
 extern char* main_package_filename;
 extern linked_list* make_pathlist(char* path_string);
 
-
 linked_list* loaded_packages;
 linked_list* loaded_groups;
 linked_list* loaded_annotations;
 int yyerrors;
 
 int stack_pointer;
-int line_number[10];
-char file_name[10][256];
-FILE* file[10];
+int line_number[INCLUDE_STACK_DEPTH];
+char file_name[INCLUDE_STACK_DEPTH][256];
 
 int include(char* filename);
 int yyerror();
@@ -174,7 +175,7 @@ extern int yylex();
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 63 "grammar.y"
+#line 64 "grammar.y"
 { 
    linked_list* list;
    char* string;
@@ -187,7 +188,7 @@ typedef union YYSTYPE
    alias_t* alias;
 }
 /* Line 193 of yacc.c.  */
-#line 191 "grammar.c"
+#line 192 "grammar.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -200,7 +201,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 204 "grammar.c"
+#line 205 "grammar.c"
 
 #ifdef short
 # undef short
@@ -506,12 +507,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    92,    92,    95,    97,    99,   101,   104,   109,   114,
-     119,   124,   129,   136,   137,   140,   144,   149,   155,   161,
-     167,   170,   173,   177,   181,   185,   189,   193,   197,   201,
-     205,   209,   214,   218,   223,   223,   223,   225,   227,   230,
-     232,   235,   237,   239,   242,   244,   247,   249,   252,   255,
-     258,   260,   263
+       0,    93,    93,    96,    98,   100,   102,   105,   110,   115,
+     120,   125,   130,   137,   138,   141,   145,   150,   156,   162,
+     168,   171,   174,   178,   182,   186,   190,   194,   198,   202,
+     206,   210,   215,   219,   224,   224,   224,   226,   228,   231,
+     233,   236,   238,   240,   243,   245,   248,   250,   253,   256,
+     259,   261,   264
 };
 #endif
 
@@ -1479,93 +1480,93 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 92 "grammar.y"
+#line 93 "grammar.y"
     { loaded_packages = new_list();
            loaded_groups = new_list();
            loaded_annotations = new_list(); }
     break;
 
   case 4:
-#line 98 "grammar.y"
+#line 99 "grammar.y"
     { add_to_tail(loaded_packages, (void*) (yyvsp[(1) - (1)].package)); }
     break;
 
   case 5:
-#line 100 "grammar.y"
+#line 101 "grammar.y"
     { add_to_tail(loaded_groups, (void*) (yyvsp[(1) - (1)].group)); }
     break;
 
   case 6:
-#line 102 "grammar.y"
+#line 103 "grammar.y"
     { add_to_tail(loaded_annotations, (void*) (yyvsp[(1) - (1)].annotation)); }
     break;
 
   case 7:
-#line 106 "grammar.y"
+#line 107 "grammar.y"
     { (yyval.package) = (yyvsp[(4) - (5)].package);
            (yyval.package)->name = (yyvsp[(1) - (5)].list); (yyval.package)->arch = NULL; (yyval.package)->os = NULL; (yyval.package)->version = NULL;
            (yyval.package)->host = NULL; (yyval.package)->shell = NULL; (yyval.package)->requires = (yyvsp[(2) - (5)].list); }
     break;
 
   case 8:
-#line 111 "grammar.y"
+#line 112 "grammar.y"
     { (yyval.package) = (yyvsp[(5) - (6)].package);
            (yyval.package)->name = (yyvsp[(1) - (6)].list); (yyval.package)->arch = (yyvsp[(2) - (6)].list); (yyval.package)->os = NULL; (yyval.package)->version = NULL;
            (yyval.package)->host = NULL; (yyval.package)->shell = NULL; (yyval.package)->requires = (yyvsp[(3) - (6)].list); }
     break;
 
   case 9:
-#line 116 "grammar.y"
+#line 117 "grammar.y"
     { (yyval.package) = (yyvsp[(6) - (7)].package);
            (yyval.package)->name = (yyvsp[(1) - (7)].list); (yyval.package)->arch = (yyvsp[(2) - (7)].list); (yyval.package)->os = (yyvsp[(3) - (7)].list); (yyval.package)->version = NULL;
            (yyval.package)->host = NULL; (yyval.package)->shell = NULL; (yyval.package)->requires = (yyvsp[(4) - (7)].list); }
     break;
 
   case 10:
-#line 121 "grammar.y"
+#line 122 "grammar.y"
     { (yyval.package) = (yyvsp[(7) - (8)].package);
            (yyval.package)->name = (yyvsp[(1) - (8)].list); (yyval.package)->arch = (yyvsp[(2) - (8)].list); (yyval.package)->os = (yyvsp[(3) - (8)].list); (yyval.package)->version = (yyvsp[(4) - (8)].list);
            (yyval.package)->host = NULL; (yyval.package)->shell = NULL; (yyval.package)->requires = (yyvsp[(5) - (8)].list); }
     break;
 
   case 11:
-#line 126 "grammar.y"
+#line 127 "grammar.y"
     { (yyval.package) = (yyvsp[(8) - (9)].package);
            (yyval.package)->name = (yyvsp[(1) - (9)].list); (yyval.package)->arch = (yyvsp[(2) - (9)].list); (yyval.package)->os = (yyvsp[(3) - (9)].list); (yyval.package)->version = (yyvsp[(4) - (9)].list);
            (yyval.package)->host = (yyvsp[(5) - (9)].list); (yyval.package)->shell = NULL; (yyval.package)->requires = (yyvsp[(6) - (9)].list); }
     break;
 
   case 12:
-#line 131 "grammar.y"
+#line 132 "grammar.y"
     { (yyval.package) = (yyvsp[(9) - (10)].package);
            (yyval.package)->name = (yyvsp[(1) - (10)].list); (yyval.package)->arch = (yyvsp[(2) - (10)].list); (yyval.package)->os = (yyvsp[(3) - (10)].list); (yyval.package)->version = (yyvsp[(4) - (10)].list);
            (yyval.package)->host = (yyvsp[(5) - (10)].list); (yyval.package)->shell = (yyvsp[(6) - (10)].list); (yyval.package)->requires = (yyvsp[(7) - (10)].list); }
     break;
 
   case 13:
-#line 136 "grammar.y"
+#line 137 "grammar.y"
     { (yyval.list) = NULL; }
     break;
 
   case 14:
-#line 138 "grammar.y"
+#line 139 "grammar.y"
     { (yyval.list) = (yyvsp[(2) - (2)].list); }
     break;
 
   case 15:
-#line 141 "grammar.y"
+#line 142 "grammar.y"
     { (yyval.group) = new(group_t); (yyval.group)->name = (yyvsp[(1) - (4)].string); (yyval.group)->packages = (yyvsp[(3) - (4)].list);}
     break;
 
   case 16:
-#line 145 "grammar.y"
+#line 146 "grammar.y"
     { (yyval.annotation) = new(annotation_t);
               (yyval.annotation)->name = (yyvsp[(2) - (5)].string);
               (yyval.annotation)->description = (yyvsp[(4) - (5)].string); }
     break;
 
   case 17:
-#line 150 "grammar.y"
+#line 151 "grammar.y"
     { (yyval.package) = new(package_t);
             (yyval.package)->variables = new_list();
             (yyval.package)->scripts = new_list();
@@ -1574,7 +1575,7 @@ yyreduce:
     break;
 
   case 18:
-#line 156 "grammar.y"
+#line 157 "grammar.y"
     { (yyval.package) = new(package_t);
             (yyval.package)->variables = new_list();
             (yyval.package)->scripts = new_list();
@@ -1583,7 +1584,7 @@ yyreduce:
     break;
 
   case 19:
-#line 162 "grammar.y"
+#line 163 "grammar.y"
     { (yyval.package) = new(package_t);
             (yyval.package)->variables = new_list();
             (yyval.package)->scripts = new_list();
@@ -1592,182 +1593,182 @@ yyreduce:
     break;
 
   case 20:
-#line 168 "grammar.y"
+#line 169 "grammar.y"
     { (yyval.package) = (yyvsp[(1) - (3)].package);
             add_to_tail((yyval.package)->variables, (void*) (yyvsp[(3) - (3)].variable)); }
     break;
 
   case 21:
-#line 171 "grammar.y"
+#line 172 "grammar.y"
     { (yyval.package) = (yyvsp[(1) - (3)].package);
             add_to_tail((yyval.package)->scripts, (void*) (yyvsp[(3) - (3)].script)); }
     break;
 
   case 22:
-#line 174 "grammar.y"
+#line 175 "grammar.y"
     { (yyval.package) = (yyvsp[(1) - (3)].package);
             add_to_tail((yyval.package)->aliases, (void*) (yyvsp[(3) - (3)].alias)); }
     break;
 
   case 23:
-#line 178 "grammar.y"
+#line 179 "grammar.y"
     { (yyval.variable) = new(variable_t);
             (yyval.variable)->name = (yyvsp[(1) - (3)].string); (yyval.variable)->type = VAR_LIT_SET;
             (yyval.variable)->literal = (yyvsp[(3) - (3)].string); (yyval.variable)->pathlist = NULL; }
     break;
 
   case 24:
-#line 182 "grammar.y"
+#line 183 "grammar.y"
     { (yyval.variable) = new(variable_t);
             (yyval.variable)->name = (yyvsp[(1) - (3)].string); (yyval.variable)->type = VAR_PATH_SET;
             (yyval.variable)->literal = NULL; (yyval.variable)->pathlist = (yyvsp[(3) - (3)].list); }
     break;
 
   case 25:
-#line 186 "grammar.y"
+#line 187 "grammar.y"
     { (yyval.variable) = new(variable_t); 
             (yyval.variable)->name = (yyvsp[(1) - (3)].string); (yyval.variable)->type = VAR_PATH_ADD;
             (yyval.variable)->literal = NULL; (yyval.variable)->pathlist = make_pathlist((yyvsp[(3) - (3)].string)); }
     break;
 
   case 26:
-#line 190 "grammar.y"
+#line 191 "grammar.y"
     { (yyval.variable) = new(variable_t); 
             (yyval.variable)->name = (yyvsp[(1) - (3)].string); (yyval.variable)->type = VAR_PATH_APPEND;
             (yyval.variable)->literal = NULL; (yyval.variable)->pathlist = make_pathlist((yyvsp[(3) - (3)].string)); }
     break;
 
   case 27:
-#line 194 "grammar.y"
+#line 195 "grammar.y"
     { (yyval.variable) = new(variable_t); 
             (yyval.variable)->name = (yyvsp[(1) - (3)].string); (yyval.variable)->type = VAR_PATH_ADD;
             (yyval.variable)->literal = NULL; (yyval.variable)->pathlist = (yyvsp[(3) - (3)].list); }
     break;
 
   case 28:
-#line 198 "grammar.y"
+#line 199 "grammar.y"
     { (yyval.variable) = new(variable_t); 
             (yyval.variable)->name = (yyvsp[(1) - (3)].string); (yyval.variable)->type = VAR_PATH_APPEND;
             (yyval.variable)->literal = NULL; (yyval.variable)->pathlist = (yyvsp[(3) - (3)].list); }
     break;
 
   case 29:
-#line 202 "grammar.y"
+#line 203 "grammar.y"
     { (yyval.variable) = new(variable_t); 
             (yyval.variable)->name = (yyvsp[(1) - (3)].string); (yyval.variable)->type = VAR_PATH_TESTSET;
             (yyval.variable)->literal = NULL; (yyval.variable)->pathlist = (yyvsp[(3) - (3)].list); }
     break;
 
   case 30:
-#line 206 "grammar.y"
+#line 207 "grammar.y"
     { (yyval.variable) = new(variable_t); 
             (yyval.variable)->name = (yyvsp[(1) - (3)].string); (yyval.variable)->type = VAR_PATH_TESTADD;
             (yyval.variable)->literal = NULL; (yyval.variable)->pathlist = make_pathlist((yyvsp[(3) - (3)].string)); }
     break;
 
   case 31:
-#line 210 "grammar.y"
+#line 211 "grammar.y"
     { (yyval.variable) = new(variable_t); 
             (yyval.variable)->name = (yyvsp[(1) - (3)].string); (yyval.variable)->type = VAR_PATH_TESTADD;
             (yyval.variable)->literal = NULL; (yyval.variable)->pathlist = (yyvsp[(3) - (3)].list); }
     break;
 
   case 32:
-#line 215 "grammar.y"
+#line 216 "grammar.y"
     { (yyval.script) = new(script_t);
 	  (yyval.script)->text = strdup(litbuf); }
     break;
 
   case 33:
-#line 219 "grammar.y"
+#line 220 "grammar.y"
     { (yyval.alias) = new(alias_t);
 	  (yyval.alias)->name = (yyvsp[(2) - (4)].string);
 	  (yyval.alias)->text = (yyvsp[(4) - (4)].string); }
     break;
 
   case 37:
-#line 226 "grammar.y"
+#line 227 "grammar.y"
     { (yyval.list) = new_list(); add_to_tail((yyval.list), (void*) (yyvsp[(1) - (1)].match)); }
     break;
 
   case 38:
-#line 228 "grammar.y"
+#line 229 "grammar.y"
     { (yyval.list) = (yyvsp[(2) - (3)].list); }
     break;
 
   case 39:
-#line 231 "grammar.y"
+#line 232 "grammar.y"
     { (yyval.list) = new_list(); add_to_tail((yyval.list), (void*) (yyvsp[(1) - (1)].match)); }
     break;
 
   case 40:
-#line 233 "grammar.y"
+#line 234 "grammar.y"
     { add_to_tail((yyval.list) = (yyvsp[(1) - (3)].list), (void*) (yyvsp[(3) - (3)].match)); }
     break;
 
   case 41:
-#line 236 "grammar.y"
+#line 237 "grammar.y"
     { (yyval.match) = new(match_t); (yyval.match)->type = MATCH_EXACT; (yyval.match)->text = (yyvsp[(1) - (1)].string); }
     break;
 
   case 42:
-#line 238 "grammar.y"
+#line 239 "grammar.y"
     { (yyval.match) = new(match_t); (yyval.match)->type = MATCH_PREFIX; (yyval.match)->text = (yyvsp[(1) - (1)].string); }
     break;
 
   case 43:
-#line 240 "grammar.y"
+#line 241 "grammar.y"
     { (yyval.match) = new(match_t); (yyval.match)->type = MATCH_WILD; (yyval.match)->text = NULL; }
     break;
 
   case 44:
-#line 243 "grammar.y"
+#line 244 "grammar.y"
     { (yyval.list) = new_list(); add_to_tail((yyval.list), (void*) (yyvsp[(1) - (1)].string)); }
     break;
 
   case 45:
-#line 245 "grammar.y"
+#line 246 "grammar.y"
     { add_to_tail((yyval.list) = (yyvsp[(1) - (3)].list), (void*) (yyvsp[(3) - (3)].string)); }
     break;
 
   case 46:
-#line 248 "grammar.y"
+#line 249 "grammar.y"
     { (yyval.list) = new_list(); add_to_tail((yyval.list), (void*) (yyvsp[(1) - (1)].string)); }
     break;
 
   case 47:
-#line 250 "grammar.y"
+#line 251 "grammar.y"
     { add_to_tail((yyval.list) = (yyvsp[(1) - (3)].list), (void*) (yyvsp[(3) - (3)].string)); }
     break;
 
   case 48:
-#line 253 "grammar.y"
+#line 254 "grammar.y"
     { (yyval.string) = strdup(expand(litbuf)); }
     break;
 
   case 49:
-#line 256 "grammar.y"
+#line 257 "grammar.y"
     { (yyval.string) = strdup(litbuf); }
     break;
 
   case 50:
-#line 259 "grammar.y"
+#line 260 "grammar.y"
     { (yyval.string) = strdup(litbuf); }
     break;
 
   case 51:
-#line 261 "grammar.y"
+#line 262 "grammar.y"
     { (yyval.string) = "alias"; }
     break;
 
   case 52:
-#line 264 "grammar.y"
+#line 265 "grammar.y"
     { (yyval.string) = strdup(litbuf); }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1771 "grammar.c"
+#line 1772 "grammar.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1981,7 +1982,7 @@ yyreturn:
 }
 
 
-#line 266 "grammar.y"
+#line 267 "grammar.y"
 
 
 int yyerror()
@@ -2022,61 +2023,5 @@ int get_packages(linked_list** packages, linked_list** groups,
    return(0);
 }
 
-int yywrap()
-{
-   fclose(file[stack_pointer--]);
-
-   if (stack_pointer != -1)
-   {
-      yyin = file[stack_pointer];
-      return(0);
-   }
-
-   return(1);
-}
-
-int include(char* filename)
-{
-   static linked_list* include_path = NULL;
-   list_node* node;
-   char* dir;
-   char the_file_name[256];
-   FILE* the_file = NULL;
-   char* path;
-
-   if (!include_path)
-   {
-      path = getenv(PACKAGE_PATH_VAR);
-      if (!path)
-         path = DEFAULT_PACKAGE_PATH;
-
-      include_path = make_pathlist(path);
-   }
-
-   strcpy(the_file_name, expand(filename));
-   if (the_file_name[0] == '/')
-      the_file = fopen(the_file_name, "r");
-
-   for (node = head(include_path) ; !the_file && node ; node = next(node))
-   {
-      dir = (char*) get_value(node);
-      sprintf(the_file_name, "%s/%s", expand(dir), filename);
-      the_file = fopen(the_file_name, "r");
-   }
-
-   if (!the_file)
-   {
-      DEBUG(stderr, "cannot open file `%s'\n", filename);
-      return(1);
-   }
-
-   DEBUG(stderr, "reading from `%s'...\n", the_file_name);
-   stack_pointer++;
-   strcpy(file_name[stack_pointer], the_file_name);
-   line_number[stack_pointer] = 1;
-   yyin = file[stack_pointer] = the_file;
-
-   return(0);
-}
 
 

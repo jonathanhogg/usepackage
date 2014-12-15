@@ -332,6 +332,9 @@ void yyfree (void *  );
 
 /* Begin user sect3 */
 
+#define yywrap(n) 1
+#define YY_SKIP_YYWRAP
+
 typedef unsigned char YY_CHAR;
 
 FILE *yyin = (FILE *) 0, *yyout = (FILE *) 0;
@@ -532,18 +535,22 @@ char *yytext;
 #include <string.h>
 #include "package.h"
 #include "grammar.h"
+#include "utils.h"
 
 char litbuf[2048];
 static char *bufp;
 
 extern int stack_pointer;
-extern int line_number[10];
-extern char file_name[10][256];
+extern int line_number[];
+extern char file_name[][256];
 
-extern int include(char* filename);
+extern linked_list* make_pathlist(char* path_string);
+int include(char* filename);
+int uninclude();
+YY_BUFFER_STATE file[INCLUDE_STACK_DEPTH];
 
 
-#line 547 "scanner.c"
+#line 554 "scanner.c"
 
 #define INITIAL 0
 #define lit 1
@@ -727,10 +734,11 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 50 "scanner.l"
+#line 55 "scanner.l"
 
 
-#line 734 "scanner.c"
+
+#line 742 "scanner.c"
 
 	if ( !(yy_init) )
 		{
@@ -815,181 +823,183 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 52 "scanner.l"
+#line 58 "scanner.l"
 /* ignore */
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 53 "scanner.l"
+#line 59 "scanner.l"
 return(COLON);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 54 "scanner.l"
+#line 60 "scanner.l"
 return(SEMICOLON);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 55 "scanner.l"
+#line 61 "scanner.l"
 return(COMMA);
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 56 "scanner.l"
+#line 62 "scanner.l"
 return(LEFTPAREN);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 57 "scanner.l"
+#line 63 "scanner.l"
 return(RIGHTPAREN);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 58 "scanner.l"
+#line 64 "scanner.l"
 return(WILDCARD);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 59 "scanner.l"
+#line 65 "scanner.l"
 return(EQUALS);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 60 "scanner.l"
+#line 66 "scanner.l"
 return(PLUSEQUALS);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 61 "scanner.l"
+#line 67 "scanner.l"
 return(EQUALSPLUS);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 62 "scanner.l"
+#line 68 "scanner.l"
 return(QEQUALS);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 63 "scanner.l"
+#line 69 "scanner.l"
 return(QPLUSEQUALS);
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 64 "scanner.l"
+#line 70 "scanner.l"
 return(ASSIGN);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 65 "scanner.l"
+#line 71 "scanner.l"
 return(WITH);
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 66 "scanner.l"
+#line 72 "scanner.l"
 return(BEGIN_ANNOTATE);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 67 "scanner.l"
+#line 73 "scanner.l"
 return(END_ANNOTATE);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 69 "scanner.l"
+#line 75 "scanner.l"
 return(ALIAS);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 71 "scanner.l"
+#line 77 "scanner.l"
 bufp=litbuf; bufp[0] = '\0'; BEGIN(lit);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 72 "scanner.l"
+#line 78 "scanner.l"
 strcpy(bufp, yytext); bufp += yyleng;
 	YY_BREAK
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 73 "scanner.l"
+#line 79 "scanner.l"
 { strcpy(bufp, yytext); bufp += yyleng;
 		  line_number[stack_pointer]++; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 75 "scanner.l"
+#line 81 "scanner.l"
 BEGIN(INITIAL); return(LITERAL);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 77 "scanner.l"
+#line 83 "scanner.l"
 bufp=litbuf; bufp[0] = '\0'; BEGIN(scpt);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 78 "scanner.l"
+#line 84 "scanner.l"
 strcpy(bufp, yytext); bufp += yyleng;
 	YY_BREAK
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 79 "scanner.l"
+#line 85 "scanner.l"
 { strcpy(bufp, yytext); bufp += yyleng;
 		  line_number[stack_pointer]++; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 81 "scanner.l"
+#line 87 "scanner.l"
 BEGIN(INITIAL); return(SCRIPT);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 83 "scanner.l"
+#line 89 "scanner.l"
 strcpy(litbuf, yytext); return(PATH);
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 84 "scanner.l"
+#line 90 "scanner.l"
 strcpy(litbuf, yytext); return(NAME);
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 85 "scanner.l"
+#line 91 "scanner.l"
 { strcpy(litbuf, yytext); litbuf[yyleng-1] = '\0';
 		  return(PREFIX); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 87 "scanner.l"
+#line 93 "scanner.l"
 /* ignore */
 	YY_BREAK
 case 30:
 /* rule 30 can match eol */
 YY_RULE_SETUP
-#line 88 "scanner.l"
+#line 94 "scanner.l"
 line_number[stack_pointer]++;
 	YY_BREAK
 case 31:
 /* rule 31 can match eol */
 YY_RULE_SETUP
-#line 90 "scanner.l"
+#line 96 "scanner.l"
 yytext[yyleng-1] = '\0'; include(yytext+9);
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 92 "scanner.l"
+#line 98 "scanner.l"
 fprintf(stderr, "usepackage: ignoring character `%s' on line %d of %s\n", yytext, line_number[stack_pointer], file_name[stack_pointer]);
 	YY_BREAK
-case 33:
-YY_RULE_SETUP
-#line 94 "scanner.l"
-ECHO;
-	YY_BREAK
-#line 989 "scanner.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(lit):
 case YY_STATE_EOF(scpt):
-	yyterminate();
+#line 100 "scanner.l"
+if (uninclude()) yyterminate();
+	YY_BREAK
+case 33:
+YY_RULE_SETUP
+#line 102 "scanner.l"
+ECHO;
+	YY_BREAK
+#line 1003 "scanner.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1984,9 +1994,77 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 94 "scanner.l"
+#line 102 "scanner.l"
 
 
 
+int include(char* filename)
+{
+   static linked_list* include_path = NULL;
+   list_node* node;
+   char* dir;
+   char the_file_name[256];
+   FILE* the_file = NULL;
+   char* path;
+
+   if (!include_path)
+   {
+      path = getenv(PACKAGE_PATH_VAR);
+      if (!path)
+         path = DEFAULT_PACKAGE_PATH;
+
+      include_path = make_pathlist(path);
+   }
+
+   strcpy(the_file_name, expand(filename));
+   if (the_file_name[0] == '/')
+   {
+      the_file = fopen(the_file_name, "r");
+   }
+   else
+   {
+      for (node = head(include_path) ; !the_file && node ; node = next(node))
+      {
+         dir = (char*) get_value(node);
+         sprintf(the_file_name, "%s/%s", expand(dir), filename);
+         the_file = fopen(the_file_name, "r");
+      }
+   }
+
+   if (!the_file)
+   {
+      DEBUG(stderr, "cannot open file `%s'\n", the_file_name);
+      return(1);
+   }
+
+   if (stack_pointer == INCLUDE_STACK_DEPTH - 1)
+   {
+      DEBUG(stderr, "maximum include depth reached\n");
+      return(1);
+   }
+
+   DEBUG(stderr, "reading from `%s'...\n", the_file_name);
+   stack_pointer++;
+   strcpy(file_name[stack_pointer], the_file_name);
+   line_number[stack_pointer] = 1;
+   yy_switch_to_buffer(file[stack_pointer] = yy_create_buffer(the_file,YY_BUF_SIZE));
+
+   return(0);
+}
+
+int uninclude()
+{
+   DEBUG(stderr, "closing file %s\n", file_name[stack_pointer]);
+   fclose(yyin);
+   yy_delete_buffer(file[stack_pointer--]);
+
+   if (stack_pointer != -1)
+   {
+      yy_switch_to_buffer(file[stack_pointer]);
+      return(0);
+   }
+
+   return(1);
+}
 
 
