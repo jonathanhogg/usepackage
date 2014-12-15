@@ -1,5 +1,5 @@
 Usepackage Environment Manager
-Copyright (C) 1995-2014  Jonathan Hogg  <jonathan@onegoodidea.com>
+Copyright (C) 1995-2014  Jonathan Hogg  <me@jonathanhogg.com>
    
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -14,6 +14,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software 
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+Changes between usepackage version 1.11 and 1.12
+
+* More code updating, this time to fix an inclusion bug related to very
+  old-school usage of flex.
+
+Changes between usepackage version 1.10 and 1.11
+
+* The code was updated a fair bit to match more modern autoconf/automake
+  and C99 standards (it's really starting to show its age).
 
 Changes between usepackage version 1.8 and 1.10
 
