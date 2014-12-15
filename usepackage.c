@@ -457,9 +457,6 @@ linked_list* make_pathlist(char* path_string)
    i = 0;
    end = strlen(path_string);
 
-   /* if (!end)
-      return(list); */
-
    while (i <= end)
    {
       if ((path_string[i] == ':') || (path_string[i] == '\0'))
