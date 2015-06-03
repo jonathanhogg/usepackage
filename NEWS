@@ -1,5 +1,5 @@
 Usepackage Environment Manager
-Copyright (C) 1995-2014  Jonathan Hogg  <me@jonathanhogg.com>
+Copyright (C) 1995-2015  Jonathan Hogg  <me@jonathanhogg.com>
    
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -14,6 +14,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software 
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+Changes between usepackage version 1.11 and 1.13
+
+* Just updating the email addresses and copyrights on everything for the
+  20TH ANNIVERSARY!!!
 
 Changes between usepackage version 1.11 and 1.12
 

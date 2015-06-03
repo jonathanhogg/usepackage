@@ -509,7 +509,7 @@ char *yytext;
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2014  Jonathan Hogg  <jonathan@onegoodidea.com>
+ * Copyright (C) 1995-2015  Jonathan Hogg  <me@jonathanhogg.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -526,7 +526,7 @@ char *yytext;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
  * Name   : scanner.l
- * Author : Jonathan Hogg <jonathan@onegoodidea.com>
+ * Author : Jonathan Hogg <me@jonathanhogg.com>
  * 
  ****************************************************************************/
 #line 27 "scanner.l"
