@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 **usepackage** is an environment management program. It is based on the principle
 of "packages" that are "used". When a package is used, the information
 necessary to invoke it is drawn into the environment of the shell. A summary
-of how to setup and use the system is given below; see the manual page for 
+of how to setup and use the system is given below; see the manual page for
 more information.
 
 ## Using usepackage
@@ -82,7 +82,7 @@ of available packages with:
 ```
 % use -l
 
-usepackage 1.13, Copyright (C) 1995-2020  Jonathan Hogg
+usepackage 1.14, Copyright (C) 1995-2020  Jonathan Hogg
 
 Available packages are:
 
@@ -119,4 +119,4 @@ kept). The syntax is also documented in the `usepackage` manual page.
 If you find a bug in usepackage, please let me know about it. Best place to do
 so is on GitHub:
 
-https://github.com/jonathanhogg/usepackage/issues
+https://github.com/jonathanhogg/usepackage
