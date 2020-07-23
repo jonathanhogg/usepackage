@@ -509,7 +509,7 @@ char *yytext;
 /*****************************************************************************
  * 
  * Usepackage Environment Manager
- * Copyright (C) 1995-2015  Jonathan Hogg  <me@jonathanhogg.com>
+ * Copyright (C) 1995-2020  Jonathan Hogg  <me@jonathanhogg.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

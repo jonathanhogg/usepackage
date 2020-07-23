@@ -1,0 +1,122 @@
+# Usepackage Environment Manager
+
+Copyright (C) 1995-2020  Jonathan Hogg  <me@jonathanhogg.com>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+# Usepackage
+
+**usepackage** is an environment management program. It is based on the principle
+of "packages" that are "used". When a package is used, the information
+necessary to invoke it is drawn into the environment of the shell. A summary
+of how to setup and use the system is given below; see the manual page for 
+more information.
+
+## Using usepackage
+
+Add one of the following lines to your shell rc file (modify depending on
+where you installed **usepackage**):
+
+- for csh/tcsh: `source /usr/local/share/usepackage/use.csh`
+- for sh/zsh/bash: `source /usr/local/share/usepackage/use.bsh`
+- for ksh: `. /usr/local/share/usepackage/use.ksh`
+
+Then invoke `use` to add packages to your environment like:
+
+```
+use <package1> [<package2>...]
+```
+
+For example, in the shell rc file:
+
+```
+use gnu standard X11
+```
+
+Note that **usepackage** is case-insensitive, so `x11` is also acceptable in the
+above example.
+
+The `use` command can be called at any time to use another package, for
+example:
+
+```
+% latex foo
+latex: Command not found.
+% use tex
+% latex foo
+This is TeX, Version 3.1415 (C version 6.1)
+...
+```
+
+If the requested package is not available for your platform then a warning
+message will be given of the form:
+
+```
+% use java
+usepackage: no match for package `java' on this host.
+```
+
+These messages can be suppressed with the `-s` flag (for instance if you log
+onto platforms for which certain packages that you use are not available):
+
+```
+% use -s java
+```
+
+You can obtain a usage summary by typing `use` with no arguments and a list
+of available packages with:
+
+```
+% use -l
+
+usepackage 1.13, Copyright (C) 1995-2020  Jonathan Hogg
+
+Available packages are:
+
+  none - empty paths
+  dot - add current directory to PATH (possible security hole)
+  [...]
+```
+
+## A Recommendation
+
+As **usepackage** makes it very easy to add packages into your environment at the
+command line, it is worth not adding all the packages you might ever need in
+your shell rc file. Instead add only the packages you commonly use and add
+rarer ones before you run them. For example, if you rarely use latex it makes
+no sense to keep it resident in your path, following the example above it is
+simple to bring it in before you use it. This will keep your path short and
+speed-up shell startup times. In particular, some brain-dead shells have
+major problems with a very long path. Another advantage of doing this is
+that the `man` command works much better with a short `MANPATH` variable and
+even better if the pages you request are near the head of the `MANPATH` (which
+is the case when a package is added at the command line).
+
+## Customising packages
+
+The file `usepackage.conf` contains the information about each package. This
+file contains comments explaining its format. Per-user packages can be added by
+creating the file `.packages` in your home directory with the same format as
+the main packages file (assuming the `include` line in `usepackage.conf` is
+kept). The syntax is also documented in the `usepackage` manual page.
+
+
+## Reporting bugs
+
+If you find a bug in usepackage, please let me know about it. Best place to do
+so is on GitHub:
+
+https://github.com/jonathanhogg/usepackage/issues

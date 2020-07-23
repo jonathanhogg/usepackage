@@ -1,5 +1,5 @@
 # Usepackage Environment Manager
-# Copyright (C) 1995-2015  Jonathan Hogg  <me@jonathanhogg.com>
+# Copyright (C) 1995-2020  Jonathan Hogg  <me@jonathanhogg.com>
 #  
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ AC_CHECK_HEADER(dirent.h)
 AH_VERBATIM([COPYRIGHT],
 [/* Copyright string for the executable. */
 #ifndef COPYRIGHT
-# define COPYRIGHT "Copyright (C) 1995-2015  Jonathan Hogg  <me@jonathanhogg.com>"
+# define COPYRIGHT "Copyright (C) 1995-2020  Jonathan Hogg  <me@jonathanhogg.com>"
 #endif])
 
 AC_OUTPUT(Makefile)
