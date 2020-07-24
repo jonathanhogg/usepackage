@@ -1,6 +1,6 @@
 
 /*****************************************************************************
- * 
+ *
  * Usepackage Environment Manager
  * Copyright (C) 1995-2020  Jonathan Hogg  <me@jonathanhogg.com>
  *
@@ -17,10 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Name   : package.h
  * Author : Jonathan Hogg <me@jonathanhogg.com>
- * 
+ *
  ****************************************************************************/
 
 
@@ -35,8 +35,8 @@
 
 /*** macros: ***/
 
-#ifndef MASTER_PACKAGE_FILE
-#define MASTER_PACKAGE_FILE "usepackage.conf"
+#ifndef MAIN_PACKAGE_FILE
+#define MAIN_PACKAGE_FILE "usepackage.conf"
 #endif
 
 #ifndef PACKAGE_PATH_VAR
@@ -121,4 +121,3 @@ extern int get_packages(linked_list** packages, linked_list** groups,
                         linked_list** annotations);
 extern int package_matches(package_t* package, char* name, char* arch,
                            char* os, char* version, char* host, char* shell);
-

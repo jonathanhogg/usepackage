@@ -1,26 +1,26 @@
 
 /*****************************************************************************
- * 
+ *
  * Usepackage Environment Manager
  * Copyright (C) 1995-2020  Jonathan Hogg  <me@jonathanhogg.com>
- *  
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, 
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software 
+ * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * 
+ *
  * Name   : usepackage.c
  * Author : Jonathan Hogg <me@jonathanhogg.com>
- * 
+ *
  ****************************************************************************/
 
 
@@ -75,7 +75,7 @@ linked_list* the_annotations;
 linked_list* the_environment;
 linked_list* the_scripts;
 linked_list* the_aliases;
-char* main_package_filename = MASTER_PACKAGE_FILE;
+char* main_package_filename = MAIN_PACKAGE_FILE;
 
 
 /*** main program: ***/
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
    the_environment = new_list();
    the_scripts = new_list();
    the_aliases = new_list();
-   
+
    if (get_packages(&the_packages, &the_groups, &the_annotations))
    {
       fprintf(stderr, "usepackage: couldn't load package information.\n");
@@ -198,7 +198,7 @@ void use_package(char* name)
    int got_one = 0;
 
    DEBUG(stderr, "using package `%s'...\n", name);
-      
+
    for (node = head(the_packages) ; node ; node = next(node))
    {
       package = (package_t*) get_value(node);
@@ -229,7 +229,7 @@ void add_package(package_t* package)
    char* name;
    int got_one;
    char* text;
-   
+
    if (package->requires)
    {
       DEBUG(stderr, "(pre-using required packages list)\n");
@@ -267,13 +267,13 @@ void add_package(package_t* package)
          set_value(enode, update_var(evar, vvar));
       }
    }
-   
+
    for (vnode = head(package->scripts) ; vnode ; vnode = next(vnode))
    {
       text = ((script_t*) get_value(vnode))->text;
       add_to_tail(the_scripts, (void*) text);
    }
-   
+
    for (vnode = head(package->aliases) ; vnode ; vnode = next(vnode))
    {
       add_to_tail(the_aliases, get_value(vnode));
@@ -529,7 +529,7 @@ variable_t* update_var(variable_t* evar, variable_t* vvar)
          }
          evar->type = VAR_PATH_ADD;
          break;
-         
+
       case VAR_PATH_TESTSET:
          testlist = test_paths(vvar->pathlist);
          if (head(testlist))
@@ -555,7 +555,7 @@ variable_t* update_var(variable_t* evar, variable_t* vvar)
             case VAR_PATH_ADD:
                evar->pathlist = merge_paths(evar->pathlist, test_paths(vvar->pathlist));
                break;
-               
+
             default:
                break;
          }
@@ -638,11 +638,11 @@ linked_list* test_paths(linked_list* vlist)
    list_node* vnode;
    char* vpath;
    FILE* test;
-   
+
    for (vnode = list_tail(vlist) ; vnode ; vnode = previous(vnode))
    {
       vpath = (char*) get_value(vnode);
-      
+
       test = fopen(vpath, "r");
       if ( test )
       {
@@ -650,7 +650,7 @@ linked_list* test_paths(linked_list* vlist)
          fclose(test);
       }
    }
-   
+
    return(elist);
 }
 
@@ -658,16 +658,16 @@ void list_annotations()
 {
    list_node* node;
    annotation_t* annotation;
- 
+
    for (node = head(the_annotations); node; node = next(node))
    {
       annotation = (annotation_t*) get_value(node);
- 
+
       fprintf(stderr, "   %s - %s\n", annotation->name,
               annotation->description);
    }
 }
- 
+
 void list_groups()
 {
    list_node* gnode;
@@ -689,4 +689,4 @@ void list_groups()
 
       fprintf(stderr, "\n");
    }
-} 
+}

@@ -1,10 +1,10 @@
 .TH USE 1 "$Date$" "Usepackage" "User Commands"
 .SH NAME
-usepackage \- 
+usepackage \-
 .I Usepackage
 Environment Manager
 .SH SYNOPSIS
-See 
+See
 .IR use(1) .
 .SH DESCRIPTION
 .I Usepackage
@@ -22,7 +22,7 @@ The environment information is specified in packages files, see
 .PP
 The
 .B usepackage
-executable is the backend program used to generate environment information 
+executable is the backend program used to generate environment information
 suitable for sourcing into a running shell. The
 .B use
 frontend should be invoked to actually effect changes to the environment,
@@ -36,7 +36,7 @@ Output verbose information to the standard error stream.
 .I \-s
 Silence warnings for un-matched packages. This is useful in a shell
 .I rc
-script when a package is known not to be available on all architectures that 
+script when a package is known not to be available on all architectures that
 the shell is used on, see
 .IR PACKAGES .
 .TP
@@ -63,7 +63,7 @@ reads package environment information from the configuration file as follows:
 .SS LOAD ORDER
 When
 .I Usepackage
-starts up, it loads an initial configuration file, the name of this file may 
+starts up, it loads an initial configuration file, the name of this file may
 be given on the command line (see
 .IR OPTIONS ),
 otherwise it defaults to the builtin name "usepackage.conf" (see
@@ -77,7 +77,7 @@ This file is located by searching along a path which defaults to:
 This path may be overridden with the PACKAGES_PATH environment variable
 (see
 .IR ENVIRONMENT ).
-A packages file may contain inclusion directives which cause the sourcing of 
+A packages file may contain inclusion directives which cause the sourcing of
 other files at given points. An inclusion directive looks like:
 .PP
 .nf
@@ -85,11 +85,11 @@ other files at given points. An inclusion directive looks like:
 .fi
 .PP
 The same location mechanism is used to find "file-name" as for the initial
-configuration file. A package file name may also be given as an absolute file 
+configuration file. A package file name may also be given as an absolute file
 name or may be shell-style user directory, tilde (~), relative.
 .SS SYNTAX
-A package file consists of comments, delimited by a leading hash (#), 
-or package definitions of the form: 
+A package file consists of comments, delimited by a leading hash (#),
+or package definitions of the form:
 .PP
 .nf
      package [arch [os [version [host [shell]]]]]
@@ -139,9 +139,9 @@ searches for the definition for a particular package, it compares each line
 in the packages file against the name of the package given (package) and
 system-dependant information for the execution host, as obtained by
 .IR uname (2).
-This information is the hardware implementation (platform), the operating 
+This information is the hardware implementation (platform), the operating
 system name (os), the operating system version (version) and the hostname
-(host). Comparisons are case-insensitive. If a match is obtained then the 
+(host). Comparisons are case-insensitive. If a match is obtained then the
 given variable definitions and script sections are processed to modify the
 environment. A  variable definition may have one of the following forms:
 .PP
@@ -155,14 +155,14 @@ environment. A  variable definition may have one of the following forms:
 .fi
 .PP
 The first sets the given variable to a literal string value, the
-second sets the given variable to a path list, the third prepends the 
-current value of a variable with the given path list, and the fourth 
-interprets the literal string as a path list and prepends it to the current 
+second sets the given variable to a path list, the third prepends the
+current value of a variable with the given path list, and the fourth
+interprets the literal string as a path list and prepends it to the current
 value of the variable. The fourth and fifth forms do the same, but append to
-the current value of the variable. Path lists are colon (:) separated lists of 
-directories and may contain shell-style tilde (~), user-relative, directories 
-which will be expanded automatically (except when the path list is given as a 
-literal string). When pre-pending paths to a variable, duplicate paths are 
+the current value of the variable. Path lists are colon (:) separated lists of
+directories and may contain shell-style tilde (~), user-relative, directories
+which will be expanded automatically (except when the path list is given as a
+literal string). When pre-pending paths to a variable, duplicate paths are
 removed from the original value first.
 .PP
 In addition,
@@ -256,9 +256,9 @@ The following fragment of a packages file illustrates the main features:
                alias cc = /usr/bin/gcc ;
 
      # Special function for zsh:
-     
+
      >> zsh-function : "Special zsh function" <<
-     
+
      zsh-function * * * * zsh :
            <[ hello() { echo "Hello World!"; } ]> ;
 
@@ -279,7 +279,7 @@ The following fragment of a packages file illustrates the main features:
 Note the use of Operating System version numbers to distinguish between
 SunOS 4 and Solaris (SunOS 5), the use of "sun4*" to match the multiple
 different platform versions of SPARC machines (sun4m, sun4c, etc.) and the
-fact that package "user" on a SPARC Solaris machine will match both of the 
+fact that package "user" on a SPARC Solaris machine will match both of the
 first two lines of the "user" package section, resulting in the "solaris"
 directory and the "sun4" directory being added into the PATH.
 .PP
@@ -305,7 +305,7 @@ as the shell startup script). These warnings may be silenced (see
 .SH FILES
 .TP 15
 .SB @pkgdatadir@/usepackage.conf
-The default master packages file.
+The default main packages file.
 .TP
 .SB @pkgdatadir@/use.csh
 Shell setup for csh and derivatives.
@@ -321,7 +321,7 @@ The underlying
 .I Usepackage
 executable.
 .SH ENVIRONMENT
-Other than the reading and re-definition of environment variables for package 
+Other than the reading and re-definition of environment variables for package
 setup,
 .B use
 also uses the following environment variables for user configuration:
@@ -362,4 +362,3 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 .SH SEE ALSO
 use(1), csh(1), sh(1), ksh(1), env(1), environ(5), getenv(3C), uname(1),
 uname(2)
-
